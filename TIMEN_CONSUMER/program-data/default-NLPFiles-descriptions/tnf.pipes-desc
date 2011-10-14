@@ -1,0 +1,22 @@
+
+word|pos|lemma|depverb|tense|mainphrase|PPdetail|te-numval|te-pattern|te-type|DCT|ref-val|value
+
+
+word:		timex tokens separated by "_"
+pos:		timex POSs separated by "_"
+lemma:		timex lemmas separated by "_"
+depverb:	timex governing-verb
+tense:  	timex governing-verb tense
+mainphrase:	timex governing main-phrase (NP-PP-ADVP-ADJP)
+PPdetail:	timex prepositional modiviers (in PP phrases: in, on, for, during...)
+te-type:	timex TimeML type (optional: leave as "ukwn" if unknown)
+DCT:		Document Creation Time in ISO8601 format
+ref-val:	Previous date/time-timex focus (temporal reference) (i.e., reference point time-location)
+value:		Normalization ISO8601 value for evaluation purposes (optional: leave as "ukwnl" if unknown)
+
+
+
+
+
+
+
