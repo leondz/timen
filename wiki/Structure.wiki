@@ -2,9 +2,9 @@ We developed TIMEN as a resource that given a timex and a set of features output
 
 In order to handle this favouring independence and modularity, TIMEN is divided into modules:
 
-  * xml_wrapper, which takes TimeML and manages document-level timex extraction and annotation, and tnf generation;
-  * timen_consumer, An application which uses TIMEN to normalize a list of timexes. This controls timex processing flow and saves previously normalized timexes in order to track reference time.
-  * timen, A library that contains functions for normalizing input timexes given a set of features and an input language. This also handles language-specific mappings (e.g. from weekday names to weekday numbers) and rule data.
+  * xml_wrapper, which takes TimeML and manages document-level timex extraction and annotation, and [tnf] generation;
+  * [timen_consumer], An application which uses TIMEN to normalize a list of timexes. This controls timex processing flow and saves previously normalized timexes in order to track reference time.
+  * [timen], A library that contains functions for normalizing input timexes given a set of features and an input language. This also handles language-specific mappings (e.g. from weekday names to weekday numbers) and rule data.
 
 Our system takes a document containing delimited timexes as input and generates an intermediate description (shown in our full paper) of each timex that includes information such as part-of-speech, applicable reference time and linguistic context. These descriptions are then passed to the TIMEN component, which generates TIMEX3-format normalized interpretations.
 
@@ -13,11 +13,11 @@ Based on a feature description of a timex, TIMEN normalizes the timex using lang
 
 There are two distinct stores of information local to TIMEN:
 
- * Knowledge base - these are language-specific, and contain static mappings of strings such as weekday names and month names to an interlingua representation (e.g. 'Monday' => 'day0')
- * Rule base - rules for converting a timex described as features in TNF into a TIMEX3 annotation.
+ * [KB Knowledge base] - these are language-specific, and contain static mappings of strings such as weekday names and month names to an interlingua representation (e.g. 'Monday' => 'day0')
+ * [Rulebase Rule base] - rules for converting a timex described as features in TNF into a TIMEX3 annotation.
 
 In this technical documentation, we define:
 
-  * Rule syntax
-  * System architecture
-  * Knowledge base syntax
+  * [Rule_syntax Rule syntax]
+  * [Architecture System architecture]
+  * [KB_syntax Knowledge base syntax]
