@@ -3,11 +3,8 @@ We developed TIMEN as a resource that given a timex and a set of features output
 In order to handle this favouring independence and modularity, TIMEN is divided into modules:
 
   * xml_wrapper, which takes TimeML and manages document-level timex extraction and annotation, and tnf generation;
-  * timen_consumer, An application which uses TIMEN to normalize a list of timexes. This controls timex processing flow and saves previously norma
-lized timexes in order to track reference time.
-which manages a stream of timexes and reference time;
-  * timen, A library that contains functions for normalizing input timexes given a set of features and an input language. This also handles langua
-ge-specific mappings (e.g. from weekday names to weekday numbers) and rule data.
+  * timen_consumer, An application which uses TIMEN to normalize a list of timexes. This controls timex processing flow and saves previously normalized timexes in order to track reference time.
+  * timen, A library that contains functions for normalizing input timexes given a set of features and an input language. This also handles language-specific mappings (e.g. from weekday names to weekday numbers) and rule data.
 
 Our system takes a document containing delimited timexes as input and generates an intermediate description (shown in our full paper) of each timex that includes information such as part-of-speech, applicable reference time and linguistic context. These descriptions are then passed to the TIMEN component, which generates TIMEX3-format normalized interpretations.
 
