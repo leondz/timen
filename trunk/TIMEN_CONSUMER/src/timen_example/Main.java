@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package timen_example;
 
 import org.apache.commons.cli.*;
@@ -18,11 +17,11 @@ public class Main {
      */
     public static void main(String[] args) {
 
-                try {
+        try {
             String lang = "en";
-            String action = "normalize"; //default action
+            String action = "normalize_expr"; //default action
             String action_parameters = null;
-            String input_files[];
+            String input[];
             //Date ExecTime = new Date();
 
 
@@ -30,13 +29,13 @@ public class Main {
             //addOption(String opt, boolean hasArg, String description)
             opt.addOption("h", "help", false, "Print this help");
             opt.addOption("l", "lang", true, "Language code (default \"EN\" [English])");
-            opt.addOption("a", "action", true, "Action/s to be done (normalize, obtain knowledge-java from db)");
-            //opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (-a annotate -ap model=TIPSemB)");
+            opt.addOption("a", "action", true, "Action/s to be done (normalize_tml, obtain knowledge-java from db)");
+            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (-a normalize -ap dct=2012-05-14)");
             opt.addOption("d", "debug", false, "Debug mode: Output errors stack trace (default: disabled)");
 
             PosixParser parser = new PosixParser();
             CommandLine cl_options = parser.parse(opt, args);
-            input_files = cl_options.getArgs();
+            input = cl_options.getArgs();
             HelpFormatter hf = new HelpFormatter();
             if (cl_options.hasOption('h')) {
                 hf.printHelp("TIMEN", opt);
@@ -49,7 +48,7 @@ public class Main {
                     lang = cl_options.getOptionValue('l').toLowerCase();
                     if (lang.length() != 2) {
                         hf.printHelp(Class.class.getName(), opt);
-                        throw new Exception("Error: incorrect language " + lang+ " -- must be 2 chars");
+                        throw new Exception("Error: incorrect language " + lang + " -- must be 2 chars");
                     }
                 }
                 if (cl_options.hasOption('a')) {
@@ -64,21 +63,24 @@ public class Main {
                         throw new RuntimeException("\tIlegal action: " + action.toUpperCase() + "\n" + errortext);
                     }
                 }
+                if (cl_options.hasOption("ap")) {
+                    action_parameters = cl_options.getOptionValue("ap");
+                }
             }
 
 
-            if (input_files == null){
+            if (input == null) {
                 hf.printHelp("TIMEN", opt);
-                throw new Exception("Input file/s not found.");
+                throw new Exception("Missing input file/s or expressions.");
             }
 
-            //System.err.println("TIMEN Will normalize these files after checking correct format.");
+            //System.err.println("TIMEN Will contextaware_normalization these files after checking correct format.");
             // Default action: get pattern/normval
-            // Other function --> directly normalize (TIPSem pat/nom already built)
+            // Other function --> directly contextaware_normalization (TIPSem pat/nom already built)
             // Other action --> from knowledge_lang.db to knowledge_lang.java
-            OptionHandler.doAction(action, input_files, action_parameters, lang);
+            OptionHandler.doAction(action, input, action_parameters, lang);
 
-            // TEST DB TODO DELETE
+            // TEST DB DEBUG (DELETE)
             //TIMEN.showDBcontents(lang);
 
 
@@ -91,5 +93,4 @@ public class Main {
         }
 
     }
-
 }

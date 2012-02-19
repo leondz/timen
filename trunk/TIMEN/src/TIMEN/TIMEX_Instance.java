@@ -18,7 +18,7 @@ public class TIMEX_Instance {
     private String tense;
     public TIMEXCalendarRef dct;
     public TIMEXCalendarRef reftime;
-    private static final String validTenses="(?:present|past|future|present-perfect|present-continuos|past-perfect|past-continuous|conditional)";
+    private static final String validTenses="(?:omit|present|past|future|present-perfect|present-continuos|past-perfect|past-continuous|conditional)";
     private static final String defaultTense="past";
 
     public TIMEX_Instance(String nt, String t, String d, String r){

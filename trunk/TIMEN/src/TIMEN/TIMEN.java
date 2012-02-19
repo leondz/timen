@@ -80,23 +80,32 @@ public class TIMEN {
     public static String granul_weeks = "yyyy-'W'ww";
 
     /**
-     * Obtains the ISO8601 normalized value for the given features.
-     * 
-     * @param word          the temporal expression text (multiwords use "_" for concat)
-     * @param pos           the timex PoS
-     * @param lemma
-     * @param depverb
-     * @param tense
-     * @param mainphrase
-     * @param ppdetail
-     * @param timex_type
-     * @param normText      timex noralized tokens
-     * @param pattern       timex pattern
+     * Obtains the ISO8601 normalized value for the given simplified features.
+     * @param expr          the temporal expression text (multiwords use "_" for concat)
      * @param dct           date creation time
-     * @param ref_val       reference point (last time ref)
      * @return
      */
-    public String normalize(String word, String pos, String lemma, String depverb, String tense, String mainphrase, String ppdetail, String timex_type, String normText, String pattern, String dct, String reftime) {
+    public String normalize(String expr, String dct) {
+        return this.normalize(expr, dct, "omit", dct);
+    }
+
+    /**
+     * Obtains the ISO8601 normalized value for the given features.
+     * @param expr          the temporal expression text (multiwords use "_" for concat)
+     * @param dct           date creation time
+     * @param tense         sentence tense (optional)
+     * @param ref_val       reference point - last time ref (optional)
+     * @return
+     */
+    public String normalize(String expr, String dct, String tense, String reftime) {
+        /*      
+         * OMITED: pos, lemma, depverb, phrase type, prep_mod
+         * (prep_mod not needed since "in 3 years" does not mean "3 years now" or anything different from "during 3 years")
+         *
+         * In the future, anaphoric cases like 3 refering 3 hours or 3 months are out...
+         * a solution is saving in addition to reftime, refduration...
+        (it should be reset each 2 sentences)
+         */
         // search by pattern first
         // then if more than one is found
         //      filter by other features
@@ -104,17 +113,23 @@ public class TIMEN {
         // what happens with modifiers (almost, aproximately, ...)
         // default normalization when no pattern is found
         // in patterns, is it important to distinguish card from ordinals?
-        // is it important to distinguish pluarls in TUnits 2 year(s) always period...?
-        // take into account TimeML class to solve ambiguity if there is
-        // "for (one year)" (duration) or "in (one year)" (date)
 
 
         // DECICE WHICH IS THE BEST PLACE TO PLACE THE DCT, REF, TENSE VALIDATOR...
 
         String norm_value = "default_norm";
 
-        System.out.println("\n\ntimex:" + word + "  normtext:" + normText + "  pattern:" + pattern + "  tense:" + tense + "\nfound rules:");
+
         try {
+            String normTextandPattern = this.getNormTextandPattern(expr);
+            if (normTextandPattern == null) {
+                throw new Exception("Problem obtaining NormText and Pattern from: " + expr);
+            }
+            String[] normTextandPattern_arr = normTextandPattern.split("\\|");
+            String normText = normTextandPattern_arr[0];
+            String pattern = normTextandPattern_arr[1];
+
+            System.out.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  tense:" + tense + "\nfound rules:");
             ArrayList<Rule> rules_found = new ArrayList<Rule>();
             SQLiteStatement st = db.prepare("SELECT * FROM RULES_LEVEL1 where pattern='" + pattern + "'");
             try {
@@ -141,8 +156,8 @@ public class TIMEN {
                 if (rules_found.size() == 1) {
                     //apply
                     TIMEX_Instance timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
-                    String result = Rule_Engine.apply(rules_found.get(0), this, timex_object);
-                    System.out.println("result: " + result);
+                    norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
+                    System.out.println("result: " + norm_value);
                 } else {
                     // choose one (disambiguate, by error? by features?)
                     System.out.println("Disambiguation needed...");
@@ -277,11 +292,6 @@ public class TIMEN {
                 pattern += " Num";
             }
 
-
-
-
-
-
         } catch (Exception e) {
             System.err.println("Errors found (TIMEN):\n\t" + e.toString() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -347,16 +357,16 @@ public class TIMEN {
      * @return
      */
     public String to_period(String num, String TUnit) {
-        String ret="";
-        if(TUnit.matches("(hour|minute|second)")){
-            ret+="T";
+        String ret = "";
+        if (TUnit.matches("(hour|minute|second)")) {
+            ret += "T";
         }
-        
+
         // must translate e.g. 120 min into 2h
         // knowledge main file needs TUnit equivalence relations...
 
-        ret+=num;
-        ret+=knowledge.TUnits.get(TUnit).substring(0, 1);
+        ret += num;
+        ret += knowledge.TUnits.get(TUnit).substring(0, 1);
 
         return ret;
     }
@@ -458,8 +468,6 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
-
-
     public String date_tense_weekday(String reference, String granularity, String weekday, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
         Date refdate = timex_object.dct.getCalendar().getTime();
@@ -473,27 +481,27 @@ public class TIMEN {
             }
 
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
-                Date result = cal.getTime();
-                if (result.before(refdate)) {
-                    if (!timex_object.getTense().startsWith("past")) {
+            Date result = cal.getTime();
+            if (result.before(refdate)) {
+                if (!timex_object.getTense().startsWith("past")) {
+                    cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+                }
+            } else {
+                if (result.equals(refdate)) {
+                    if (timex_object.getTense().equals("past")) {
+                        //if (locale.getLanguage().equalsIgnoreCase("es")) {
+                        cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+                        //}
+                    } else {
                         cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
                     }
-                } else {
-                    if (result.equals(refdate)) {
-                        if (timex_object.getTense().equals("past")) {
-                           //if (locale.getLanguage().equalsIgnoreCase("es")) {
-                                cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
-                           //}
-                        } else {
-                            cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
-                        }
-                    } else { // after
-                        if (timex_object.getTense().startsWith("past")) {
-                            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
-                        }
+                } else { // after
+                    if (timex_object.getTense().startsWith("past")) {
+                        cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
                     }
-
                 }
+
+            }
 
         } catch (Exception e) {
             System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
@@ -505,15 +513,6 @@ public class TIMEN {
 
         return formatter.format(cal.getTime());
     }
-
-
-
-
-
-
-
-
-
     /**
      * Just playing with SQLite files, langs, and dbs.
      * TODO DELETE THIS TOY FUNCTION
