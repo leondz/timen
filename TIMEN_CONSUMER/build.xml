@@ -71,4 +71,7 @@
     nbproject/build-impl.xml file. 
 
     -->
+   <copy file="./lib/libsqlite4java-linux-i386.so" todir="./dist/lib"/>
+   <copy file="./lib/libsqlite4java-linux-amd64.so" todir="./dist/lib"/>
+
 </project>
