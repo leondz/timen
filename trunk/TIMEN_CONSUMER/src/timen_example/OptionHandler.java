@@ -25,8 +25,7 @@ public class OptionHandler {
 
         NORMALIZE_EXPR,
         NORMALIZE_TML,
-        CREATE_KNOWLEDGE_FILE,
-        OBTAIN_INPUT_FROM_TML;
+        CREATE_KNOWLEDGE_FILE;
     }
     private static TIMEN timen;
     private static SimpleDateFormat dct_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -68,12 +67,16 @@ public class OptionHandler {
                     /* Create a timen object */
                     timen = new TIMEN(new Locale(lang));
 
-                    /* Process expression */
-                    if (input.length == 1) {
+                    /* Process expression/s */
+                    for (int i = 0; i < input.length; i++) {
+                        System.out.println(timen.normalize(input[i], dctvalue));
+                    }
+                    // limit to one expression, but it could be useful allowing a list for efficiency
+                    /*if (input.length == 1) {
                         System.out.println(timen.normalize(input[0], dctvalue));
                     } else {
                         System.err.println("Expecting one expression, found " + input.length);
-                    }
+                    }*/
                 }
                 break;
 
