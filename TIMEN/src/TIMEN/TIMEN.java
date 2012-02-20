@@ -12,7 +12,8 @@ import utils_bk.*;
 
 /**
  *
- * @author hector
+ * @author Hector Llorens
+ * @since 2012
  */
 public class TIMEN {
 
@@ -37,7 +38,6 @@ public class TIMEN {
             String lang = l.getLanguage().toUpperCase();
             c = Class.forName("Knowledge.Knowledge_" + lang);
             knowledge = (Knowledge) c.newInstance();
-            //TUnits = ((HashMap<String, Integer>) (c.getField("TUnits").get(null))); // just a comment to know how was done before
         } catch (Exception e) {
             System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -55,7 +55,7 @@ public class TIMEN {
         }
 
         try {
-            // disable logging
+            // disable sqlite logging
             Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.OFF);
             db = new SQLiteConnection(new File(program_path + "rules_" + l.getLanguage() + ".db"));
             db.open(true);
@@ -72,6 +72,7 @@ public class TIMEN {
         db.dispose();
 
     }
+    
     public static String granul_years = "yyyy";
     public static String granul_months = "yyyy-MM";
     public static String granul_days = "yyyy-MM-dd";
@@ -80,7 +81,7 @@ public class TIMEN {
     public static String granul_weeks = "yyyy-'W'ww";
 
     /**
-     * Obtains the ISO8601 normalized value for the given simplified features.
+     * Simplified version of normalize (no tense, no context)
      * @param expr          the temporal expression text (multiwords use "_" for concat)
      * @param dct           date creation time
      * @return
@@ -129,7 +130,9 @@ public class TIMEN {
             String normText = normTextandPattern_arr[0];
             String pattern = normTextandPattern_arr[1];
 
-            System.out.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  tense:" + tense + "\nfound rules:");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.out.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  tense:" + tense + "\nfound rules:");
+            }
             ArrayList<Rule> rules_found = new ArrayList<Rule>();
             SQLiteStatement st = db.prepare("SELECT * FROM RULES_LEVEL1 where pattern='" + pattern + "'");
             try {
@@ -146,21 +149,29 @@ public class TIMEN {
 
             if (rules_found.size() == 0) {
                 // debugg (return default)
-                System.err.println("\tNo rules found for: " + pattern);
+                if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                    System.err.println("\tNo rules found for: " + pattern);
+                }
             } else {
                 // debugg
                 for (Rule rule : rules_found) {
-                    System.err.println("\t" + rule.get_id() + " " + rule.get_pattern() + " rule to apply: " + rule.get_rule());
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.err.println("\t" + rule.get_id() + " " + rule.get_pattern() + " rule to apply: " + rule.get_rule());
+                    }
                 }
 
                 if (rules_found.size() == 1) {
                     //apply
                     TIMEX_Instance timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
                     norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
-                    System.out.println("result: " + norm_value);
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.out.println("result: " + norm_value);
+                    }
                 } else {
                     // choose one (disambiguate, by error? by features?)
-                    System.out.println("Disambiguation needed...");
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.out.println("Disambiguation needed...");
+                    }
                 }
 
             }
@@ -305,6 +316,7 @@ public class TIMEN {
 
     }
 
+    
     public Locale getLocale() {
         return locale;
     }
@@ -513,31 +525,5 @@ public class TIMEN {
 
         return formatter.format(cal.getTime());
     }
-    /**
-     * Just playing with SQLite files, langs, and dbs.
-     * TODO DELETE THIS TOY FUNCTION
-     * @param lang
-     */
-    /*    public static void showDBcontents(String lang) {
-    try {
-    // disable logging
-    Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.OFF);
-    SQLiteConnection db = new SQLiteConnection(new File(program_path + "rules_" + lang + ".db"));
-    db.open(true);
-    SQLiteStatement st = db.prepare("SELECT * FROM RULES_LEVEL1");
-    try {
-    // st.bind(1, minimumQuantity);
-    while (st.step()) {
-    //orders.add(
-    System.out.println(st.columnString(0) + "->" + st.columnString(1));
-    //);
-    }
-    } finally {
-    st.dispose();
-    }
-    db.dispose();
-    } catch (SQLiteException ex) {
-    System.out.println("Instantiation SQLiteException: " + ex.getMessage());
-    }
-    }*/
+    
 }

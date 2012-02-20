@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package timen_example;
 
 import FeatureBuilder.*;
@@ -19,7 +15,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/** @author Hector Llorens */
+/**
+ * @author Hector Llorens
+ * @since 2012
+ */
 public class OptionHandler {
 
     public static enum Action {
@@ -71,7 +70,7 @@ public class OptionHandler {
 
                     /* Process expression */
                     if (input.length == 1) {
-                        timen.normalize(input[0], dctvalue);
+                        System.out.println(timen.normalize(input[0], dctvalue));
                     } else {
                         System.err.println("Expecting one expression, found " + input.length);
                     }
@@ -80,7 +79,34 @@ public class OptionHandler {
 
                 case NORMALIZE_TML: {
                     /* DCT is got from the tml file */
+                    if(getParameter(action_parameters, "dct")!=null){
+                        throw new Exception("DCT must be specified in each tml file, not as a parameter.");
+                    }
 
+                    /* Create an output folder */
+                    String output_folder_string = getParameter(action_parameters, "output_folder");
+                    if (output_folder_string == null) {
+                        output_folder_string="TIMEN-output";
+                        String parent_folder=new File(input[0]).getParent();
+                        if (parent_folder!=null){
+                            output_folder_string=parent_folder+File.separator+output_folder_string;
+                        }
+                    }
+                    File output_folder=new File(output_folder_string);
+                    if(output_folder.exists()){
+                        System.err.println("Output directory already exists: "+output_folder.getCanonicalPath()+".");
+                        Console c = System.console();
+                        String overwrite = c.readLine("Do you want to overwrite it (Y/n): ");
+                        if(!(overwrite.equalsIgnoreCase("y") || overwrite.equals(""))){
+                            throw new Exception("You must specify a valid output folder or leave it empty to use default (TIMEN-output)");
+                        }
+                        c=null;
+                    }else{
+                        if (!output_folder.mkdirs()) {  // mkdirs creates many parent dirs if needed
+                            throw new Exception("Error creating output folder: "+output_folder);
+                        }
+                    }
+                    
                     /* Create a timen object */
                     timen = new TIMEN(new Locale(lang));
 
@@ -98,9 +124,12 @@ public class OptionHandler {
 
                         /* get normalized values -- ids need to be specified*/
                         HashMap<String, String> normalization = contextaware_normalization(outputfile);
+                        if (System.getProperty("DEBUG") == null || !System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                            outputfile.delete();
+                        }
 
-                        /* RESTORE TML WITH IDs */
-                        create_updated_tml_with_normalization(input_file, normalization);
+                        /* save normalization in a tml file in output_folder */
+                        create_updated_tml_with_normalization(input_file, normalization, output_folder);
 
                     }
 
@@ -146,7 +175,7 @@ public class OptionHandler {
             }
 
             // Create a working directory
-            File dir = new File(input_file.getCanonicalPath() + "-TIPSemB-dataset/");
+            File dir = new File(input_file.getCanonicalPath() + "-TIPSemB-dataset");
             if (!dir.exists() || !dir.isDirectory()) {
                 dir.mkdir();
             }
@@ -165,13 +194,15 @@ public class OptionHandler {
             TML_file_utils.tml2dataset4model(xmlfile, features);
 
             // add TempEval2 features
-            output = TempEvalFiles.merge_extents(dir.getCanonicalPath() + "/" + input_file.getName() + ".plain.TempEval2-features", dir + "/timex-extents.tab", "timex");
-            features = TempEvalFiles.merge_attribs(output, dir + "/timex-attributes.tab", "timex");
+            output = TempEvalFiles.merge_extents(dir.getCanonicalPath() + File.separator + input_file.getName() + ".plain.TempEval2-features", dir + File.separator +"timex-extents.tab", "timex");
+            features = TempEvalFiles.merge_attribs(output, dir + File.separator +"timex-attributes.tab", "timex");
             output = Timen.get_timen(features, lang);
 
-            outputfile = new File(FileUtils.getFolder(input_file.getCanonicalPath()) + "/" + input_file.getName() + ".TIMEN_complete");
+            outputfile = new File(FileUtils.getFolder(input_file.getCanonicalPath()) + File.separator + input_file.getName() + ".TIMEN_complete");
             FileUtils.copyFileUtil(new File(output), outputfile);
-            //FileUtils.deleteRecursively(dir);
+            if (System.getProperty("DEBUG") == null || !System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                FileUtils.deleteRecursively(dir);
+            }
         } catch (Exception e) {
             System.err.println("\nErrors found (ActionHandler):\n\t" + e.toString() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -243,7 +274,7 @@ public class OptionHandler {
         return normalization;
     }
 
-    public static void create_updated_tml_with_normalization(File file, HashMap<String, String> normalization) {
+    public static void create_updated_tml_with_normalization(File file, HashMap<String, String> normalization, File output_folder) {
         try {
             String tmp = FileUtils.readFileAsString(file.getCanonicalPath(), "UTF-8");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -265,13 +296,13 @@ public class OptionHandler {
                     tmp = tmp.replaceAll("(<TIMEX3[^>]*) value=\"[^\"]*\"([^>]*tid=\"" + element.getAttribute("tid") + "\"[^>]*>)", "$1" + "$2");
                     tmp = tmp.replaceAll("(<TIMEX3[^>]*tid=\"" + element.getAttribute("tid") + "\"[^>]*) value=\"[^\"]*\"([^>]*>)", "$1" + "$2");
                     // add new normalized value
-                    tmp = tmp.replaceAll("(<TIMEX3[^>]*tid=\"" + element.getAttribute("tid") + "\"[^>]*)>", "$1 value=\""+ normalization.get(element.getAttribute("tid"))+"\">");
+                    tmp = tmp.replaceAll("(<TIMEX3[^>]*tid=\"" + element.getAttribute("tid") + "\"[^>]*)>", "$1 value=\"" + normalization.get(element.getAttribute("tid")) + "\">");
                 }
             }
-            doc=null;
-            db=null;
-            dbf=null;
-            FileUtils.writeFileFromString(tmp, file.getCanonicalPath() + ".timen");
+            doc = null;
+            db = null;
+            dbf = null;
+            FileUtils.writeFileFromString(tmp, output_folder.getCanonicalPath()+File.separator+file.getName());
         } catch (Exception e) {
             System.err.println("\nErrors found (ActionHandler):\n\t" + e.toString() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {

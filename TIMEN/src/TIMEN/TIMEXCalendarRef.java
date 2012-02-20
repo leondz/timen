@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package TIMEN;
 
 import java.text.*;
@@ -10,7 +5,7 @@ import java.util.*;
 
 /**
  *
- * @author hector
+ * @author Hector Llorens
  */
 public class TIMEXCalendarRef {
     // in the future manage Time Zone
