@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<TimeML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://timeml.org/timeMLdocs/TimeML_1.2.1.xsd">
+
+<DOCID>APW19980418.0210</DOCID>
+
+<DCT><TIMEX3 tid="t0" type="TIME" value="1998-04-18T06:07:00" temporalFunction="false" functionInDocument="CREATION_TIME">04/18/1998 06:07:00</TIMEX3></DCT>
+
+
+<TEXT>
+He <EVENT eid="e4" class="REPORTING">said</EVENT> something <TIMEX3 tid="t31" type="DATE" value="1998-04-18" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t0">yesterday</TIMEX3>. 
+</TEXT>
+
+</TimeML>
