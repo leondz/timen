@@ -33,7 +33,7 @@ java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -
 Additional instructions for developers:
 ---------------------------------------
 
-COMPILING THE GRAMMAR
+COMPILING TIMEN GRAMMAR (REMOVE ALREADY INCLUDED IN TIMEN README)
 ---------------------
 java org.antlr.Tool Expr.g
 	This generates: tokens, lexer, and parser java files.

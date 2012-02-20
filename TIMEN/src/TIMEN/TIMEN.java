@@ -32,7 +32,8 @@ public class TIMEN {
         numek = new NUMEK(l);
         locale = l;
 
-        // load knowledge
+        // load knowledge (in the future the knowledge should be a sqlite db)
+        // The sqlite is loaded into a hash in construction and then it is fast if used in tml files
         Class c;
         try {
             String lang = l.getLanguage().toUpperCase();
@@ -72,7 +73,6 @@ public class TIMEN {
         db.dispose();
 
     }
-    
     public static String granul_years = "yyyy";
     public static String granul_months = "yyyy-MM";
     public static String granul_days = "yyyy-MM-dd";
@@ -190,137 +190,15 @@ public class TIMEN {
         return norm_value;
     }
 
-    /**
-     * Obtains the normalized text (NormText) and Patter from a given timex textual expression
-     * @param timex    the timex textual expression
-     * @return         the feature-values for NormText and Pattern
-     */
-    @SuppressWarnings("static-access")
-    public String getNormTextandPattern(String timex) {
-        String normText = "";
-        String pattern = "";
-        try {
-
-            // Numeric ordinals to numbers
-            timex = timex.replaceAll("([0-9]+)(?:_)?(?:st|nd|rd|th)", "$1");
-
-            // Check for separate date/time separators -> UNIFY
-            timex = timex.replaceAll("([0-9]+)_([-/:])_([0-9]+|" + knowledge.TMonths_re + ")_([-/:])_([0-9]+)", "$1$2$3$4$5");
-            timex = timex.replaceAll("([0-9]+[-/:])_((?:[0-9]+|" + knowledge.TMonths_re + ")[-/:])_([0-9]+)", "$1$2$3");
-            timex = timex.replaceAll("([0-9]+)_([-/:](?:[0-9]+|" + knowledge.TMonths_re + "))_([-/:][0-9]+)", "$1$2$3");
-            timex = timex.replaceAll("([0-9]+|" + knowledge.TMonths_re + ")_([-/:])_([0-9]+)", "$1$2$3");
-            timex = timex.replaceAll("((?:[0-9]+|" + knowledge.TMonths_re + ")[-/:])_([0-9]+)", "$1$2");
-            timex = timex.replaceAll("([0-9]+|" + knowledge.TMonths_re + ")_([-/:][0-9]+)", "$1$2");
-
-
-            // Special for mids
-            timex = timex.replaceAll("mid(?:-)?([0-9]+)", "mid_$1");
-            timex = timex.replaceAll("mid-(.+)", "mid_$1");
-
-            //Special for 80s, etc.
-            timex = timex.replaceAll("([0-9]+)s", "$1_s");
-
-            // Special adjective periods (e.g., 10-hour)
-            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + ")", "$1_$2");
-
-            // Special for fractions (only one is normalized because there should be no more than one per timex)
-            if (timex.matches("(?:.*_)?(?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*_" + knowledge.TUnit_re + ".*")) {
-                String nums2norm = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$2");
-                String normalizedfrac = "" + NUMEK.calc_and_sum_frac(nums2norm.replaceAll("_", " "));
-                timex = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$1" + normalizedfrac + "$3");
-            }
-
-
-
-
-            String[] tempex_arr = timex.split("_");
-
-            // check spelled nums and repair other elements (mid, sept., etc.)
-            // spelled nums (e.g., one million or 25 hundred)
-            // ([0-9]+(\\.[0-9]+_spelledMagnitude_))?(spelled_)+, if after [0-9] there is no spell leave as it is.
-            String spelledNum = "";
-            String currentPat = "";
-            for (int i = 0; i < tempex_arr.length; i++) {
-                if (tempex_arr[i].matches(knowledge.TUnit_re)) {
-                    tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
-                    currentPat = "TUnit";
-                } else {
-                    if (tempex_arr[i].matches(knowledge.TMonths_re)) {
-                        currentPat = "TMonth";
-                    } else {
-                        if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
-                            currentPat = "TWeekday";
-                        } else {
-                            if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
-                                currentPat = "Time";
-                            } else {
-                                if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
-                                        || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
-                                        || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
-                                        || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9]") // ISO
-                                        ) {
-                                    currentPat = "Date";
-                                } else {
-                                    if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
-                                        currentPat = "Num";
-                                    } else {
-                                        currentPat = tempex_arr[i].toLowerCase();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // check if a spellednum ends
-                if (!spelledNum.equals("") && (!currentPat.equals("Num") || tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || spelledNum.trim().matches(numek.ordinals_re) || tempex_arr[i].trim().matches(numek.ordinals_re))) {
-                    //if (!spelledNum.trim().matches(numek.ordinals_re)) {
-                    normText += " " + numek.text2number(spelledNum.trim());
-                    //} else {
-                    //    normText += " " + spelledNum.trim();
-                    //}
-                    pattern += " Num";
-                    spelledNum = ""; // initialize
-                }
-
-                // add to normTE or to spelled num
-                if (currentPat.equalsIgnoreCase("Num")) {
-                    spelledNum += " " + tempex_arr[i];
-                } else {
-                    // Month could be replaced by a number eg Oct by 08 but since Java manages Month names is OK.
-                    normText += " " + tempex_arr[i].toLowerCase().replaceAll("^sept(\\.)?$", "sep"); //.replaceFirst("^.*s$", tempex_arr[i].toLowerCase().substring(0, tempex_arr[i].length() - 1));
-                    pattern += " " + currentPat;
-                }
-            }
-
-            // add last spellednum if exists
-            if (!spelledNum.equals("")) {
-                //if (!spelledNum.trim().matches(numek.ordinals_re)) {
-                normText += " " + numek.text2number(spelledNum.trim());
-                //} else {
-                //    normText += " " + spelledNum.trim();
-                //}
-                pattern += " Num";
-            }
-
-        } catch (Exception e) {
-            System.err.println("Errors found (TIMEN):\n\t" + e.toString() + "\n");
-            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                e.printStackTrace(System.err);
-                System.exit(1);
-            }
-            return null;
-        }
-
-        return (normText.trim() + "|" + pattern.trim()).replaceAll(" ", "_");
-
-    }
-
-    
     public Locale getLocale() {
         return locale;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Functions of the normalization gramar
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Returns a 4 digit year guessed from a less than 4 digit representation.
      * @param year
@@ -331,9 +209,10 @@ public class TIMEN {
 
         // if the date is not numeric...
         if (!year.matches("[0-9]+")) {
-            System.err.println("A number expected");
-            // HANDLE SOFT AND STRICT TIMEN (SOFT allows errors and takes defaults, strict breaks and exits)
-            //soft
+            System.err.println("Using DCT year. Number expected in to_tyear(), found: " + year);
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.exit(1);
+            }
             return timex_object.dct.getYear();
         }
         // ignore >4 digit dates
@@ -359,7 +238,6 @@ public class TIMEN {
             dctcentury -= 1;
         }
         return new Integer(ambigyear + dctcentury * 100).toString();
-
     }
 
     /**
@@ -525,5 +403,130 @@ public class TIMEN {
 
         return formatter.format(cal.getTime());
     }
-    
+
+    /**
+     * Obtains the normalized text (NormText) and Patter from a given timex textual expression
+     * @param timex    the timex textual expression
+     * @return         the feature-values for NormText and Pattern
+     */
+    @SuppressWarnings("static-access")
+    public String getNormTextandPattern(String timex) {
+        String normText = "";
+        String pattern = "";
+        try {
+
+            // Numeric ordinals to numbers
+            timex = timex.replaceAll("([0-9]+)(?:_)?(?:st|nd|rd|th)", "$1");
+
+            // Check for separate date/time separators -> UNIFY
+            timex = timex.replaceAll("([0-9]+)_([-/:])_([0-9]+|" + knowledge.TMonths_re + ")_([-/:])_([0-9]+)", "$1$2$3$4$5");
+            timex = timex.replaceAll("([0-9]+[-/:])_((?:[0-9]+|" + knowledge.TMonths_re + ")[-/:])_([0-9]+)", "$1$2$3");
+            timex = timex.replaceAll("([0-9]+)_([-/:](?:[0-9]+|" + knowledge.TMonths_re + "))_([-/:][0-9]+)", "$1$2$3");
+            timex = timex.replaceAll("([0-9]+|" + knowledge.TMonths_re + ")_([-/:])_([0-9]+)", "$1$2$3");
+            timex = timex.replaceAll("((?:[0-9]+|" + knowledge.TMonths_re + ")[-/:])_([0-9]+)", "$1$2");
+            timex = timex.replaceAll("([0-9]+|" + knowledge.TMonths_re + ")_([-/:][0-9]+)", "$1$2");
+
+
+            // Special for mids
+            timex = timex.replaceAll("mid(?:-)?([0-9]+)", "mid_$1");
+            timex = timex.replaceAll("mid-(.+)", "mid_$1");
+
+            //Special for 80s, etc.
+            timex = timex.replaceAll("([0-9]+)s", "$1_s");
+
+            // Special adjective periods (e.g., 10-hour)
+            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + ")", "$1_$2");
+
+            // Special for fractions (only one is normalized because there should be no more than one per timex)
+            if (timex.matches("(?:.*_)?(?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*_" + knowledge.TUnit_re + ".*")) {
+                String nums2norm = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$2");
+                String normalizedfrac = "" + NUMEK.calc_and_sum_frac(nums2norm.replaceAll("_", " "));
+                timex = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$1" + normalizedfrac + "$3");
+            }
+
+
+
+
+            String[] tempex_arr = timex.split("_");
+
+            // check spelled nums and repair other elements (mid, sept., etc.)
+            // spelled nums (e.g., one million or 25 hundred)
+            // ([0-9]+(\\.[0-9]+_spelledMagnitude_))?(spelled_)+, if after [0-9] there is no spell leave as it is.
+            String spelledNum = "";
+            String currentPat = "";
+            for (int i = 0; i < tempex_arr.length; i++) {
+                if (tempex_arr[i].matches(knowledge.TUnit_re)) {
+                    tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
+                    currentPat = "TUnit";
+                } else {
+                    if (tempex_arr[i].matches(knowledge.TMonths_re)) {
+                        currentPat = "TMonth";
+                    } else {
+                        if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
+                            currentPat = "TWeekday";
+                        } else {
+                            if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
+                                currentPat = "Time";
+                            } else {
+                                if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
+                                        || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
+                                        || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
+                                        || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9]") // ISO
+                                        ) {
+                                    currentPat = "Date";
+                                } else {
+                                    if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
+                                        currentPat = "Num";
+                                    } else {
+                                        currentPat = tempex_arr[i].toLowerCase();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // check if a spellednum ends
+                if (!spelledNum.equals("") && (!currentPat.equals("Num") || tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || spelledNum.trim().matches(numek.ordinals_re) || tempex_arr[i].trim().matches(numek.ordinals_re))) {
+                    //if (!spelledNum.trim().matches(numek.ordinals_re)) {
+                    normText += " " + numek.text2number(spelledNum.trim());
+                    //} else {
+                    //    normText += " " + spelledNum.trim();
+                    //}
+                    pattern += " Num";
+                    spelledNum = ""; // initialize
+                }
+
+                // add to normTE or to spelled num
+                if (currentPat.equalsIgnoreCase("Num")) {
+                    spelledNum += " " + tempex_arr[i];
+                } else {
+                    // Month could be replaced by a number eg Oct by 08 but since Java manages Month names is OK.
+                    normText += " " + tempex_arr[i].toLowerCase().replaceAll("^sept(\\.)?$", "sep"); //.replaceFirst("^.*s$", tempex_arr[i].toLowerCase().substring(0, tempex_arr[i].length() - 1));
+                    pattern += " " + currentPat;
+                }
+            }
+
+            // add last spellednum if exists
+            if (!spelledNum.equals("")) {
+                //if (!spelledNum.trim().matches(numek.ordinals_re)) {
+                normText += " " + numek.text2number(spelledNum.trim());
+                //} else {
+                //    normText += " " + spelledNum.trim();
+                //}
+                pattern += " Num";
+            }
+
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.toString() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+            return null;
+        }
+
+        return (normText.trim() + "|" + pattern.trim()).replaceAll(" ", "_");
+
+    }
 }
