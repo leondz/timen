@@ -1,0 +1,8 @@
+After compilation you must copy the TIMEN/lib/*.so sqlite4java libraries to the dist/lib folder.
+Otherwise you will get an error.
+
+If you want to use the NLP version you need to:
+1) copy the Treetagger program-data/Tretagger/script in the Treetagger folder
+2) specify the Treetagger path in the program-data/confing.properties
+
+
