@@ -359,7 +359,7 @@
 			<xs:attribute name="tid" type="TimeID" use="required" />
 			<xs:attribute name="sentID" type="xs:integer" />
 
-			<xs:attribute name="type" use="required">
+			<xs:attribute name="type"> <!--use="required" removed to allow timex recognition without attributes-->
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
 						<xs:enumeration value="DATE" />
@@ -386,7 +386,7 @@
 
 			<xs:attribute name="temporalFunction" type="xs:boolean" default="false" />
 
-			<xs:attribute name="value" use="required">
+			<xs:attribute name="value"> <!--use="required" removed to allow timex recognition without attributes-->
 				<xs:simpleType>
 					<xs:union memberTypes="Date Time WeekDate WeekTime Season PartOfYear PaPrFu Duration"/>
 				</xs:simpleType>
