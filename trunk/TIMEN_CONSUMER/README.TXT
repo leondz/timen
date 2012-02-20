@@ -1,22 +1,37 @@
 LICENSE
+	AGPL Apache
 
 AUTHORS
+	Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
+
+Prerequisites:
+-------------
+  Only if you want to use the NLP version you need to:
+	1) copy the Treetagger program-data/Tretagger/script in the Treetagger folder
+	2) specify the Treetagger path in the program-data/confing.properties
+
+
+Installation/Building:
+---------------------
+cd TIMEN_CONSUMER; ant
+
+Usage:
+-----
+java -jar "/path2jar/TIMEN_CONSUMER.jar" [options]
+
+
+Examples:
+--------
+
+java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday"
+java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday" -ap dct=1999-12-04
+java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml
+java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
 
 
 
-
-
-To get the TIMEN input features such as POS, LEMMA, ... we need a PoS tagger... e.g., TreeTagger.
-It has to be installed and the path has to be specified in a conf file.
-or we can just omit PoS and lemma (e.g., use always lower case and make rules to guess ambiguous cases).
-
-Best thing to do is use or implement a basic tokenizer (such as the one in TreeTagger based on MUC-TreeBank) (simple perl script...)
-For the moment we can forget about this and make the systems implementing a TIMEN consumer be in-charged of generating TIMEN input from TimeML.
-
-stanford parser (english) or freeling (spanish) support is not needed for now
-we can focus on TIMEN rules & syntax and the camera-ready
-
-
+Additional instructions for developers:
+---------------------------------------
 
 COMPILING THE GRAMMAR
 ---------------------

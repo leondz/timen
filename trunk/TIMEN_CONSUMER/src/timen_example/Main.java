@@ -27,7 +27,7 @@ public class Main {
             opt.addOption("h", "help", false, "Print this help");
             opt.addOption("l", "lang", true, "Language code (default \"EN\" [English])");
             opt.addOption("a", "action", true, "Action/s to be done (normalize_tml, obtain knowledge-java from db)");
-            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (-a normalize -ap dct=2012-05-14,output_folder=myfolder)");
+            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (dct=2012-05-14,output_folder=myfolder,use_nlp=true)");
             opt.addOption("d", "debug", false, "Debug mode: Output errors stack trace (default: disabled)");
 
             PosixParser parser = new PosixParser();

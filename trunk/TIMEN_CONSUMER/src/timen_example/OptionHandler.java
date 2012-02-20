@@ -78,35 +78,43 @@ public class OptionHandler {
                 break;
 
                 case NORMALIZE_TML: {
-                    /* DCT is got from the tml file */
-                    if(getParameter(action_parameters, "dct")!=null){
+                    /* Disable DCT, it is obtained from the tml file */
+                    if (getParameter(action_parameters, "dct") != null) {
                         throw new Exception("DCT must be specified in each tml file, not as a parameter.");
+                    }
+
+                    /* Set use_nlp parameter */
+                    String use_nlp = getParameter(action_parameters, "use_nlp");
+                    if (use_nlp != null && !use_nlp.equalsIgnoreCase("true")) {
+                        use_nlp = null;
                     }
 
                     /* Create an output folder */
                     String output_folder_string = getParameter(action_parameters, "output_folder");
                     if (output_folder_string == null) {
-                        output_folder_string="TIMEN-output";
-                        String parent_folder=new File(input[0]).getParent();
-                        if (parent_folder!=null){
-                            output_folder_string=parent_folder+File.separator+output_folder_string;
+                        output_folder_string = "TIMEN-output";
+                        String parent_folder = new File(input[0]).getParent();
+                        if (parent_folder != null) {
+                            output_folder_string = parent_folder + File.separator + output_folder_string;
                         }
                     }
-                    File output_folder=new File(output_folder_string);
-                    if(output_folder.exists()){
-                        System.err.println("Output directory already exists: "+output_folder.getCanonicalPath()+".");
+
+
+                    File output_folder = new File(output_folder_string);
+                    if (output_folder.exists()) {
+                        System.err.println("Output directory already exists: " + output_folder.getCanonicalPath() + ".");
                         Console c = System.console();
                         String overwrite = c.readLine("Do you want to overwrite it (Y/n): ");
-                        if(!(overwrite.equalsIgnoreCase("y") || overwrite.equals(""))){
+                        if (!(overwrite.equalsIgnoreCase("y") || overwrite.equals(""))) {
                             throw new Exception("You must specify a valid output folder or leave it empty to use default (TIMEN-output)");
                         }
-                        c=null;
-                    }else{
+                        c = null;
+                    } else {
                         if (!output_folder.mkdirs()) {  // mkdirs creates many parent dirs if needed
-                            throw new Exception("Error creating output folder: "+output_folder);
+                            throw new Exception("Error creating output folder: " + output_folder);
                         }
                     }
-                    
+
                     /* Create a timen object */
                     timen = new TIMEN(new Locale(lang));
 
@@ -120,7 +128,13 @@ public class OptionHandler {
                             throw new IllegalArgumentException("File must be a regular file: " + input_file);
                         }
 
-                        File outputfile = getNLPfeatures(input_file, lang);
+                        File outputfile;
+
+                        if (use_nlp != null) {
+                            outputfile = getNLPfeatures(input_file, lang);
+                        } else {
+                            outputfile = getFeatures(input_file);
+                        }
 
                         /* get normalized values -- ids need to be specified*/
                         HashMap<String, String> normalization = contextaware_normalization(outputfile);
@@ -153,6 +167,73 @@ public class OptionHandler {
             //throw new RuntimeException("\tAction: " + action.toUpperCase());
         }
 
+    }
+
+    public static File getFeatures(File input_file) {
+        File outputfile = null;
+        String dct=null;
+        try {
+            XMLFile xmlfile = new XMLFile();
+            xmlfile.loadFile(input_file);
+            if (!xmlfile.getExtension().equalsIgnoreCase("tml")) {
+                throw new Exception("TimeML (.tml) XML file is required as input.");
+            }
+            if (!xmlfile.isWellFormed()) {
+                throw new Exception("File: " + xmlfile.getFile() + " is not a valid TimeML (.tml) XML file.");
+            }
+
+
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(input_file);
+            doc.getDocumentElement().normalize();
+
+            Element dcte = ((Element) ((NodeList) ((Element) doc.getElementsByTagName("TIMEX3").item(0))));
+
+            if (dcte != null) {
+                dct =  dcte.getAttribute("value");
+            }
+
+            if(dct==null || dct.length()==0){
+                throw new Exception("DCT not found in TimeML file.");
+            }
+
+            NodeList text = doc.getElementsByTagName("TEXT");
+            if (text.getLength() > 1) {
+                throw new Exception("More than one TEXT tag found.");
+            }
+            Element TextElmnt = (Element) text.item(0); // If not ELEMENT NODE will throw exception
+
+            // normalize timexes
+            NodeList current_node = TextElmnt.getElementsByTagName("TIMEX3");
+
+            // Write outputfile
+            outputfile = new File(FileUtils.getFolder(input_file.getCanonicalPath()) + File.separator + input_file.getName() + ".TIMEN_complete");
+            BufferedWriter dct_writer = new BufferedWriter(new FileWriter(outputfile));
+            try {
+
+                for (int s = 0; s < current_node.getLength(); s++) {
+                    Element element = (Element) current_node.item(s);
+                    // write line to file
+                    dct_writer.write(element.getAttribute("tid")+"|"+element.getTextContent().replaceAll("\\s+", "_")+"|omit|"+dct);
+                }
+            } finally {
+                if (dct_writer != null) {
+                    dct_writer.close();
+                }
+            }
+            doc = null;
+            db = null;
+            dbf = null;
+        } catch (Exception e) {
+            System.err.println("\nErrors found (ActionHandler):\n\t" + e.toString() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+        return outputfile;
     }
 
     /*
@@ -194,8 +275,8 @@ public class OptionHandler {
             TML_file_utils.tml2dataset4model(xmlfile, features);
 
             // add TempEval2 features
-            output = TempEvalFiles.merge_extents(dir.getCanonicalPath() + File.separator + input_file.getName() + ".plain.TempEval2-features", dir + File.separator +"timex-extents.tab", "timex");
-            features = TempEvalFiles.merge_attribs(output, dir + File.separator +"timex-attributes.tab", "timex");
+            output = TempEvalFiles.merge_extents(dir.getCanonicalPath() + File.separator + input_file.getName() + ".plain.TempEval2-features", dir + File.separator + "timex-extents.tab", "timex");
+            features = TempEvalFiles.merge_attribs(output, dir + File.separator + "timex-attributes.tab", "timex");
             output = Timen.get_timen(features, lang);
 
             outputfile = new File(FileUtils.getFolder(input_file.getCanonicalPath()) + File.separator + input_file.getName() + ".TIMEN_complete");
@@ -302,7 +383,7 @@ public class OptionHandler {
             doc = null;
             db = null;
             dbf = null;
-            FileUtils.writeFileFromString(tmp, output_folder.getCanonicalPath()+File.separator+file.getName());
+            FileUtils.writeFileFromString(tmp, output_folder.getCanonicalPath() + File.separator + file.getName());
         } catch (Exception e) {
             System.err.println("\nErrors found (ActionHandler):\n\t" + e.toString() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
