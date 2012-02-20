@@ -1,6 +1,0 @@
-fileA|1993|CD|@card@|begin|present|I-PP|until|DATE|1989-10-30
-fileA|this_year|DT_NN|this_year|gain|present-perfect|I-NP|-|DATE|1989-10-30
-fileA|Friday|NNP|Friday|close|present|I-PP|to|DATE|1989-10-30
-fileB|January_nineteen_ninety-seven|NNP_VB_JJ|January_nineteen_<unknown>|nineteen-error|present|B-NP_B-VP_B-ADJP|-|DATE|1998-02-27
-fileB|last_month|JJ_NN|last_month|kill|present|I-NP|-|DATE|1998-02-27
-fileB|nineteen_ninety-seven|JJ_JJ|nineteen_<unknown>|claim|present|I-NP|-|DATE|1998-02-27

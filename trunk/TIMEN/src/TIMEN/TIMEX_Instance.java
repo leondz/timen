@@ -1,15 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package TIMEN;
 
 import TIMEN.TIMEXCalendarRef;
 
 /**
  *
- * @author hector
+ * @author Hector Llorens
  */
 public class TIMEX_Instance {
 
