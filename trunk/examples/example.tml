@@ -7,7 +7,7 @@
 
 
 <TEXT>
-He <EVENT eid="e4" class="REPORTING">said</EVENT> something <TIMEX3 tid="t31" type="DATE" value="1998-04-18" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t0">yesterday</TIMEX3>. 
+He <EVENT eid="e4" class="REPORTING">said</EVENT> something <TIMEX3 tid="t31" type="DATE" value="1998-04-17" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t0">yesterday</TIMEX3>. 
 </TEXT>
 
 </TimeML>

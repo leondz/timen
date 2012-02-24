@@ -23,13 +23,16 @@ rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] :
 	|e=dct_month[$timex_object] {$value = $e.value;}
 	|e=dct_day[$timex_object] {$value = $e.value;}
 	|e=to_year[$timex_object] {$value = $e.value;}
+	|e=to_month[$timen,$timex_object] {$value = $e.value;}
 	|e=add[$timen, $timex_object] {$value = $e.value;}
-	|e=date_tense_weekday[$timen, $timex_object] {$value = $e.value;}
+	|e=date_weekday[$timen, $timex_object] {$value = $e.value;}
+	|e=date_month[$timen, $timex_object] {$value = $e.value;}
 	|e=to_period[$timen, $timex_object] {$value = $e.value;}
 	);
 
 to_period[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
-	'TO_PERIOD' '(' num=pat[$timex_object] ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($num.value,$tunit.value);};
+	'TO_PERIOD' '(' num=pat[$timex_object] ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($num.value,$tunit.value);}
+        | 'TO_PERIOD' '(' INT ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($INT.text,$tunit.value);};
 
 
 dct_year[TIMEX_Instance timex_object] returns [String value]:
@@ -44,14 +47,26 @@ dct_day[TIMEX_Instance timex_object] returns [String value]:
 to_year[TIMEX_Instance timex_object] returns [String value]:
 	'TO_YEAR' '(' e=pat[$timex_object] ')' {$value = TIMEN.to_year($e.value,$timex_object);};
 
+to_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+	'TO_MONTH' '(' e=pat[$timex_object] ')' {$value = $timen.to_month($e.value,$timex_object);};
+
+
 add[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:	
          'ADD' '(' r=REFERENCE       ',' GRANULARITY           ',' i=intnumber ')' {$value = $timen.add($REFERENCE.text,$GRANULARITY.text,$i.value, $timex_object);}
         | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=toint[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
         | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=tonegativeint[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
+        | 'ADD_WEEKDAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=intnumber ')' {$value = $timen.add_weekday($REFERENCE.text,$e.value,$i.value, $timex_object);}
         ;
 
-date_tense_weekday[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
-         'DATE_TENSE_WEEKDAY' '(' r=REFERENCE       ',' GRANULARITY           ',' e=pat[$timex_object] ')' {$value = $timen.date_tense_weekday($REFERENCE.text,$GRANULARITY.text,$e.value, $timex_object);};
+
+
+
+date_weekday[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+         'DATE_WEEKDAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ')' {$value = $timen.date_weekday($REFERENCE.text,$e.value, $timex_object);};
+
+date_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+         'DATE_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ')' {$value = $timen.date_month($REFERENCE.text,$e.value, $timex_object);};
+
 
 
 pat[TIMEX_Instance timex_object] returns [String value]:
@@ -65,7 +80,8 @@ toint[TIMEX_Instance timex_object] returns [int value]:
 
 
 print returns [String value]:
-	'"' STRING '"' {$value = $STRING.text;};
+    STRING {$value = $STRING.text;};
+    /*STRING {$value = $STRING.substring(1,$STRING.lenght()-1);};*/
 
 intnumber returns [int value]:
 	INT {$value = Integer.parseInt($INT.text);};
@@ -81,7 +97,9 @@ REFERENCE: ('DCT'|'REFTIME');
 
 GRANULARITY: ('millennium'|'century'|'decade'|'year'|'semester'|'quarter'|'month'|'week'|'day'|'hour'|'minute'|'second');
 
-STRING: ('-'|'P'); //('a'..'z'|'A'..'Z'|'-')+;
+/*TAG: '<' (~'>')+ '>' {state.text = $text.substring(1, $text.length()-1);};*/
+
+STRING: '"' (~'"')+ '"' {state.text = $text.substring(1, $text.length()-1);};  //( '-'|'P' | 'PRESENT_REF' | 'PAST_REF' | 'FUTURE_REF' | 'TNI'); //('a'..'z'|'A'..'Z'|'-')+; // we prefer controlling strings
 
 INT		: ('+'|'-')? '0'..'9'+;
 

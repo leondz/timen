@@ -59,3 +59,10 @@ The answer by Dr. Manning is the most appropriate if you are considering the JAV
 
 But a little suggestion if we modify the command java edu.stanford.nlp.process.DocumentPreprocessor /u/nlp/data/lexparser/textDocument.txt > oneTokenizedSentencePerLine.txt TO java edu.stanford.nlp.process.DocumentPreprocessor -file /u/nlp/data/lexparser/textDocument.txt > oneTokenizedSentencePerLine.txt . It will work fine as you need to specify what kind of file is being presented as input. So -file for Text file, -html for HTML, etc.
 
+Advanced debugging notes (Net Beans/Eclipse)
+--------------------------------------------
+
+If you are interested on run a debugging session step by step and you want to access (put break points) in TIMEN classes. You have to remove the TIMEN library from the project and add TIMEN as a project.
+IMPORTANT: When you finish debugging you have to recompile TIMEN an relink it as a library instead of as a project in TIMEN_CONSUMER.
+
+
