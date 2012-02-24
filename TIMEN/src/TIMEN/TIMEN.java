@@ -566,6 +566,7 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
+
     public String date_month(String reference, String month, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
         Date refdate = timex_object.dct.getCalendar().getTime();
@@ -576,6 +577,50 @@ public class TIMEN {
             }
             cal.setTime(refdate);
             cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            Date result = cal.getTime();
+            if (result.before(refdate)) {
+                if (timex_object.getTense().equals("future")) {
+                    cal.add(GregorianCalendar.YEAR, 1);
+                }
+            } else {
+                if (result.equals(refdate)) {
+                    if (timex_object.getTense().equals("past")) {
+                        cal.add(GregorianCalendar.YEAR, -1);
+                    } else {
+                        cal.add(GregorianCalendar.YEAR, 1);
+                    }
+                } else { // after
+                    if (timex_object.getTense().equals("past")) {
+                        cal.add(GregorianCalendar.YEAR, -1);
+                    }
+                }
+
+            }
+
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+
+        return formatter.format(cal.getTime());
+    }
+
+
+
+    public String date_month_day(String reference, String month,  String day, TIMEX_Instance timex_object) {
+        Calendar cal = new GregorianCalendar();
+        Date refdate = timex_object.dct.getCalendar().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
+        try {
+            if (reference.equalsIgnoreCase("REFTIME")) {
+                refdate = timex_object.reftime.getCalendar().getTime();
+            }
+            cal.setTime(refdate);
+            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            cal.set(GregorianCalendar.DAY_OF_MONTH, Integer.parseInt(day));
             Date result = cal.getTime();
             if (result.before(refdate)) {
                 if (timex_object.getTense().equals("future")) {
@@ -679,9 +724,11 @@ public class TIMEN {
                     currentPat = "TUnit";
                 } else {
                     if (tempex_arr[i].matches(knowledge.TMonths_re)) {
+                        tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
                         currentPat = "TMonth";
                     } else {
                         if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
+                            tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
                             currentPat = "TWeekday";
                         } else {
                             if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
