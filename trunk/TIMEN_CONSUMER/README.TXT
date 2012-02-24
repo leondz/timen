@@ -28,6 +28,9 @@ java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday" -ap dct=1999-12-04
 java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml
 java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
 
+You just have to put TimeBank or TBAQ files in a folder and run 
+java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml folder/*.tml
+Then use the evaluation scripts to evaluate...
 
 
 Additional instructions for developers:

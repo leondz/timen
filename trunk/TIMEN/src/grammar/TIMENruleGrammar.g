@@ -27,6 +27,7 @@ rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] :
 	|e=add[$timen, $timex_object] {$value = $e.value;}
 	|e=date_weekday[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month[$timen, $timex_object] {$value = $e.value;}
+	|e=date_month_day[$timen, $timex_object] {$value = $e.value;}
 	|e=to_period[$timen, $timex_object] {$value = $e.value;}
 	);
 
@@ -53,6 +54,7 @@ to_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 
 add[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:	
          'ADD' '(' r=REFERENCE       ',' GRANULARITY           ',' i=intnumber ')' {$value = $timen.add($REFERENCE.text,$GRANULARITY.text,$i.value, $timex_object);}
+        | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=intnumber ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
         | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=toint[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
         | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=tonegativeint[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
         | 'ADD_WEEKDAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=intnumber ')' {$value = $timen.add_weekday($REFERENCE.text,$e.value,$i.value, $timex_object);}
@@ -67,6 +69,8 @@ date_weekday[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 date_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
          'DATE_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ')' {$value = $timen.date_month($REFERENCE.text,$e.value, $timex_object);};
 
+date_month_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+         'DATE_MONTH_DAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object] ')' {$value = $timen.date_month_day($REFERENCE.text,$e.value,$d.value, $timex_object);};
 
 
 pat[TIMEX_Instance timex_object] returns [String value]:
