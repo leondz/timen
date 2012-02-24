@@ -39,6 +39,8 @@ public class Rule_Engine {
         CommonTokenStream rule_tokens = new CommonTokenStream(rule_lexer);
         TIMENruleGrammarParser rule_parser = new TIMENruleGrammarParser(rule_tokens);
 
+        // TODO currently this switch is quite useless
+
             switch (Rule.NormTaxonomy.valueOf(rule.get_rule_type())) {
                 case explicit: {
                     result=rule_parser.run(timen_object, timex_object);
@@ -51,6 +53,7 @@ public class Rule_Engine {
                 break;
 
                 case implicit_anaphoric: {
+                    result=rule_parser.run(timen_object, timex_object);
                 }
                 break;
 
@@ -60,10 +63,12 @@ public class Rule_Engine {
                 break;
 
                 case set: {
+                    result=rule_parser.run(timen_object, timex_object);
                 }
                 break;
 
                 case vague: {
+                    result=rule_parser.run(timen_object, timex_object);
                 }
                 break;
 
@@ -106,8 +111,5 @@ public class Rule_Engine {
         return result;
     }
 */
-    
-    public static String to_year(String Num) {
-        return null;
-    }
+
 }

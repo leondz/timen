@@ -110,18 +110,31 @@ public class TIMEN {
         // search by pattern first
         // then if more than one is found
         //      filter by other features
-        // period... recursive pattern?
+        // period... recursive pattern? NO
         // what happens with modifiers (almost, aproximately, ...)
         // default normalization when no pattern is found
         // in patterns, is it important to distinguish card from ordinals?
 
 
-        // DECICE WHICH IS THE BEST PLACE TO PLACE THE DCT, REF, TENSE VALIDATOR...
-
         String norm_value = "default_norm";
 
 
         try {
+            //  DCT, REF validation?
+            if (tense.startsWith("past-") || tense.startsWith("present-perfect")) {
+                tense = "past";
+            } else {
+                if (tense.equals("conditional")) {
+                    tense = "future";
+                } else {
+                    if (tense.contains("-")) {
+                        tense = tense.substring(0, tense.indexOf('-'));
+                    }
+                    if (!tense.matches("(?:past|present|future)")) {
+                        tense = "present";
+                    }
+                }
+            }
             String normTextandPattern = this.getNormTextandPattern(expr);
             if (normTextandPattern == null) {
                 throw new Exception("Problem obtaining NormText and Pattern from: " + expr);
@@ -131,50 +144,36 @@ public class TIMEN {
             String pattern = normTextandPattern_arr[1];
 
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                System.out.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  tense:" + tense + "\nfound rules:");
-            }
-            ArrayList<Rule> rules_found = new ArrayList<Rule>();
-            SQLiteStatement st = db.prepare("SELECT * FROM RULES_LEVEL1 where pattern='" + pattern + "'");
-            try {
-                // st.bind(1, minimumQuantity);
-                while (st.step()) {
-                    //orders.add(
-                    rules_found.add(new Rule(st.columnInt(0), st.columnString(1), st.columnString(2), st.columnString(3), st.columnString(4)));
-                    //System.err.println("\t"+st.columnInt(0) + " " + st.columnString(1)+" rule to apply: "+st.columnString(2));
-                    //);
-                }
-            } finally {
-                st.dispose();
+                System.out.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
             }
 
-            if (rules_found.size() == 0) {
-                // debugg (return default)
-                if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                    System.err.println("\tNo rules found for: " + pattern);
+            TIMEX_Instance timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
+            ArrayList<Rule> rules_found;
+            for (int level = 1; level <= 3; level++) {
+                rules_found = get_rules_from_db("RULES_LEVEL" + level, pattern);
+                norm_value = apply_rules(rules_found, pattern, timex_object);
+                if (!norm_value.equals("default_norm")) {
+                    break;
                 }
-            } else {
-                // debugg
-                for (Rule rule : rules_found) {
-                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                        System.err.println("\t" + rule.get_id() + " " + rule.get_pattern() + " rule to apply: " + rule.get_rule());
-                    }
-                }
-
-                if (rules_found.size() == 1) {
-                    //apply
-                    TIMEX_Instance timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
-                    norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
-                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                        System.out.println("result: " + norm_value);
-                    }
-                } else {
-                    // choose one (disambiguate, by error? by features?)
-                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                        System.out.println("Disambiguation needed...");
-                    }
-                }
-
             }
+
+            // reduce left-right
+            while (pattern.split("_").length > 1 && norm_value.equals("default_norm")) {
+                normText = normText.replaceFirst("[^_]+_", "");
+                pattern = pattern.replaceFirst("[^_]+_", "");
+                timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
+                for (int level = 1; level <= 3; level++) {
+                    rules_found = get_rules_from_db("RULES_LEVEL" + level, pattern);
+                    norm_value = apply_rules(rules_found, pattern, timex_object);
+                    if (!norm_value.equals("default_norm")) {
+                        break;
+                    }
+                }
+            }
+
+            // reduce right-left?
+
+            // other heuristics?
 
         } catch (Exception e) {
             System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
@@ -192,6 +191,133 @@ public class TIMEN {
 
     public Locale getLocale() {
         return locale;
+    }
+
+    public ArrayList<Rule> get_rules_from_db(String table, String pattern) {
+        ArrayList<Rule> rules_found = new ArrayList<Rule>();
+        try {
+            SQLiteStatement st = db.prepare("SELECT * FROM " + table + " where pattern='" + pattern + "'");
+            try {
+                // st.bind(1, minimumQuantity);
+                while (st.step()) {
+                    //orders.add(
+                    rules_found.add(new Rule(st.columnInt(0), st.columnString(1), st.columnString(2), st.columnString(3), st.columnString(4)));
+                    //System.err.println("\t"+st.columnInt(0) + " " + st.columnString(1)+" rule to apply: "+st.columnString(2));
+                    //);
+                }
+            } finally {
+                st.dispose();
+            }
+        } catch (Exception e) {
+            System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+            }
+            System.exit(1);
+        }
+        return rules_found;
+    }
+
+    public String apply_rules(ArrayList<Rule> rules_found, String pattern, TIMEX_Instance timex_object) {
+        String norm_value = "default_norm";
+        try {
+            if (rules_found.size() == 0) {
+                // debugg (return default)
+                if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                    System.err.println("\tNo rules found for: " + pattern);
+                }
+            } else {
+                // debugg
+                for (Rule rule : rules_found) {
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.err.println("\t" + rule.get_id() + " " + rule.get_pattern() + " rule to apply: " + rule.get_rule());
+                    }
+                }
+
+                if (rules_found.size() == 1) {
+                    //apply
+                    norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.out.println("result: " + norm_value);
+                    }
+                } else {
+                    // choose one:
+                    // Disambiguation: select the first that matches all conditions
+                    boolean select;
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.out.println("Disambiguation needed...");
+                    }
+                    for (Rule rule : rules_found) {
+                        select = true;
+                        if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                            System.err.println("\t" + rule.get_id() + " rule to apply: " + rule.get_rule() + " conditions: " + rule.get_rule_condition());
+                        }
+                        if (rule.get_rule_condition() != null) {
+                            // TODO: WE SHOULD CREATE A CONDITION GRAMMAR TOO...
+                            //BUT FOR THE MOMENT WE CAN ALLOW ONLY ONLY ONE CONDITION
+                            String condition = rule.get_rule_condition().replaceAll("\\s+", "");
+                            String operator = condition.replaceAll("[^!<=>]", "");
+                            String[] condition_args = rule.get_rule_condition().split("(<=|>=|==|!=)");
+                            if (condition_args.length < 2) {
+                                condition_args = rule.get_rule_condition().split("(<|>)");
+                            }
+                            if (condition_args.length != 2 || operator.length() < 1) {
+                                throw new Exception("Malformed condition in rule: " + rule.get_id() + " condition: " + condition);
+                            }
+                            // get PAT values
+                            if (condition_args[0].matches("PAT\\([^)]*\\)")) {
+                                condition_args[0] = timex_object.getNormTextArr()[Integer.parseInt(condition_args[0].replaceFirst("PAT\\(([^)]*)\\)", "$1"))];
+                            }
+                            if (condition_args[1].matches("PAT\\([^)]*\\)")) {
+                                condition_args[1] = timex_object.getNormTextArr()[Integer.parseInt(condition_args[1].replaceFirst("PAT\\(([^)]*)\\)", "$1"))];
+                            }
+                            /*if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                            System.out.println(operator+"("+condition_args[0]+","+condition_args[1]+")");
+                            } */
+                            // handle operators
+                            if (operator.equals("==") && !condition_args[0].equals(condition_args[1])) {
+                                select = false;
+                            }
+                            if (operator.equals("!=") && condition_args[0].equals(condition_args[1])) {
+                                select = false;
+                            }
+                            if (operator.equals("<=") && !(Integer.parseInt(condition_args[0]) <= Integer.parseInt(condition_args[1]))) {
+                                select = false;
+                            }
+                            if (operator.equals(">=") && !(Integer.parseInt(condition_args[0]) >= Integer.parseInt(condition_args[1]))) {
+                                select = false;
+                            }
+                            if (operator.equals("<") && !(Integer.parseInt(condition_args[0]) < Integer.parseInt(condition_args[1]))) {
+                                select = false;
+                            }
+                            if (operator.equals(">") && !(Integer.parseInt(condition_args[0]) > Integer.parseInt(condition_args[1]))) {
+                                select = false;
+                            }
+                        }
+                        if (select) {
+                            //apply
+                            norm_value = Rule_Engine.apply(rule, this, timex_object);
+                            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                                System.err.println("result (rule " + rule.get_id() + "): " + norm_value);
+                            }
+                        } else {
+                            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                                System.err.println("\tUnmached condition");
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+            }
+            System.exit(1);
+        }
+        return norm_value;
+
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -240,6 +366,14 @@ public class TIMEN {
         return new Integer(ambigyear + dctcentury * 100).toString();
     }
 
+    public String to_month(String month, TIMEX_Instance timex_object) {
+        String output = "" + knowledge.Yearmonths.get(month);
+        if (output.length() == 1) {
+            output = "0" + output;
+        }
+        return output;
+    }
+
     /**
      * Returns a valid TimeML period format
      * @param num
@@ -256,7 +390,7 @@ public class TIMEN {
         // knowledge main file needs TUnit equivalence relations...
 
         ret += num;
-        ret += knowledge.TUnits.get(TUnit).substring(0, 1);
+        ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
 
         return ret;
     }
@@ -358,18 +492,48 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
-    public String date_tense_weekday(String reference, String granularity, String weekday, TIMEX_Instance timex_object) {
-        Calendar cal = new GregorianCalendar();
-        Date refdate = timex_object.dct.getCalendar().getTime();
 
+    /**
+     * Adds a positive or negative integer from a weekday given a specific reference (dct or reftime)
+     * @param reference
+     * @param weekday
+     * @param quantity
+     * @return
+     */
+    public String add_weekday(String reference, String weekday, int quantity, TIMEX_Instance timex_object) {
+        Calendar cal = timex_object.dct.getCalendar();
         SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
 
         try {
+            if (reference.equalsIgnoreCase("REFTIME")) {
+                cal = timex_object.reftime.getCalendar();
+            }
 
+            formatter = new SimpleDateFormat(granul_days);
+            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            cal.add(GregorianCalendar.DAY_OF_MONTH, quantity);
+
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+
+        return formatter.format(cal.getTime());
+    }
+
+
+    public String date_weekday(String reference, String weekday, TIMEX_Instance timex_object) {
+        Calendar cal = new GregorianCalendar();
+        Date refdate = timex_object.dct.getCalendar().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
+        try {
             if (reference.equalsIgnoreCase("REFTIME")) {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
-
+            cal.setTime(refdate);
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
             Date result = cal.getTime();
             if (result.before(refdate)) {
@@ -388,6 +552,45 @@ public class TIMEN {
                 } else { // after
                     if (timex_object.getTense().startsWith("past")) {
                         cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+
+        return formatter.format(cal.getTime());
+    }
+
+    public String date_month(String reference, String month, TIMEX_Instance timex_object) {
+        Calendar cal = new GregorianCalendar();
+        Date refdate = timex_object.dct.getCalendar().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat(granul_months);
+        try {
+            if (reference.equalsIgnoreCase("REFTIME")) {
+                refdate = timex_object.reftime.getCalendar().getTime();
+            }
+            cal.setTime(refdate);
+            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            Date result = cal.getTime();
+            if (result.before(refdate)) {
+                if (timex_object.getTense().equals("future")) {
+                    cal.add(GregorianCalendar.YEAR, 1);
+                }
+            } else {
+                if (result.equals(refdate)) {
+                    if (timex_object.getTense().equals("past")) {
+                        cal.add(GregorianCalendar.YEAR, -1);
+                    } else {
+                        cal.add(GregorianCalendar.YEAR, 1);
+                    }
+                } else { // after
+                    if (timex_object.getTense().equals("past")) {
+                        cal.add(GregorianCalendar.YEAR, -1);
                     }
                 }
 
@@ -414,6 +617,15 @@ public class TIMEN {
         String normText = "";
         String pattern = "";
         try {
+            // ONLY FOR SECURITY. re-normalize spaces (ensure no spaces)
+            timex=timex.replaceAll("\\s+", "_"); // ONLY FOR SECURITY
+            // ONLY FOR SECURITY (we expect _ already)
+
+            timex="_"+timex+"_";
+
+            // remove useless symbols
+            timex=timex.replaceAll("_,", ""); // tokenized commas
+            timex=timex.replaceAll(",_", "_"); // untokenized commas
 
             // Numeric ordinals to numbers
             timex = timex.replaceAll("([0-9]+)(?:_)?(?:st|nd|rd|th)", "$1");
@@ -444,8 +656,15 @@ public class TIMEN {
                 timex = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$1" + normalizedfrac + "$3");
             }
 
+            // remove useless tokens (language - specific)
+            if (locale.getLanguage().equalsIgnoreCase("en")) {
+                timex=timex.replaceAll("_of_", "_").replaceAll("_the_","_");
+            }
+            if (locale.getLanguage().equalsIgnoreCase("es")) {
+                timex=timex.replaceAll("_de_", "_").replaceAll("_del_","_").replaceAll("_el_", "_").replaceAll("_la_","_").replaceAll("_los_", "_").replaceAll("_las_","_");
+            }
 
-
+            timex=timex.substring(1, timex.length()-1);
 
             String[] tempex_arr = timex.split("_");
 

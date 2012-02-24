@@ -32,3 +32,12 @@ Additional instructions for developers:
 To edit the grammar you can use the visual editor "ANTLR-works":
 	java -jar antlrworks-1.4.3.jar
 
+
+Advanced debugging notes (Net Beans/Eclipse)
+--------------------------------------------
+
+If you are interested on run a debugging session step by step and you want to access (put break points) in TIMEN classes. You have to remove the TIMEN library from the project and add TIMEN as a project.
+IMPORTANT: When you finish debugging you have to recompile TIMEN an relink it as a library instead of as a project in TIMEN_CONSUMER.
+
+
+

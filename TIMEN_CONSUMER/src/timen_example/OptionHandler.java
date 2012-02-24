@@ -53,7 +53,9 @@ public class OptionHandler {
     public static void doAction(String action, String[] input, String action_parameters, String lang) {
 
         try {
-            System.err.println("\n\nDoing action: " + action.toUpperCase() + "\n------------");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.err.println("\n\nDoing action: " + action.toUpperCase() + "\n------------");
+            }
             switch (Action.valueOf(action.toUpperCase())) {
 
 
@@ -69,7 +71,7 @@ public class OptionHandler {
 
                     /* Process expression/s */
                     for (int i = 0; i < input.length; i++) {
-                        System.out.println(timen.normalize(input[i], dctvalue));
+                        System.out.println(timen.normalize(input[i].replaceAll("\\s+", "_"), dctvalue));
                     }
                     // limit to one expression, but it could be useful allowing a list for efficiency
                     /*if (input.length == 1) {
@@ -106,17 +108,21 @@ public class OptionHandler {
                     File output_folder = new File(output_folder_string);
                     if (output_folder.exists()) {
                         System.err.println("Output directory already exists: " + output_folder.getCanonicalPath() + ".");
-                        Console c = System.console();
-                        String overwrite = c.readLine("Do you want to overwrite it (Y/n): ");
-                        if (!(overwrite.equalsIgnoreCase("y") || overwrite.equals(""))) {
-                            throw new Exception("You must specify a valid output folder or leave it empty to use default (TIMEN-output)");
+                        if (System.getProperty("DEBUG") == null || System.getProperty("DEBUG").equalsIgnoreCase("false")) {
+                            Console c = System.console();
+                            String overwrite = c.readLine("Do you want to overwrite it (Y/n): ");
+                            if (!(overwrite.equalsIgnoreCase("y") || overwrite.equals(""))) {
+                                throw new Exception("You must specify a valid output folder or leave it empty to use default (TIMEN-output)");
+                            }
+                            c = null;
                         }
-                        c = null;
                     } else {
                         if (!output_folder.mkdirs()) {  // mkdirs creates many parent dirs if needed
                             throw new Exception("Error creating output folder: " + output_folder);
                         }
                     }
+
+
 
                     /* Create a timen object */
                     timen = new TIMEN(new Locale(lang));
@@ -213,17 +219,17 @@ public class OptionHandler {
 
             // Write outputfile
             outputfile = new File(FileUtils.getFolder(input_file.getCanonicalPath()) + File.separator + input_file.getName() + ".TIMEN_complete");
-            BufferedWriter dct_writer = new BufferedWriter(new FileWriter(outputfile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputfile));
             try {
 
                 for (int s = 0; s < current_node.getLength(); s++) {
                     Element element = (Element) current_node.item(s);
                     // write line to file
-                    dct_writer.write(element.getAttribute("tid")+"|"+element.getTextContent().replaceAll("\\s+", "_")+"|omit|"+dct);
+                    writer.write(element.getAttribute("tid")+"|"+element.getTextContent().replaceAll("\\s+", "_")+"|omit|"+dct+"\n");
                 }
             } finally {
-                if (dct_writer != null) {
-                    dct_writer.close();
+                if (writer != null) {
+                    writer.close();
                 }
             }
             doc = null;
