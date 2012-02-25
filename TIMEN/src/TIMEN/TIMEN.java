@@ -61,7 +61,7 @@ public class TIMEN {
             db = new SQLiteConnection(new File(program_path + "rules_" + l.getLanguage() + ".db"));
             db.open(true);
         } catch (SQLiteException ex) {
-            System.out.println("Instantiation SQLiteException: " + ex.getMessage());
+            System.err.println("Instantiation SQLiteException: " + ex.getMessage());
         }
     }
 
@@ -120,18 +120,23 @@ public class TIMEN {
 
 
         try {
-            //  DCT, REF validation?
-            if (tense.startsWith("past-") || tense.startsWith("present-perfect")) {
-                tense = "past";
-            } else {
-                if (tense.equals("conditional")) {
-                    tense = "future";
+            if (expr == null || dct == null || tense == null || reftime == null) {
+                throw new Exception("Some of the TIMEN.normalize() arguments are null.");
+            }
+
+            if (!tense.equals("omit")) {
+                if (tense.startsWith("past-") || tense.startsWith("present-perfect")) {
+                    tense = "past";
                 } else {
-                    if (tense.contains("-")) {
-                        tense = tense.substring(0, tense.indexOf('-'));
-                    }
-                    if (!tense.matches("(?:past|present|future)")) {
-                        tense = "present";
+                    if (tense.equals("conditional")) {
+                        tense = "future";
+                    } else {
+                        if (tense.contains("-")) {
+                            tense = tense.substring(0, tense.indexOf('-'));
+                        }
+                        if (!tense.matches("(?:past|present|future)")) {
+                            tense = "present";
+                        }
                     }
                 }
             }
@@ -144,9 +149,10 @@ public class TIMEN {
             String pattern = normTextandPattern_arr[1];
 
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                System.out.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
+                System.err.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
             }
 
+            // includes tense, DCT and reftime validation
             TIMEX_Instance timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
             ArrayList<Rule> rules_found;
             for (int level = 1; level <= 3; level++) {
@@ -238,14 +244,14 @@ public class TIMEN {
                     //apply
                     norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
                     if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                        System.out.println("result: " + norm_value);
+                        System.err.println("result: " + norm_value);
                     }
                 } else {
                     // choose one:
                     // Disambiguation: select the first that matches all conditions
                     boolean select;
                     if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                        System.out.println("Disambiguation needed...");
+                        System.err.println("Disambiguation needed...");
                     }
                     for (Rule rule : rules_found) {
                         select = true;
@@ -272,7 +278,7 @@ public class TIMEN {
                                 condition_args[1] = timex_object.getNormTextArr()[Integer.parseInt(condition_args[1].replaceFirst("PAT\\(([^)]*)\\)", "$1"))];
                             }
                             /*if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                            System.out.println(operator+"("+condition_args[0]+","+condition_args[1]+")");
+                            System.err.println(operator+"("+condition_args[0]+","+condition_args[1]+")");
                             } */
                             // handle operators
                             if (operator.equals("==") && !condition_args[0].equals(condition_args[1])) {
@@ -300,6 +306,7 @@ public class TIMEN {
                             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                                 System.err.println("result (rule " + rule.get_id() + "): " + norm_value);
                             }
+                            break;
                         } else {
                             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                                 System.err.println("\tUnmached condition");
@@ -366,8 +373,24 @@ public class TIMEN {
         return new Integer(ambigyear + dctcentury * 100).toString();
     }
 
-    public String to_month(String month, TIMEX_Instance timex_object) {
+    public String to_month(String month) {
         String output = "" + knowledge.Yearmonths.get(month);
+        if (output.length() == 1) {
+            output = "0" + output;
+        }
+        return output;
+    }
+
+    public String to_day(String day) {
+        int dayi=Integer.parseInt(day);
+        if(dayi<0 || dayi>31){
+            System.err.println("Day lower than 0 or greater than 31, found: " + day);
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.exit(1);
+            }
+            dayi=1;
+        }
+        String output = ""+dayi;
         if (output.length() == 1) {
             output = "0" + output;
         }
@@ -386,7 +409,7 @@ public class TIMEN {
             ret += "T";
         }
 
-        // must translate e.g. 120 min into 2h
+        // must translate e.g. 120 min into 2h?? probably not... just leave it as it is
         // knowledge main file needs TUnit equivalence relations...
 
         ret += num;
@@ -492,7 +515,6 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
-
     /**
      * Adds a positive or negative integer from a weekday given a specific reference (dct or reftime)
      * @param reference
@@ -508,7 +530,6 @@ public class TIMEN {
             if (reference.equalsIgnoreCase("REFTIME")) {
                 cal = timex_object.reftime.getCalendar();
             }
-
             formatter = new SimpleDateFormat(granul_days);
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
             cal.add(GregorianCalendar.DAY_OF_MONTH, quantity);
@@ -524,6 +545,20 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
+    public String getTOD(String tod) {
+        String result = "";
+        try {
+            result = knowledge.TODs.get(tod);
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+
+        return result;
+    }
 
     public String date_weekday(String reference, String weekday, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
@@ -536,22 +571,24 @@ public class TIMEN {
             cal.setTime(refdate);
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
             Date result = cal.getTime();
-            if (result.before(refdate)) {
-                if (!timex_object.getTense().startsWith("past")) {
-                    cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
-                }
-            } else {
-                if (result.equals(refdate)) {
-                    if (timex_object.getTense().equals("past")) {
-                        //if (locale.getLanguage().equalsIgnoreCase("es")) {
-                        cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
-                        //}
-                    } else {
+            if (!timex_object.getTense().startsWith("omit")) {
+                if (result.before(refdate)) {
+                    if (!timex_object.getTense().startsWith("past")) {
                         cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
                     }
-                } else { // after
-                    if (timex_object.getTense().startsWith("past")) {
-                        cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+                } else {
+                    if (result.equals(refdate)) {
+                        if (timex_object.getTense().equals("past")) {
+                            //if (locale.getLanguage().equalsIgnoreCase("es")) {
+                            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+                            //}
+                        } else {
+                            cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+                        }
+                    } else { // after
+                        if (timex_object.getTense().startsWith("past")) {
+                            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+                        }
                     }
                 }
             }
@@ -565,7 +602,6 @@ public class TIMEN {
 
         return formatter.format(cal.getTime());
     }
-
 
     public String date_month(String reference, String month, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
@@ -578,23 +614,25 @@ public class TIMEN {
             cal.setTime(refdate);
             cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
             Date result = cal.getTime();
-            if (result.before(refdate)) {
-                if (timex_object.getTense().equals("future")) {
-                    cal.add(GregorianCalendar.YEAR, 1);
-                }
-            } else {
-                if (result.equals(refdate)) {
-                    if (timex_object.getTense().equals("past")) {
-                        cal.add(GregorianCalendar.YEAR, -1);
-                    } else {
+            if (!timex_object.getTense().startsWith("omit")) {
+                if (result.before(refdate)) {
+                    if (timex_object.getTense().equals("future")) {
                         cal.add(GregorianCalendar.YEAR, 1);
                     }
-                } else { // after
-                    if (timex_object.getTense().equals("past")) {
-                        cal.add(GregorianCalendar.YEAR, -1);
+                } else {
+                    if (result.equals(refdate)) {
+                        if (timex_object.getTense().equals("past")) {
+                            cal.add(GregorianCalendar.YEAR, -1);
+                        } else {
+                            cal.add(GregorianCalendar.YEAR, 1);
+                        }
+                    } else { // after
+                        if (timex_object.getTense().equals("past")) {
+                            cal.add(GregorianCalendar.YEAR, -1);
+                        }
                     }
-                }
 
+                }
             }
 
         } catch (Exception e) {
@@ -608,9 +646,7 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
-
-
-    public String date_month_day(String reference, String month,  String day, TIMEX_Instance timex_object) {
+    public String date_month_day(String reference, String month, String day, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
         Date refdate = timex_object.dct.getCalendar().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
@@ -622,23 +658,26 @@ public class TIMEN {
             cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
             cal.set(GregorianCalendar.DAY_OF_MONTH, Integer.parseInt(day));
             Date result = cal.getTime();
-            if (result.before(refdate)) {
-                if (timex_object.getTense().equals("future")) {
-                    cal.add(GregorianCalendar.YEAR, 1);
-                }
-            } else {
-                if (result.equals(refdate)) {
-                    if (timex_object.getTense().equals("past")) {
-                        cal.add(GregorianCalendar.YEAR, -1);
-                    } else {
+            if (!timex_object.getTense().startsWith("omit")) {
+
+                if (result.before(refdate)) {
+                    if (timex_object.getTense().equals("future")) {
                         cal.add(GregorianCalendar.YEAR, 1);
                     }
-                } else { // after
-                    if (timex_object.getTense().equals("past")) {
-                        cal.add(GregorianCalendar.YEAR, -1);
+                } else {
+                    if (result.equals(refdate)) {
+                        if (timex_object.getTense().equals("past")) {
+                            cal.add(GregorianCalendar.YEAR, -1);
+                        } else {
+                            cal.add(GregorianCalendar.YEAR, 1);
+                        }
+                    } else { // after
+                        if (timex_object.getTense().equals("past")) {
+                            cal.add(GregorianCalendar.YEAR, -1);
+                        }
                     }
-                }
 
+                }
             }
 
         } catch (Exception e) {
@@ -652,6 +691,9 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
+    /*******************************************************************
+     *  NORMALIZING TEXT INPUT
+     ******************************************************************/
     /**
      * Obtains the normalized text (NormText) and Patter from a given timex textual expression
      * @param timex    the timex textual expression
@@ -663,14 +705,14 @@ public class TIMEN {
         String pattern = "";
         try {
             // ONLY FOR SECURITY. re-normalize spaces (ensure no spaces)
-            timex=timex.replaceAll("\\s+", "_"); // ONLY FOR SECURITY
+            timex = timex.replaceAll("\\s+", "_"); // ONLY FOR SECURITY
             // ONLY FOR SECURITY (we expect _ already)
 
-            timex="_"+timex+"_";
+            timex = "_" + timex + "_";
 
             // remove useless symbols
-            timex=timex.replaceAll("_,", ""); // tokenized commas
-            timex=timex.replaceAll(",_", "_"); // untokenized commas
+            timex = timex.replaceAll("_,", ""); // tokenized commas
+            timex = timex.replaceAll(",_", "_"); // untokenized commas
 
             // Numeric ordinals to numbers
             timex = timex.replaceAll("([0-9]+)(?:_)?(?:st|nd|rd|th)", "$1");
@@ -691,8 +733,8 @@ public class TIMEN {
             //Special for 80s, etc.
             timex = timex.replaceAll("([0-9]+)s", "$1_s");
 
-            // Special adjective periods (e.g., 10-hour)
-            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + ")", "$1_$2");
+            // Special adjective periods (e.g., 10-hour), and special quarter
+            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + "|quarter)", "$1_$2");
 
             // Special for fractions (only one is normalized because there should be no more than one per timex)
             if (timex.matches("(?:.*_)?(?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*_" + knowledge.TUnit_re + ".*")) {
@@ -701,15 +743,23 @@ public class TIMEN {
                 timex = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$1" + normalizedfrac + "$3");
             }
 
-            // remove useless tokens (language - specific)
-            if (locale.getLanguage().equalsIgnoreCase("en")) {
-                timex=timex.replaceAll("_of_", "_").replaceAll("_the_","_");
-            }
-            if (locale.getLanguage().equalsIgnoreCase("es")) {
-                timex=timex.replaceAll("_de_", "_").replaceAll("_del_","_").replaceAll("_el_", "_").replaceAll("_la_","_").replaceAll("_los_", "_").replaceAll("_las_","_");
+
+            // DISAMBIGUATE IF NEEDED
+            if (knowledge.ambiguous_re!=null && timex.matches(knowledge.ambiguous_re)) {
+                timex = knowledge.disambiguate(timex);
             }
 
-            timex=timex.substring(1, timex.length()-1);
+            // remove useless tokens (language - specific)
+            // TODO... perhaps articles do not have to be removed (distinguish dates and periods)
+            // the week DATE, week PERIOD
+            if (locale.getLanguage().equalsIgnoreCase("en")) {
+                timex = timex.replaceAll("_of_", "_");
+            }
+            if (locale.getLanguage().equalsIgnoreCase("es")) {
+                timex = timex.replaceAll("_de_", "_"); //.replaceAll("_del_", "_").replaceAll("_el_", "_").replaceAll("_la_", "_").replaceAll("_los_", "_").replaceAll("_las_", "_");
+            }
+
+            timex = timex.substring(1, timex.length() - 1);
 
             String[] tempex_arr = timex.split("_");
 
@@ -719,32 +769,41 @@ public class TIMEN {
             String spelledNum = "";
             String currentPat = "";
             for (int i = 0; i < tempex_arr.length; i++) {
-                if (tempex_arr[i].matches(knowledge.TUnit_re)) {
-                    tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
-                    currentPat = "TUnit";
+                if (tempex_arr[i].matches(knowledge.TOD_re)) {
+                    currentPat = "TOD";
                 } else {
-                    if (tempex_arr[i].matches(knowledge.TMonths_re)) {
-                        tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
-                        currentPat = "TMonth";
+                    if (tempex_arr[i].matches(knowledge.Seasons_re)) {
+                        currentPat = "Season";
                     } else {
-                        if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
-                            tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
-                            currentPat = "TWeekday";
+
+                        if (tempex_arr[i].matches(knowledge.TUnit_re)) {
+                            tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
+                            currentPat = "TUnit";
                         } else {
-                            if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
-                                currentPat = "Time";
+                            if (tempex_arr[i].matches(knowledge.TMonths_re)) {
+                                tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
+                                currentPat = "TMonth";
                             } else {
-                                if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
-                                        || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
-                                        || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
-                                        || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9]") // ISO
-                                        ) {
-                                    currentPat = "Date";
+                                if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
+                                    tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
+                                    currentPat = "TWeekday";
                                 } else {
-                                    if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
-                                        currentPat = "Num";
+                                    if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
+                                        currentPat = "Time";
                                     } else {
-                                        currentPat = tempex_arr[i].toLowerCase();
+                                        if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
+                                                || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
+                                                || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
+                                                || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9]") // ISO
+                                                ) {
+                                            currentPat = "Date";
+                                        } else {
+                                            if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
+                                                currentPat = "Num";
+                                            } else {
+                                                currentPat = tempex_arr[i].toLowerCase();
+                                            }
+                                        }
                                     }
                                 }
                             }
