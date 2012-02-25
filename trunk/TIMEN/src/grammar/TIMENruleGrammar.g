@@ -24,16 +24,24 @@ rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] :
 	|e=dct_day[$timex_object] {$value = $e.value;}
 	|e=to_year[$timex_object] {$value = $e.value;}
 	|e=to_month[$timen,$timex_object] {$value = $e.value;}
+	|e=to_day[$timen,$timex_object] {$value = $e.value;}
 	|e=add[$timen, $timex_object] {$value = $e.value;}
 	|e=date_weekday[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month_day[$timen, $timex_object] {$value = $e.value;}
 	|e=to_period[$timen, $timex_object] {$value = $e.value;}
+	|e=get_tod[$timen, timex_object] {$value = $e.value;}
 	);
 
 to_period[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 	'TO_PERIOD' '(' num=pat[$timex_object] ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($num.value,$tunit.value);}
-        | 'TO_PERIOD' '(' INT ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($INT.text,$tunit.value);};
+        | 'TO_PERIOD' '(' INT ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($INT.text,$tunit.value);}
+        | 'TO_PERIOD' '(' STRING ',' tunit=pat[$timex_object] ')' {$value = $timen.to_period($STRING.text,$tunit.value);}
+        ;
+
+
+get_tod[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+	'GET_TOD' '(' e=pat[$timex_object] ')' {$value = $timen.getTOD($e.value);};
 
 
 dct_year[TIMEX_Instance timex_object] returns [String value]:
@@ -49,7 +57,10 @@ to_year[TIMEX_Instance timex_object] returns [String value]:
 	'TO_YEAR' '(' e=pat[$timex_object] ')' {$value = TIMEN.to_year($e.value,$timex_object);};
 
 to_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
-	'TO_MONTH' '(' e=pat[$timex_object] ')' {$value = $timen.to_month($e.value,$timex_object);};
+	'TO_MONTH' '(' e=pat[$timex_object] ')' {$value = $timen.to_month($e.value);};
+
+to_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+	'TO_DAY' '(' e=pat[$timex_object] ')' {$value = $timen.to_day($e.value);};
 
 
 add[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:	

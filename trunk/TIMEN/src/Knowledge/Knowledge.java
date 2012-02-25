@@ -9,6 +9,8 @@ import java.util.*;
  */
 public abstract class Knowledge {
 
+    public String ambiguous_re;
+
     public String TUnit_re;
     // hack "seconds" because the ambiguity with ordinal
     // abbreviations? h min sec
@@ -23,6 +25,7 @@ public abstract class Knowledge {
     public HashMap<String, Integer> Yearmonths;
     public  HashMap<String, String> TUnits;
     public  HashMap<String, Integer> decades;
+    public  HashMap<String, String> TODs;
 
 
 
@@ -33,6 +36,14 @@ public abstract class Knowledge {
      * @return  String: normalized text
      */
     public abstract String normalizeTUnit(String text);
+
+    /**
+     * Returns an unambiguous semi-pattern
+     * @param text
+     *
+     * @return  String: nunamiguous text
+     */
+    public abstract String disambiguate(String text);
 
 
     public Knowledge() {

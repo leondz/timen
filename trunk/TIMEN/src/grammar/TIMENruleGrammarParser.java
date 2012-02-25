@@ -1,4 +1,4 @@
-// $ANTLR 3.4 TIMENruleGrammar.g 2012-02-24 19:59:19
+// $ANTLR 3.4 TIMENruleGrammar.g 2012-02-25 12:35:26
 
     package grammar;
     import TIMEN.*;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class TIMENruleGrammarParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "COMMENT", "GRANULARITY", "INT", "REFERENCE", "SEPARATOR", "STRING", "WHITESPACE", "'('", "')'", "','", "'ADD'", "'ADD_WEEKDAY'", "'DATE_MONTH'", "'DATE_MONTH_DAY'", "'DATE_WEEKDAY'", "'DCTDAY'", "'DCTMONTH'", "'DCTYEAR'", "'INT('", "'NEGATIVEINT('", "'PAT'", "'TO_MONTH'", "'TO_PERIOD'", "'TO_YEAR'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "COMMENT", "GRANULARITY", "INT", "REFERENCE", "SEPARATOR", "STRING", "WHITESPACE", "'('", "')'", "','", "'ADD'", "'ADD_WEEKDAY'", "'DATE_MONTH'", "'DATE_MONTH_DAY'", "'DATE_WEEKDAY'", "'DCTDAY'", "'DCTMONTH'", "'DCTYEAR'", "'GET_TOD'", "'INT('", "'NEGATIVEINT('", "'PAT'", "'TO_DAY'", "'TO_MONTH'", "'TO_PERIOD'", "'TO_YEAR'"
     };
 
     public static final int EOF=-1;
@@ -33,6 +33,8 @@ public class TIMENruleGrammarParser extends Parser {
     public static final int T__25=25;
     public static final int T__26=26;
     public static final int T__27=27;
+    public static final int T__28=28;
+    public static final int T__29=29;
     public static final int COMMENT=4;
     public static final int GRANULARITY=5;
     public static final int INT=6;
@@ -150,7 +152,7 @@ public class TIMENruleGrammarParser extends Parser {
                 if ( (LA2_0==SEPARATOR) ) {
                     int LA2_1 = input.LA(2);
 
-                    if ( (LA2_1==STRING||(LA2_1 >= 14 && LA2_1 <= 21)||(LA2_1 >= 24 && LA2_1 <= 27)) ) {
+                    if ( (LA2_1==STRING||(LA2_1 >= 14 && LA2_1 <= 22)||(LA2_1 >= 25 && LA2_1 <= 29)) ) {
                         alt2=1;
                     }
 
@@ -199,7 +201,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "rule"
-    // TIMENruleGrammar.g:19:1: rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] ) ;
+    // TIMENruleGrammar.g:19:1: rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= to_day[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] |e= get_tod[$timen, timex_object] ) ;
     public final String rule(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -208,18 +210,18 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:19:71: ( (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] ) )
-            // TIMENruleGrammar.g:20:2: (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] )
+            // TIMENruleGrammar.g:19:71: ( (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= to_day[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] |e= get_tod[$timen, timex_object] ) )
+            // TIMENruleGrammar.g:20:2: (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= to_day[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] |e= get_tod[$timen, timex_object] )
             {
-            // TIMENruleGrammar.g:20:2: (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] )
-            int alt3=12;
+            // TIMENruleGrammar.g:20:2: (e= print |e= pat[$timex_object] |e= dct_year[$timex_object] |e= dct_month[$timex_object] |e= dct_day[$timex_object] |e= to_year[$timex_object] |e= to_month[$timen,$timex_object] |e= to_day[$timen,$timex_object] |e= add[$timen, $timex_object] |e= date_weekday[$timen, $timex_object] |e= date_month[$timen, $timex_object] |e= date_month_day[$timen, $timex_object] |e= to_period[$timen, $timex_object] |e= get_tod[$timen, timex_object] )
+            int alt3=14;
             switch ( input.LA(1) ) {
             case STRING:
                 {
                 alt3=1;
                 }
                 break;
-            case 24:
+            case 25:
                 {
                 alt3=2;
                 }
@@ -239,40 +241,50 @@ public class TIMENruleGrammarParser extends Parser {
                 alt3=5;
                 }
                 break;
-            case 27:
+            case 29:
                 {
                 alt3=6;
                 }
                 break;
-            case 25:
+            case 27:
                 {
                 alt3=7;
+                }
+                break;
+            case 26:
+                {
+                alt3=8;
                 }
                 break;
             case 14:
             case 15:
                 {
-                alt3=8;
+                alt3=9;
                 }
                 break;
             case 18:
                 {
-                alt3=9;
+                alt3=10;
                 }
                 break;
             case 16:
                 {
-                alt3=10;
+                alt3=11;
                 }
                 break;
             case 17:
                 {
-                alt3=11;
+                alt3=12;
                 }
                 break;
-            case 26:
+            case 28:
                 {
-                alt3=12;
+                alt3=13;
+                }
+                break;
+            case 22:
+                {
+                alt3=14;
                 }
                 break;
             default:
@@ -376,10 +388,10 @@ public class TIMENruleGrammarParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // TIMENruleGrammar.g:27:3: e= add[$timen, $timex_object]
+                    // TIMENruleGrammar.g:27:3: e= to_day[$timen,$timex_object]
                     {
-                    pushFollow(FOLLOW_add_in_rule156);
-                    e=add(timen, timex_object);
+                    pushFollow(FOLLOW_to_day_in_rule156);
+                    e=to_day(timen, timex_object);
 
                     state._fsp--;
 
@@ -389,10 +401,10 @@ public class TIMENruleGrammarParser extends Parser {
                     }
                     break;
                 case 9 :
-                    // TIMENruleGrammar.g:28:3: e= date_weekday[$timen, $timex_object]
+                    // TIMENruleGrammar.g:28:3: e= add[$timen, $timex_object]
                     {
-                    pushFollow(FOLLOW_date_weekday_in_rule165);
-                    e=date_weekday(timen, timex_object);
+                    pushFollow(FOLLOW_add_in_rule165);
+                    e=add(timen, timex_object);
 
                     state._fsp--;
 
@@ -402,10 +414,10 @@ public class TIMENruleGrammarParser extends Parser {
                     }
                     break;
                 case 10 :
-                    // TIMENruleGrammar.g:29:3: e= date_month[$timen, $timex_object]
+                    // TIMENruleGrammar.g:29:3: e= date_weekday[$timen, $timex_object]
                     {
-                    pushFollow(FOLLOW_date_month_in_rule174);
-                    e=date_month(timen, timex_object);
+                    pushFollow(FOLLOW_date_weekday_in_rule174);
+                    e=date_weekday(timen, timex_object);
 
                     state._fsp--;
 
@@ -415,10 +427,10 @@ public class TIMENruleGrammarParser extends Parser {
                     }
                     break;
                 case 11 :
-                    // TIMENruleGrammar.g:30:3: e= date_month_day[$timen, $timex_object]
+                    // TIMENruleGrammar.g:30:3: e= date_month[$timen, $timex_object]
                     {
-                    pushFollow(FOLLOW_date_month_day_in_rule183);
-                    e=date_month_day(timen, timex_object);
+                    pushFollow(FOLLOW_date_month_in_rule183);
+                    e=date_month(timen, timex_object);
 
                     state._fsp--;
 
@@ -428,10 +440,36 @@ public class TIMENruleGrammarParser extends Parser {
                     }
                     break;
                 case 12 :
-                    // TIMENruleGrammar.g:31:3: e= to_period[$timen, $timex_object]
+                    // TIMENruleGrammar.g:31:3: e= date_month_day[$timen, $timex_object]
                     {
-                    pushFollow(FOLLOW_to_period_in_rule192);
+                    pushFollow(FOLLOW_date_month_day_in_rule192);
+                    e=date_month_day(timen, timex_object);
+
+                    state._fsp--;
+
+
+                    value = e;
+
+                    }
+                    break;
+                case 13 :
+                    // TIMENruleGrammar.g:32:3: e= to_period[$timen, $timex_object]
+                    {
+                    pushFollow(FOLLOW_to_period_in_rule201);
                     e=to_period(timen, timex_object);
+
+                    state._fsp--;
+
+
+                    value = e;
+
+                    }
+                    break;
+                case 14 :
+                    // TIMENruleGrammar.g:33:3: e= get_tod[$timen, timex_object]
+                    {
+                    pushFollow(FOLLOW_get_tod_in_rule210);
+                    e=get_tod(timen, timex_object);
 
                     state._fsp--;
 
@@ -462,41 +500,51 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "to_period"
-    // TIMENruleGrammar.g:34:1: to_period[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : ( 'TO_PERIOD' '(' num= pat[$timex_object] ',' tunit= pat[$timex_object] ')' | 'TO_PERIOD' '(' INT ',' tunit= pat[$timex_object] ')' );
+    // TIMENruleGrammar.g:36:1: to_period[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : ( 'TO_PERIOD' '(' num= pat[$timex_object] ',' tunit= pat[$timex_object] ')' | 'TO_PERIOD' '(' INT ',' tunit= pat[$timex_object] ')' | 'TO_PERIOD' '(' STRING ',' tunit= pat[$timex_object] ')' );
     public final String to_period(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
 
         Token INT2=null;
+        Token STRING3=null;
         String num =null;
 
         String tunit =null;
 
 
         try {
-            // TIMENruleGrammar.g:34:75: ( 'TO_PERIOD' '(' num= pat[$timex_object] ',' tunit= pat[$timex_object] ')' | 'TO_PERIOD' '(' INT ',' tunit= pat[$timex_object] ')' )
-            int alt4=2;
+            // TIMENruleGrammar.g:36:75: ( 'TO_PERIOD' '(' num= pat[$timex_object] ',' tunit= pat[$timex_object] ')' | 'TO_PERIOD' '(' INT ',' tunit= pat[$timex_object] ')' | 'TO_PERIOD' '(' STRING ',' tunit= pat[$timex_object] ')' )
+            int alt4=3;
             int LA4_0 = input.LA(1);
 
-            if ( (LA4_0==26) ) {
+            if ( (LA4_0==28) ) {
                 int LA4_1 = input.LA(2);
 
                 if ( (LA4_1==11) ) {
-                    int LA4_2 = input.LA(3);
-
-                    if ( (LA4_2==INT) ) {
+                    switch ( input.LA(3) ) {
+                    case INT:
+                        {
                         alt4=2;
-                    }
-                    else if ( (LA4_2==24) ) {
+                        }
+                        break;
+                    case STRING:
+                        {
+                        alt4=3;
+                        }
+                        break;
+                    case 25:
+                        {
                         alt4=1;
-                    }
-                    else {
+                        }
+                        break;
+                    default:
                         NoViableAltException nvae =
                             new NoViableAltException("", 4, 2, input);
 
                         throw nvae;
 
                     }
+
                 }
                 else {
                     NoViableAltException nvae =
@@ -515,52 +563,75 @@ public class TIMENruleGrammarParser extends Parser {
             }
             switch (alt4) {
                 case 1 :
-                    // TIMENruleGrammar.g:35:2: 'TO_PERIOD' '(' num= pat[$timex_object] ',' tunit= pat[$timex_object] ')'
+                    // TIMENruleGrammar.g:37:2: 'TO_PERIOD' '(' num= pat[$timex_object] ',' tunit= pat[$timex_object] ')'
                     {
-                    match(input,26,FOLLOW_26_in_to_period211); 
+                    match(input,28,FOLLOW_28_in_to_period229); 
 
-                    match(input,11,FOLLOW_11_in_to_period213); 
+                    match(input,11,FOLLOW_11_in_to_period231); 
 
-                    pushFollow(FOLLOW_pat_in_to_period217);
+                    pushFollow(FOLLOW_pat_in_to_period235);
                     num=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,13,FOLLOW_13_in_to_period220); 
+                    match(input,13,FOLLOW_13_in_to_period238); 
 
-                    pushFollow(FOLLOW_pat_in_to_period224);
+                    pushFollow(FOLLOW_pat_in_to_period242);
                     tunit=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_to_period227); 
+                    match(input,12,FOLLOW_12_in_to_period245); 
 
                     value = timen.to_period(num,tunit);
 
                     }
                     break;
                 case 2 :
-                    // TIMENruleGrammar.g:36:11: 'TO_PERIOD' '(' INT ',' tunit= pat[$timex_object] ')'
+                    // TIMENruleGrammar.g:38:11: 'TO_PERIOD' '(' INT ',' tunit= pat[$timex_object] ')'
                     {
-                    match(input,26,FOLLOW_26_in_to_period241); 
+                    match(input,28,FOLLOW_28_in_to_period259); 
 
-                    match(input,11,FOLLOW_11_in_to_period243); 
+                    match(input,11,FOLLOW_11_in_to_period261); 
 
-                    INT2=(Token)match(input,INT,FOLLOW_INT_in_to_period245); 
+                    INT2=(Token)match(input,INT,FOLLOW_INT_in_to_period263); 
 
-                    match(input,13,FOLLOW_13_in_to_period247); 
+                    match(input,13,FOLLOW_13_in_to_period265); 
 
-                    pushFollow(FOLLOW_pat_in_to_period251);
+                    pushFollow(FOLLOW_pat_in_to_period269);
                     tunit=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_to_period254); 
+                    match(input,12,FOLLOW_12_in_to_period272); 
 
                     value = timen.to_period((INT2!=null?INT2.getText():null),tunit);
+
+                    }
+                    break;
+                case 3 :
+                    // TIMENruleGrammar.g:39:11: 'TO_PERIOD' '(' STRING ',' tunit= pat[$timex_object] ')'
+                    {
+                    match(input,28,FOLLOW_28_in_to_period286); 
+
+                    match(input,11,FOLLOW_11_in_to_period288); 
+
+                    STRING3=(Token)match(input,STRING,FOLLOW_STRING_in_to_period290); 
+
+                    match(input,13,FOLLOW_13_in_to_period292); 
+
+                    pushFollow(FOLLOW_pat_in_to_period296);
+                    tunit=pat(timex_object);
+
+                    state._fsp--;
+
+
+                    match(input,12,FOLLOW_12_in_to_period299); 
+
+                    value = timen.to_period((STRING3!=null?STRING3.getText():null),tunit);
 
                     }
                     break;
@@ -581,17 +652,61 @@ public class TIMENruleGrammarParser extends Parser {
 
 
 
+    // $ANTLR start "get_tod"
+    // TIMENruleGrammar.g:43:1: get_tod[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'GET_TOD' '(' e= pat[$timex_object] ')' ;
+    public final String get_tod(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
+        String value = null;
+
+
+        String e =null;
+
+
+        try {
+            // TIMENruleGrammar.g:43:73: ( 'GET_TOD' '(' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:44:2: 'GET_TOD' '(' e= pat[$timex_object] ')'
+            {
+            match(input,22,FOLLOW_22_in_get_tod324); 
+
+            match(input,11,FOLLOW_11_in_get_tod326); 
+
+            pushFollow(FOLLOW_pat_in_get_tod330);
+            e=pat(timex_object);
+
+            state._fsp--;
+
+
+            match(input,12,FOLLOW_12_in_get_tod333); 
+
+            value = timen.getTOD(e);
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return value;
+    }
+    // $ANTLR end "get_tod"
+
+
+
     // $ANTLR start "dct_year"
-    // TIMENruleGrammar.g:39:1: dct_year[TIMEX_Instance timex_object] returns [String value] : 'DCTYEAR' ;
+    // TIMENruleGrammar.g:47:1: dct_year[TIMEX_Instance timex_object] returns [String value] : 'DCTYEAR' ;
     public final String dct_year(TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
 
         try {
-            // TIMENruleGrammar.g:39:61: ( 'DCTYEAR' )
-            // TIMENruleGrammar.g:40:2: 'DCTYEAR'
+            // TIMENruleGrammar.g:47:61: ( 'DCTYEAR' )
+            // TIMENruleGrammar.g:48:2: 'DCTYEAR'
             {
-            match(input,21,FOLLOW_21_in_dct_year270); 
+            match(input,21,FOLLOW_21_in_dct_year349); 
 
             value = timex_object.dct.getYear();
 
@@ -613,16 +728,16 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "dct_month"
-    // TIMENruleGrammar.g:42:1: dct_month[TIMEX_Instance timex_object] returns [String value] : 'DCTMONTH' ;
+    // TIMENruleGrammar.g:50:1: dct_month[TIMEX_Instance timex_object] returns [String value] : 'DCTMONTH' ;
     public final String dct_month(TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
 
         try {
-            // TIMENruleGrammar.g:42:62: ( 'DCTMONTH' )
-            // TIMENruleGrammar.g:43:2: 'DCTMONTH'
+            // TIMENruleGrammar.g:50:62: ( 'DCTMONTH' )
+            // TIMENruleGrammar.g:51:2: 'DCTMONTH'
             {
-            match(input,20,FOLLOW_20_in_dct_month286); 
+            match(input,20,FOLLOW_20_in_dct_month365); 
 
             value = timex_object.dct.getMonth();
 
@@ -644,16 +759,16 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "dct_day"
-    // TIMENruleGrammar.g:45:1: dct_day[TIMEX_Instance timex_object] returns [String value] : 'DCTDAY' ;
+    // TIMENruleGrammar.g:53:1: dct_day[TIMEX_Instance timex_object] returns [String value] : 'DCTDAY' ;
     public final String dct_day(TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
 
         try {
-            // TIMENruleGrammar.g:45:60: ( 'DCTDAY' )
-            // TIMENruleGrammar.g:46:2: 'DCTDAY'
+            // TIMENruleGrammar.g:53:60: ( 'DCTDAY' )
+            // TIMENruleGrammar.g:54:2: 'DCTDAY'
             {
-            match(input,19,FOLLOW_19_in_dct_day302); 
+            match(input,19,FOLLOW_19_in_dct_day381); 
 
             value = timex_object.dct.getDay();
 
@@ -675,7 +790,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "to_year"
-    // TIMENruleGrammar.g:48:1: to_year[TIMEX_Instance timex_object] returns [String value] : 'TO_YEAR' '(' e= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:56:1: to_year[TIMEX_Instance timex_object] returns [String value] : 'TO_YEAR' '(' e= pat[$timex_object] ')' ;
     public final String to_year(TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -684,20 +799,20 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:48:60: ( 'TO_YEAR' '(' e= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:49:2: 'TO_YEAR' '(' e= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:56:60: ( 'TO_YEAR' '(' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:57:2: 'TO_YEAR' '(' e= pat[$timex_object] ')'
             {
-            match(input,27,FOLLOW_27_in_to_year318); 
+            match(input,29,FOLLOW_29_in_to_year397); 
 
-            match(input,11,FOLLOW_11_in_to_year320); 
+            match(input,11,FOLLOW_11_in_to_year399); 
 
-            pushFollow(FOLLOW_pat_in_to_year324);
+            pushFollow(FOLLOW_pat_in_to_year403);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_to_year327); 
+            match(input,12,FOLLOW_12_in_to_year406); 
 
             value = TIMEN.to_year(e,timex_object);
 
@@ -719,7 +834,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "to_month"
-    // TIMENruleGrammar.g:51:1: to_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'TO_MONTH' '(' e= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:59:1: to_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'TO_MONTH' '(' e= pat[$timex_object] ')' ;
     public final String to_month(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -728,22 +843,22 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:51:74: ( 'TO_MONTH' '(' e= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:52:2: 'TO_MONTH' '(' e= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:59:74: ( 'TO_MONTH' '(' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:60:2: 'TO_MONTH' '(' e= pat[$timex_object] ')'
             {
-            match(input,25,FOLLOW_25_in_to_month342); 
+            match(input,27,FOLLOW_27_in_to_month421); 
 
-            match(input,11,FOLLOW_11_in_to_month344); 
+            match(input,11,FOLLOW_11_in_to_month423); 
 
-            pushFollow(FOLLOW_pat_in_to_month348);
+            pushFollow(FOLLOW_pat_in_to_month427);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_to_month351); 
+            match(input,12,FOLLOW_12_in_to_month430); 
 
-            value = timen.to_month(e,timex_object);
+            value = timen.to_month(e);
 
             }
 
@@ -762,21 +877,65 @@ public class TIMENruleGrammarParser extends Parser {
 
 
 
+    // $ANTLR start "to_day"
+    // TIMENruleGrammar.g:62:1: to_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'TO_DAY' '(' e= pat[$timex_object] ')' ;
+    public final String to_day(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
+        String value = null;
+
+
+        String e =null;
+
+
+        try {
+            // TIMENruleGrammar.g:62:72: ( 'TO_DAY' '(' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:63:2: 'TO_DAY' '(' e= pat[$timex_object] ')'
+            {
+            match(input,26,FOLLOW_26_in_to_day445); 
+
+            match(input,11,FOLLOW_11_in_to_day447); 
+
+            pushFollow(FOLLOW_pat_in_to_day451);
+            e=pat(timex_object);
+
+            state._fsp--;
+
+
+            match(input,12,FOLLOW_12_in_to_day454); 
+
+            value = timen.to_day(e);
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return value;
+    }
+    // $ANTLR end "to_day"
+
+
+
     // $ANTLR start "add"
-    // TIMENruleGrammar.g:55:1: add[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : ( 'ADD' '(' r= REFERENCE ',' GRANULARITY ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= toint[$timex_object] ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= tonegativeint[$timex_object] ')' | 'ADD_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' );
+    // TIMENruleGrammar.g:66:1: add[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : ( 'ADD' '(' r= REFERENCE ',' GRANULARITY ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= toint[$timex_object] ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= tonegativeint[$timex_object] ')' | 'ADD_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' );
     public final String add(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
 
         Token r=null;
-        Token GRANULARITY3=null;
+        Token GRANULARITY4=null;
         int i =0;
 
         String e =null;
 
 
         try {
-            // TIMENruleGrammar.g:55:69: ( 'ADD' '(' r= REFERENCE ',' GRANULARITY ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= toint[$timex_object] ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= tonegativeint[$timex_object] ')' | 'ADD_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' )
+            // TIMENruleGrammar.g:66:69: ( 'ADD' '(' r= REFERENCE ',' GRANULARITY ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= toint[$timex_object] ')' | 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= tonegativeint[$timex_object] ')' | 'ADD_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')' )
             int alt5=5;
             int LA5_0 = input.LA(1);
 
@@ -795,7 +954,7 @@ public class TIMENruleGrammarParser extends Parser {
                             if ( (LA5_5==GRANULARITY) ) {
                                 alt5=1;
                             }
-                            else if ( (LA5_5==24) ) {
+                            else if ( (LA5_5==25) ) {
                                 int LA5_7 = input.LA(6);
 
                                 if ( (LA5_7==11) ) {
@@ -814,12 +973,12 @@ public class TIMENruleGrammarParser extends Parser {
                                                     alt5=2;
                                                     }
                                                     break;
-                                                case 22:
+                                                case 23:
                                                     {
                                                     alt5=3;
                                                     }
                                                     break;
-                                                case 23:
+                                                case 24:
                                                     {
                                                     alt5=4;
                                                     }
@@ -909,151 +1068,151 @@ public class TIMENruleGrammarParser extends Parser {
             }
             switch (alt5) {
                 case 1 :
-                    // TIMENruleGrammar.g:56:10: 'ADD' '(' r= REFERENCE ',' GRANULARITY ',' i= intnumber ')'
+                    // TIMENruleGrammar.g:67:10: 'ADD' '(' r= REFERENCE ',' GRANULARITY ',' i= intnumber ')'
                     {
-                    match(input,14,FOLLOW_14_in_add376); 
+                    match(input,14,FOLLOW_14_in_add479); 
 
-                    match(input,11,FOLLOW_11_in_add378); 
+                    match(input,11,FOLLOW_11_in_add481); 
 
-                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add382); 
+                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add485); 
 
-                    match(input,13,FOLLOW_13_in_add390); 
+                    match(input,13,FOLLOW_13_in_add493); 
 
-                    GRANULARITY3=(Token)match(input,GRANULARITY,FOLLOW_GRANULARITY_in_add392); 
+                    GRANULARITY4=(Token)match(input,GRANULARITY,FOLLOW_GRANULARITY_in_add495); 
 
-                    match(input,13,FOLLOW_13_in_add404); 
+                    match(input,13,FOLLOW_13_in_add507); 
 
-                    pushFollow(FOLLOW_intnumber_in_add408);
+                    pushFollow(FOLLOW_intnumber_in_add511);
                     i=intnumber();
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_add410); 
+                    match(input,12,FOLLOW_12_in_add513); 
 
-                    value = timen.add((r!=null?r.getText():null),(GRANULARITY3!=null?GRANULARITY3.getText():null),i, timex_object);
+                    value = timen.add((r!=null?r.getText():null),(GRANULARITY4!=null?GRANULARITY4.getText():null),i, timex_object);
 
                     }
                     break;
                 case 2 :
-                    // TIMENruleGrammar.g:57:11: 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')'
+                    // TIMENruleGrammar.g:68:11: 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')'
                     {
-                    match(input,14,FOLLOW_14_in_add424); 
+                    match(input,14,FOLLOW_14_in_add527); 
 
-                    match(input,11,FOLLOW_11_in_add426); 
+                    match(input,11,FOLLOW_11_in_add529); 
 
-                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add430); 
+                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add533); 
 
-                    match(input,13,FOLLOW_13_in_add438); 
+                    match(input,13,FOLLOW_13_in_add541); 
 
-                    pushFollow(FOLLOW_pat_in_add442);
+                    pushFollow(FOLLOW_pat_in_add545);
                     e=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,13,FOLLOW_13_in_add445); 
+                    match(input,13,FOLLOW_13_in_add548); 
 
-                    pushFollow(FOLLOW_intnumber_in_add449);
+                    pushFollow(FOLLOW_intnumber_in_add552);
                     i=intnumber();
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_add451); 
+                    match(input,12,FOLLOW_12_in_add554); 
 
                     value = timen.add((r!=null?r.getText():null),e,i, timex_object);
 
                     }
                     break;
                 case 3 :
-                    // TIMENruleGrammar.g:58:11: 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= toint[$timex_object] ')'
+                    // TIMENruleGrammar.g:69:11: 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= toint[$timex_object] ')'
                     {
-                    match(input,14,FOLLOW_14_in_add465); 
+                    match(input,14,FOLLOW_14_in_add568); 
 
-                    match(input,11,FOLLOW_11_in_add467); 
+                    match(input,11,FOLLOW_11_in_add570); 
 
-                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add471); 
+                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add574); 
 
-                    match(input,13,FOLLOW_13_in_add479); 
+                    match(input,13,FOLLOW_13_in_add582); 
 
-                    pushFollow(FOLLOW_pat_in_add483);
+                    pushFollow(FOLLOW_pat_in_add586);
                     e=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,13,FOLLOW_13_in_add486); 
+                    match(input,13,FOLLOW_13_in_add589); 
 
-                    pushFollow(FOLLOW_toint_in_add490);
+                    pushFollow(FOLLOW_toint_in_add593);
                     i=toint(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_add493); 
+                    match(input,12,FOLLOW_12_in_add596); 
 
                     value = timen.add((r!=null?r.getText():null),e,i, timex_object);
 
                     }
                     break;
                 case 4 :
-                    // TIMENruleGrammar.g:59:11: 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= tonegativeint[$timex_object] ')'
+                    // TIMENruleGrammar.g:70:11: 'ADD' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= tonegativeint[$timex_object] ')'
                     {
-                    match(input,14,FOLLOW_14_in_add507); 
+                    match(input,14,FOLLOW_14_in_add610); 
 
-                    match(input,11,FOLLOW_11_in_add509); 
+                    match(input,11,FOLLOW_11_in_add612); 
 
-                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add513); 
+                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add616); 
 
-                    match(input,13,FOLLOW_13_in_add521); 
+                    match(input,13,FOLLOW_13_in_add624); 
 
-                    pushFollow(FOLLOW_pat_in_add525);
+                    pushFollow(FOLLOW_pat_in_add628);
                     e=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,13,FOLLOW_13_in_add528); 
+                    match(input,13,FOLLOW_13_in_add631); 
 
-                    pushFollow(FOLLOW_tonegativeint_in_add532);
+                    pushFollow(FOLLOW_tonegativeint_in_add635);
                     i=tonegativeint(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_add535); 
+                    match(input,12,FOLLOW_12_in_add638); 
 
                     value = timen.add((r!=null?r.getText():null),e,i, timex_object);
 
                     }
                     break;
                 case 5 :
-                    // TIMENruleGrammar.g:60:11: 'ADD_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')'
+                    // TIMENruleGrammar.g:71:11: 'ADD_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' i= intnumber ')'
                     {
-                    match(input,15,FOLLOW_15_in_add549); 
+                    match(input,15,FOLLOW_15_in_add652); 
 
-                    match(input,11,FOLLOW_11_in_add551); 
+                    match(input,11,FOLLOW_11_in_add654); 
 
-                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add555); 
+                    r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_add658); 
 
-                    match(input,13,FOLLOW_13_in_add563); 
+                    match(input,13,FOLLOW_13_in_add666); 
 
-                    pushFollow(FOLLOW_pat_in_add567);
+                    pushFollow(FOLLOW_pat_in_add670);
                     e=pat(timex_object);
 
                     state._fsp--;
 
 
-                    match(input,13,FOLLOW_13_in_add570); 
+                    match(input,13,FOLLOW_13_in_add673); 
 
-                    pushFollow(FOLLOW_intnumber_in_add574);
+                    pushFollow(FOLLOW_intnumber_in_add677);
                     i=intnumber();
 
                     state._fsp--;
 
 
-                    match(input,12,FOLLOW_12_in_add576); 
+                    match(input,12,FOLLOW_12_in_add679); 
 
                     value = timen.add_weekday((r!=null?r.getText():null),e,i, timex_object);
 
@@ -1077,7 +1236,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "date_weekday"
-    // TIMENruleGrammar.g:66:1: date_weekday[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'DATE_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:77:1: date_weekday[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'DATE_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ')' ;
     public final String date_weekday(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -1087,24 +1246,24 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:66:78: ( 'DATE_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:67:10: 'DATE_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:77:78: ( 'DATE_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:78:10: 'DATE_WEEKDAY' '(' r= REFERENCE ',' e= pat[$timex_object] ')'
             {
-            match(input,18,FOLLOW_18_in_date_weekday611); 
+            match(input,18,FOLLOW_18_in_date_weekday714); 
 
-            match(input,11,FOLLOW_11_in_date_weekday613); 
+            match(input,11,FOLLOW_11_in_date_weekday716); 
 
-            r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_date_weekday617); 
+            r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_date_weekday720); 
 
-            match(input,13,FOLLOW_13_in_date_weekday625); 
+            match(input,13,FOLLOW_13_in_date_weekday728); 
 
-            pushFollow(FOLLOW_pat_in_date_weekday629);
+            pushFollow(FOLLOW_pat_in_date_weekday732);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_date_weekday632); 
+            match(input,12,FOLLOW_12_in_date_weekday735); 
 
             value = timen.date_weekday((r!=null?r.getText():null),e, timex_object);
 
@@ -1126,7 +1285,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "date_month"
-    // TIMENruleGrammar.g:69:1: date_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'DATE_MONTH' '(' r= REFERENCE ',' e= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:80:1: date_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'DATE_MONTH' '(' r= REFERENCE ',' e= pat[$timex_object] ')' ;
     public final String date_month(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -1136,24 +1295,24 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:69:76: ( 'DATE_MONTH' '(' r= REFERENCE ',' e= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:70:10: 'DATE_MONTH' '(' r= REFERENCE ',' e= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:80:76: ( 'DATE_MONTH' '(' r= REFERENCE ',' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:81:10: 'DATE_MONTH' '(' r= REFERENCE ',' e= pat[$timex_object] ')'
             {
-            match(input,16,FOLLOW_16_in_date_month655); 
+            match(input,16,FOLLOW_16_in_date_month758); 
 
-            match(input,11,FOLLOW_11_in_date_month657); 
+            match(input,11,FOLLOW_11_in_date_month760); 
 
-            r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_date_month661); 
+            r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_date_month764); 
 
-            match(input,13,FOLLOW_13_in_date_month669); 
+            match(input,13,FOLLOW_13_in_date_month772); 
 
-            pushFollow(FOLLOW_pat_in_date_month673);
+            pushFollow(FOLLOW_pat_in_date_month776);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_date_month676); 
+            match(input,12,FOLLOW_12_in_date_month779); 
 
             value = timen.date_month((r!=null?r.getText():null),e, timex_object);
 
@@ -1175,7 +1334,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "date_month_day"
-    // TIMENruleGrammar.g:72:1: date_month_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'DATE_MONTH_DAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' d= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:83:1: date_month_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value] : 'DATE_MONTH_DAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' d= pat[$timex_object] ')' ;
     public final String date_month_day(TIMEN timen, TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -1187,32 +1346,32 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:72:80: ( 'DATE_MONTH_DAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' d= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:73:10: 'DATE_MONTH_DAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' d= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:83:80: ( 'DATE_MONTH_DAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' d= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:84:10: 'DATE_MONTH_DAY' '(' r= REFERENCE ',' e= pat[$timex_object] ',' d= pat[$timex_object] ')'
             {
-            match(input,17,FOLLOW_17_in_date_month_day699); 
+            match(input,17,FOLLOW_17_in_date_month_day802); 
 
-            match(input,11,FOLLOW_11_in_date_month_day701); 
+            match(input,11,FOLLOW_11_in_date_month_day804); 
 
-            r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_date_month_day705); 
+            r=(Token)match(input,REFERENCE,FOLLOW_REFERENCE_in_date_month_day808); 
 
-            match(input,13,FOLLOW_13_in_date_month_day713); 
+            match(input,13,FOLLOW_13_in_date_month_day816); 
 
-            pushFollow(FOLLOW_pat_in_date_month_day717);
+            pushFollow(FOLLOW_pat_in_date_month_day820);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,13,FOLLOW_13_in_date_month_day720); 
+            match(input,13,FOLLOW_13_in_date_month_day823); 
 
-            pushFollow(FOLLOW_pat_in_date_month_day724);
+            pushFollow(FOLLOW_pat_in_date_month_day827);
             d=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_date_month_day727); 
+            match(input,12,FOLLOW_12_in_date_month_day830); 
 
             value = timen.date_month_day((r!=null?r.getText():null),e,d, timex_object);
 
@@ -1234,7 +1393,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "pat"
-    // TIMENruleGrammar.g:76:1: pat[TIMEX_Instance timex_object] returns [String value] : 'PAT' '(' e= intnumber ')' ;
+    // TIMENruleGrammar.g:87:1: pat[TIMEX_Instance timex_object] returns [String value] : 'PAT' '(' e= intnumber ')' ;
     public final String pat(TIMEX_Instance timex_object) throws RecognitionException {
         String value = null;
 
@@ -1243,20 +1402,20 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:76:56: ( 'PAT' '(' e= intnumber ')' )
-            // TIMENruleGrammar.g:77:2: 'PAT' '(' e= intnumber ')'
+            // TIMENruleGrammar.g:87:56: ( 'PAT' '(' e= intnumber ')' )
+            // TIMENruleGrammar.g:88:2: 'PAT' '(' e= intnumber ')'
             {
-            match(input,24,FOLLOW_24_in_pat743); 
+            match(input,25,FOLLOW_25_in_pat846); 
 
-            match(input,11,FOLLOW_11_in_pat745); 
+            match(input,11,FOLLOW_11_in_pat848); 
 
-            pushFollow(FOLLOW_intnumber_in_pat749);
+            pushFollow(FOLLOW_intnumber_in_pat852);
             e=intnumber();
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_pat751); 
+            match(input,12,FOLLOW_12_in_pat854); 
 
             value = timex_object.getNormTextArr()[e];
 
@@ -1278,7 +1437,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "tonegativeint"
-    // TIMENruleGrammar.g:79:1: tonegativeint[TIMEX_Instance timex_object] returns [int value] : 'NEGATIVEINT(' e= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:90:1: tonegativeint[TIMEX_Instance timex_object] returns [int value] : 'NEGATIVEINT(' e= pat[$timex_object] ')' ;
     public final int tonegativeint(TIMEX_Instance timex_object) throws RecognitionException {
         int value = 0;
 
@@ -1287,18 +1446,18 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:79:63: ( 'NEGATIVEINT(' e= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:80:5: 'NEGATIVEINT(' e= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:90:63: ( 'NEGATIVEINT(' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:91:5: 'NEGATIVEINT(' e= pat[$timex_object] ')'
             {
-            match(input,23,FOLLOW_23_in_tonegativeint769); 
+            match(input,24,FOLLOW_24_in_tonegativeint872); 
 
-            pushFollow(FOLLOW_pat_in_tonegativeint773);
+            pushFollow(FOLLOW_pat_in_tonegativeint876);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_tonegativeint776); 
+            match(input,12,FOLLOW_12_in_tonegativeint879); 
 
             value = Integer.parseInt("-"+e);
 
@@ -1320,7 +1479,7 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "toint"
-    // TIMENruleGrammar.g:82:1: toint[TIMEX_Instance timex_object] returns [int value] : 'INT(' e= pat[$timex_object] ')' ;
+    // TIMENruleGrammar.g:93:1: toint[TIMEX_Instance timex_object] returns [int value] : 'INT(' e= pat[$timex_object] ')' ;
     public final int toint(TIMEX_Instance timex_object) throws RecognitionException {
         int value = 0;
 
@@ -1329,18 +1488,18 @@ public class TIMENruleGrammarParser extends Parser {
 
 
         try {
-            // TIMENruleGrammar.g:82:55: ( 'INT(' e= pat[$timex_object] ')' )
-            // TIMENruleGrammar.g:83:5: 'INT(' e= pat[$timex_object] ')'
+            // TIMENruleGrammar.g:93:55: ( 'INT(' e= pat[$timex_object] ')' )
+            // TIMENruleGrammar.g:94:5: 'INT(' e= pat[$timex_object] ')'
             {
-            match(input,22,FOLLOW_22_in_toint794); 
+            match(input,23,FOLLOW_23_in_toint897); 
 
-            pushFollow(FOLLOW_pat_in_toint798);
+            pushFollow(FOLLOW_pat_in_toint901);
             e=pat(timex_object);
 
             state._fsp--;
 
 
-            match(input,12,FOLLOW_12_in_toint801); 
+            match(input,12,FOLLOW_12_in_toint904); 
 
             value = Integer.parseInt(e);
 
@@ -1362,20 +1521,20 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "print"
-    // TIMENruleGrammar.g:86:1: print returns [String value] : STRING ;
+    // TIMENruleGrammar.g:97:1: print returns [String value] : STRING ;
     public final String print() throws RecognitionException {
         String value = null;
 
 
-        Token STRING4=null;
+        Token STRING5=null;
 
         try {
-            // TIMENruleGrammar.g:86:29: ( STRING )
-            // TIMENruleGrammar.g:87:5: STRING
+            // TIMENruleGrammar.g:97:29: ( STRING )
+            // TIMENruleGrammar.g:98:5: STRING
             {
-            STRING4=(Token)match(input,STRING,FOLLOW_STRING_in_print819); 
+            STRING5=(Token)match(input,STRING,FOLLOW_STRING_in_print922); 
 
-            value = (STRING4!=null?STRING4.getText():null);
+            value = (STRING5!=null?STRING5.getText():null);
 
             }
 
@@ -1395,20 +1554,20 @@ public class TIMENruleGrammarParser extends Parser {
 
 
     // $ANTLR start "intnumber"
-    // TIMENruleGrammar.g:90:1: intnumber returns [int value] : INT ;
+    // TIMENruleGrammar.g:101:1: intnumber returns [int value] : INT ;
     public final int intnumber() throws RecognitionException {
         int value = 0;
 
 
-        Token INT5=null;
+        Token INT6=null;
 
         try {
-            // TIMENruleGrammar.g:90:30: ( INT )
-            // TIMENruleGrammar.g:91:2: INT
+            // TIMENruleGrammar.g:101:30: ( INT )
+            // TIMENruleGrammar.g:102:2: INT
             {
-            INT5=(Token)match(input,INT,FOLLOW_INT_in_intnumber839); 
+            INT6=(Token)match(input,INT,FOLLOW_INT_in_intnumber942); 
 
-            value = Integer.parseInt((INT5!=null?INT5.getText():null));
+            value = Integer.parseInt((INT6!=null?INT6.getText():null));
 
             }
 
@@ -1434,7 +1593,7 @@ public class TIMENruleGrammarParser extends Parser {
     public static final BitSet FOLLOW_SEPARATOR_in_run37 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_run41 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule_in_rules59 = new BitSet(new long[]{0x0000000000000102L});
-    public static final BitSet FOLLOW_SEPARATOR_in_rules65 = new BitSet(new long[]{0x000000000F3FC200L});
+    public static final BitSet FOLLOW_SEPARATOR_in_rules65 = new BitSet(new long[]{0x000000003E7FC200L});
     public static final BitSet FOLLOW_rule_in_rules69 = new BitSet(new long[]{0x0000000000000102L});
     public static final BitSet FOLLOW_print_in_rule94 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_pat_in_rule102 = new BitSet(new long[]{0x0000000000000002L});
@@ -1443,105 +1602,121 @@ public class TIMENruleGrammarParser extends Parser {
     public static final BitSet FOLLOW_dct_day_in_rule129 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_to_year_in_rule138 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_to_month_in_rule147 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_add_in_rule156 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_date_weekday_in_rule165 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_date_month_in_rule174 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_date_month_day_in_rule183 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_to_period_in_rule192 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_to_period211 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_to_period213 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_to_period217 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_to_period220 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_to_period224 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_to_period227 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_to_period241 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_to_period243 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_INT_in_to_period245 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_to_period247 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_to_period251 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_to_period254 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_21_in_dct_year270 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_20_in_dct_month286 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_19_in_dct_day302 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_27_in_to_year318 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_to_year320 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_to_year324 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_to_year327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_25_in_to_month342 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_to_month344 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_to_month348 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_to_month351 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_14_in_add376 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_add378 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_add382 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add390 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_GRANULARITY_in_add392 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add404 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_intnumber_in_add408 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_add410 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_14_in_add424 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_add426 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_add430 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add438 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_add442 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add445 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_intnumber_in_add449 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_add451 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_14_in_add465 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_add467 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_add471 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add479 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_add483 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add486 = new BitSet(new long[]{0x0000000000400000L});
-    public static final BitSet FOLLOW_toint_in_add490 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_add493 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_14_in_add507 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_add509 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_add513 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add521 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_add525 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add528 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_tonegativeint_in_add532 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_add535 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_15_in_add549 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_add551 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_add555 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add563 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_add567 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_add570 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_intnumber_in_add574 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_add576 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_18_in_date_weekday611 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_date_weekday613 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_date_weekday617 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_date_weekday625 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_date_weekday629 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_date_weekday632 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_16_in_date_month655 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_date_month657 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_date_month661 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_date_month669 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_date_month673 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_date_month676 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_17_in_date_month_day699 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_date_month_day701 = new BitSet(new long[]{0x0000000000000080L});
-    public static final BitSet FOLLOW_REFERENCE_in_date_month_day705 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_date_month_day713 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_date_month_day717 = new BitSet(new long[]{0x0000000000002000L});
-    public static final BitSet FOLLOW_13_in_date_month_day720 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_date_month_day724 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_date_month_day727 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_24_in_pat743 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_11_in_pat745 = new BitSet(new long[]{0x0000000000000040L});
-    public static final BitSet FOLLOW_intnumber_in_pat749 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_pat751 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_23_in_tonegativeint769 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_tonegativeint773 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_tonegativeint776 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_22_in_toint794 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_pat_in_toint798 = new BitSet(new long[]{0x0000000000001000L});
-    public static final BitSet FOLLOW_12_in_toint801 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STRING_in_print819 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_INT_in_intnumber839 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_to_day_in_rule156 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_add_in_rule165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_date_weekday_in_rule174 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_date_month_in_rule183 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_date_month_day_in_rule192 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_to_period_in_rule201 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_get_tod_in_rule210 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_28_in_to_period229 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_to_period231 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_period235 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_to_period238 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_period242 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_to_period245 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_28_in_to_period259 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_to_period261 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_INT_in_to_period263 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_to_period265 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_period269 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_to_period272 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_28_in_to_period286 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_to_period288 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_STRING_in_to_period290 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_to_period292 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_period296 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_to_period299 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_22_in_get_tod324 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_get_tod326 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_get_tod330 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_get_tod333 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_21_in_dct_year349 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_20_in_dct_month365 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_19_in_dct_day381 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_to_year397 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_to_year399 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_year403 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_to_year406 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_27_in_to_month421 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_to_month423 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_month427 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_to_month430 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_to_day445 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_to_day447 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_to_day451 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_to_day454 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_14_in_add479 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_add481 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_add485 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add493 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_GRANULARITY_in_add495 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add507 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_intnumber_in_add511 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_add513 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_14_in_add527 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_add529 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_add533 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add541 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_add545 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add548 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_intnumber_in_add552 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_add554 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_14_in_add568 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_add570 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_add574 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add582 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_add586 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add589 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_toint_in_add593 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_add596 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_14_in_add610 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_add612 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_add616 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add624 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_add628 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add631 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_tonegativeint_in_add635 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_add638 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_15_in_add652 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_add654 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_add658 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add666 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_add670 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_add673 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_intnumber_in_add677 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_add679 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_18_in_date_weekday714 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_date_weekday716 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_date_weekday720 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_date_weekday728 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_date_weekday732 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_date_weekday735 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_16_in_date_month758 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_date_month760 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_date_month764 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_date_month772 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_date_month776 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_date_month779 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_17_in_date_month_day802 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_date_month_day804 = new BitSet(new long[]{0x0000000000000080L});
+    public static final BitSet FOLLOW_REFERENCE_in_date_month_day808 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_date_month_day816 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_date_month_day820 = new BitSet(new long[]{0x0000000000002000L});
+    public static final BitSet FOLLOW_13_in_date_month_day823 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_date_month_day827 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_date_month_day830 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_25_in_pat846 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_11_in_pat848 = new BitSet(new long[]{0x0000000000000040L});
+    public static final BitSet FOLLOW_intnumber_in_pat852 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_pat854 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_24_in_tonegativeint872 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_tonegativeint876 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_tonegativeint879 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_23_in_toint897 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_pat_in_toint901 = new BitSet(new long[]{0x0000000000001000L});
+    public static final BitSet FOLLOW_12_in_toint904 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STRING_in_print922 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INT_in_intnumber942 = new BitSet(new long[]{0x0000000000000002L});
 
 }
