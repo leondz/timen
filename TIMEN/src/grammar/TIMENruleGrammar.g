@@ -77,6 +77,7 @@ add[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 date_weekday[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
          'DATE_WEEKDAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ')' {$value = $timen.date_weekday($REFERENCE.text,$e.value, $timex_object);};
 
+
 date_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
          'DATE_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ')' {$value = $timen.date_month($REFERENCE.text,$e.value, $timex_object);};
 

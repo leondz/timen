@@ -9,6 +9,7 @@ Prerequisites:
   Only if you want to use the NLP version you need to:
 	1) copy the Treetagger program-data/Tretagger/script in the Treetagger folder
 	2) specify the Treetagger path in the program-data/confing.properties
+	3) Remove from Treetagger/lib/english-abberviations     "days."
 
 
 Installation/Building:
