@@ -277,6 +277,15 @@ public class TIMEN {
                             if (condition_args[1].matches("PAT\\([^)]*\\)")) {
                                 condition_args[1] = timex_object.getNormTextArr()[Integer.parseInt(condition_args[1].replaceFirst("PAT\\(([^)]*)\\)", "$1"))];
                             }
+                            // get tense values
+                            if (condition_args[0].equalsIgnoreCase("tense")) {
+                                condition_args[0] = timex_object.getTense();
+                            }
+                            if (condition_args[1].matches("tense")) {
+                                condition_args[1] = timex_object.getTense();
+                            }
+
+
                             /*if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                             System.err.println(operator+"("+condition_args[0]+","+condition_args[1]+")");
                             } */
@@ -603,6 +612,7 @@ public class TIMEN {
         return formatter.format(cal.getTime());
     }
 
+
     public String date_month(String reference, String month, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
         Date refdate = timex_object.dct.getCalendar().getTime();
@@ -714,6 +724,10 @@ public class TIMEN {
             timex = timex.replaceAll("_,", ""); // tokenized commas
             timex = timex.replaceAll(",_", "_"); // untokenized commas
 
+            // ordinals disambiguation
+            /*ordinals always use "the" before... we distinguish...
+            or even distinguish at number level (...) (Num and Ord)*/
+
             // Numeric ordinals to numbers
             timex = timex.replaceAll("([0-9]+)(?:_)?(?:st|nd|rd|th)", "$1");
 
@@ -753,7 +767,7 @@ public class TIMEN {
             // TODO... perhaps articles do not have to be removed (distinguish dates and periods)
             // the week DATE, week PERIOD
             if (locale.getLanguage().equalsIgnoreCase("en")) {
-                timex = timex.replaceAll("_of_", "_");
+                timex = timex.replaceAll("_of_", "_"); //.replaceAll("_the_", "_"); // consider not omitting for disambiguation
             }
             if (locale.getLanguage().equalsIgnoreCase("es")) {
                 timex = timex.replaceAll("_de_", "_"); //.replaceAll("_del_", "_").replaceAll("_el_", "_").replaceAll("_la_", "_").replaceAll("_los_", "_").replaceAll("_las_", "_");

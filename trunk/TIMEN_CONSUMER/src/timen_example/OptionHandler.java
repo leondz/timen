@@ -334,6 +334,10 @@ public class OptionHandler {
                 while ((pipesline = pipesreader.readLine()) != null) {
                     pipesarr = pipesline.split("\\|");
                     linen++;
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                        System.err.println(pipesline);
+                    }
+
                     if (pipesarr.length >= 2) {
                         String id = pipesarr[0];
                         String text = pipesarr[1];

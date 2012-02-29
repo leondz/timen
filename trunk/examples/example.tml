@@ -3,11 +3,16 @@
 
 <DOCID>APW19980418.0210</DOCID>
 
-<DCT><TIMEX3 tid="t0" type="TIME" value="1998-04-18T06:07:00" temporalFunction="false" functionInDocument="CREATION_TIME">04/18/1998 06:07:00</TIMEX3></DCT>
+<DCT><TIMEX3 tid="t0" type="TIME" value="2012-02-25" temporalFunction="false" functionInDocument="CREATION_TIME">xxxx</TIMEX3></DCT>
 
 
 <TEXT>
-He <EVENT eid="e4" class="REPORTING">said</EVENT> something <TIMEX3 tid="t31" type="DATE" value="1998-04-17" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t0">yesterday</TIMEX3>. 
+Today is Saturday.
+He said something <TIMEX3 tid="t31" type="DATE" value="2012-02-24">yesterday</TIMEX3>. 
+He said something on <TIMEX3 tid="t32" type="DATE" value="2012-02-24">Friday</TIMEX3>. 
+He said something on <TIMEX3 tid="t33" type="DATE" value="2012-02-20">Monday</TIMEX3>. 
+He said something on <TIMEX3 tid="t34" type="DATE" value="2012-02-19">Sunday</TIMEX3>. 
+He will say something on <TIMEX3 tid="t35" type="DATE" value="2012-02-26">Sunday</TIMEX3>. 
 </TEXT>
 
 </TimeML>
