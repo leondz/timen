@@ -112,6 +112,7 @@ intnumber returns [int value]:
 REFERENCE: ('DCT'|'REFTIME');
 
 GRANULARITY: ('millennium'|'century'|'decade'|'year'|'semester'|'quarter'|'month'|'week'|'day'|'hour'|'minute'|'second');
+        /*'milenio'|'siglo'|'década'|'año'|'semestre'|'trimestre'|'mes'|'semana'|'día'|'hora'|'minuto'|'segundo'*/
 
 /*TAG: '<' (~'>')+ '>' {state.text = $text.substring(1, $text.length()-1);};*/
 
