@@ -445,8 +445,10 @@ public class TIMEN {
             }
 
             // get the normalized English name
-            granularity = knowledge.TUnits.get(granularity);
-
+            String gr = knowledge.TUnits.get(granularity);
+            if(gr!=null){
+                granularity = gr;
+            }
 
 
             if (granularity.equalsIgnoreCase("year")) {
