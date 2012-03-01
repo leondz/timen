@@ -317,8 +317,7 @@ public class OptionHandler {
      * DEPRECATED - ref-val:  Previous date/time-timex focus (temporal reference) (i.e., reference point time-location)
      *                          NOW IS HANDLED BY THE CONSUMER
      *
-     * @param expr
-     * @param output_file
+     * @param input_file
      *
      */
     public static HashMap<String, String> contextaware_normalization(File input_file) {
