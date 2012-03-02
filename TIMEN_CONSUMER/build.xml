@@ -73,6 +73,12 @@
     -->
    <copy file="./lib/libsqlite4java-linux-i386.so" todir="./dist/lib"/>
    <copy file="./lib/libsqlite4java-linux-amd64.so" todir="./dist/lib"/>
+
+   <copy file="./lib/libsqlite4java-osx.jnilib" todir="./dist/lib"/>
+   <copy file="./lib/libsqlite4java-osx-10.4.jnilib" todir="./dist/lib"/>
+   <copy file="./lib/libsqlite4java-osx-ppc.jnilib" todir="./dist/lib"/>
+   <copy file="./lib/sqlite4java-win32-x64.dll" todir="./dist/lib"/>
+   <copy file="./lib/sqlite4java-win32-x86.dll" todir="./dist/lib"/>
   <copy todir="./dist/program-data">
     <fileset dir="./program-data"/>
   </copy>
