@@ -17,7 +17,7 @@ import utils_bk.*;
  */
 public class TIMEN {
 
-    public static String program_path = FileUtils.getApplicationPath() + "program-data/";
+    public static String program_path = FileUtils.getApplicationPath() + "program-data" + File.separator;
     private Locale locale;
     private NUMEK numek;
     private SQLiteConnection db;
@@ -57,6 +57,9 @@ public class TIMEN {
 
         try {
             // disable sqlite logging
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.err.println("Using db: "+program_path + "rules_" + l.getLanguage() + ".db");
+            }
             Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.OFF);
             db = new SQLiteConnection(new File(program_path + "rules_" + l.getLanguage() + ".db"));
             db.open(true);
