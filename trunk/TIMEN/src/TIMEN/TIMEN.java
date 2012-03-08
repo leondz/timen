@@ -388,7 +388,7 @@ public class TIMEN {
     }
 
     public String to_month(String month) {
-        String output = "" + knowledge.Yearmonths.get(month);
+        String output = "" + (knowledge.Yearmonths.get(month)+1);
         if (output.length() == 1) {
             output = "0" + output;
         }
