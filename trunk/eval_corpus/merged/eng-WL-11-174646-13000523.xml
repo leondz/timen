@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TimeML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://timeml.org/timeMLdocs/TimeML_1.2.1.xsd">
+
+
+<DOCID> eng-WL-11-174646-13000523 </DOCID>
+<DCT><TIMEX3 temporalFunction="false" functionInDocument="CREATION_TIME" value="2009-12-10T17:54:00" tid="t0" type="TIME">2009-12-10T17:54:00</TIMEX3></DCT>
+
+
+
+<TEXT>
+
+ Tim Urban 
+ <TIMEX3 value="2009-12-10T17:54:00" tid="t1" type="TIME">2009-12-10T17:54:00</TIMEX3> 
+So somehow they found our website contact form.
+
+I don't know how they found it, but they found it.
+
+The spammers of the world have been pretty well blocked from bothering me ever since I joined Gmail <TIMEX3 value="PXY" tid="t2" type="DURATION">a few years</TIMEX3> ago. They try, but the spam filter is like a dick bouncer at the door who shoves their fake IDs into his pocket and directs them to the shitty "spam folder" bar next door. Sometimes one of them gets clever and figures out how to trick the bouncer, but all it takes is a quick "report as spam" click by me and the bouncer is like, "I'm sorry sir, it won't happen again," and that's the last I'll see that particular spammer.
+
+But then we put a contact form on the website of my tutoring company. And we didn't hire a bouncer. We didn't even hire a door. Spammers can just head on in as they please.
+
+The result is that our website inbox is loaded with spam.
+
+And the thing is, it's not normal spam-it's weird fucking spam. And it's sitting there alongside normal emails from clients. So there will be consecutive emails where one is like, "Hi, do you guys do AP Chemistry tutoring in the Brooklyn area?" and the next is like, "Young Ukrainian girls sharing big black cock," and frankly, it's a bit distracting.
+
+And let me stress again-the spam we're getting is weird . Here is a sampling of the recent spam subject lines.
+
+thai lady dating
+women workforce percentage
+holiday inn cincinnati oh airport
+india women rights
+free fucking porn wife
+free russian wife
+white woman dating black men
+dating with a deaf people
+filipino female celebrity
+arab womens solidarity association
+online catwomen games
+west virginia marriage record
+florist in boise
+womens basketball practice jersey
+wife swapper pics
+revolvers for women
+indian prescription pharmacy
+catholic dancing
+chinese mail to order bride
+body builder female gallery
+anti slavery convention of american women
+arranged in marriage pakistan
+young russian bride
+female facial hair pics
+married herpes dating
+area builder cincinnati
+pros and cons for women joining the military
+female saxophone players
+women tied up with rope
+japanese office ladies
+corpse bride movie quotes
+pennsylvania midwifery associates
+cheerleaders dating sites
+moroccan belly woman
+stories of russian women with aids
+cuban mail order bride
+cost to marry a russian woman
+russian women in stockings
+woman surf camps
+heavy drinking russian brides
+
+Um...
+
+What ? What the hell is going on? Was I lying to you? Weird , right?
+
+So <TIMEX3 value="2009-12-10" tid="t3" type="DATE" anchorTimeID="t98">today</TIMEX3> , when I saw our most recent spam subject, "heavy drinking russian brides," I was finally like, "Really? Heavy drinking Russian brides ?" and I decided to click on the link.
+
+It landed me here -a dating service disguised as a mail-order Russian bride service. Or maybe it's a mail-order Russian bride service disguised as a dating service. I can't tell.
+
+In any case, spam boggles me. It's one of those things I don't really get. Who does the spamming? How well does it work? Are there spammers that get rich by spamming? What does a spammer say when someone asks what they do? Is there a euphemism for being a spammer? Like a "Viral Marketing Specialist" or something? Is spamming illegal? Did modern-day spam filters destroy the marketing strategies of a ton of companies and websites? Furthermore, how did they find my website? And why is the spam that comes to my website so bizarre and varied? And what the hell is a "Moroccan belly woman?"
+
+I don't understand.
+
+And while I'm in the mood, <TIMEX3 tid="t4" type="PRESENT_REF" anchorTimeID="t99">this</TIMEX3> seems like as good a time as any to dive back in. Shall we?
+
+19 more things I don't understand:
+
+1) The slash between the A and C when people write A/C. It's not an air/conditioner. So what the hell?
+
+2) Why NBA and NFL refs still run around with whistles in their mouths like idiots.
+
+Really? An old-fashioned whistle in those dudes' mouths as they ref the game? That's the best technology we have? How easy would it be to have a little device in their hand with a little button that produced the same exact sound? What is it about sports that makes people so overly resistant to change?
+
+3) What an espresso machine does. First let me mention that I don't really understand the difference between an espresso and a cappuccino and a latte and an Americano or whatever. To me, they all fall into the "drinks I'm supposed to love but actually normal coffee is better" category. I'm usually all about "When in Rome" when I travel, but when I was actually in Rome <TIMEX3 value="2007" tid="t5" type="DATE">two years ago</TIMEX3> , I would constantly ask for "American drip coffee" and everyone would look at me like I was a child molester. But back to the actual machines. Espresso machines are incredibly large, loud, complicated metal boxes and I have no idea what they do-except be incredibly loud when I'm trying to get work done on my laptop at the counter.
+
+4) What we are supposed to call <TIMEX3 value="200" tid="t6" type="DATE">this decade</TIMEX3> . When it was <TIMEX3 value="1998" tid="t7" type="DATE">1998</TIMEX3> or so, I remember saying to someone, "I wonder what we're gonna call <TIMEX3 value="200" tid="t8" type="DATE" anchorTimeID="t7">this next decade</TIMEX3> ." You have the "<TIMEX3 value="198" tid="t9" type="DATE">eighties</TIMEX3> ," the "<TIMEX3 value="199" tid="t10" type="DATE">nineties</TIMEX3> ," and the what ? But when I asked that question, it was with the assumption that we'd call it something . Never did it cross my mind that we would just never really come up with anything. I've heard the <TIMEX3 value="200" tid="t11" type="DATE">oughties</TIMEX3> , but every time I've heard someone use that term, they're either a d-bag or they're self-loathing while saying it-one or the other. It's just really weird that the whole community of 375,000,000 native English speakers on the planet had <TIMEX3 value="P10Y" tid="t12" type="DURATION">ten years</TIMEX3> to figure this out and failed.
+
+It's not like this is a small thing-people constantly refer to decades with a word. The Roaring <TIMEX3 value="192" tid="t13" type="DATE">Twenties</TIMEX3> . The counterculture of the <TIMEX3 value="196" tid="t14" type="DATE">sixties</TIMEX3> . <TIMEX3 value="197" tid="t15" type="DATE">Seventies</TIMEX3> music. <TIMEX3 value="198" tid="t16" type="DATE">Eighties</TIMEX3> dances. This is a problem.
+
+The only people we can ask for help are people that were around between <TIMEX3 value="1900" tid="t17" type="DATE">1900</TIMEX3> and <TIMEX3 value="1910" tid="t18" type="DATE">1910</TIMEX3> , and they're all dead.
+
+And we're not really out of the trenches yet either. What's happening <TIMEX3 value="2010" tid="t19" type="DATE">next year</TIMEX3> ? The <TIMEX3 value="201" tid="t20" type="DATE">teens</TIMEX3> ? That's no walk in the park either. Clearly better than the disaster we have for <TIMEX3 value="200" tid="t21" type="DATE">this decade</TIMEX3> 's name, but do you really want to go to a <TIMEX3 value="201" tid="t22" type="DATE">teens</TIMEX3> dance ? Will you be proud to say you were alive in the Roaring <TIMEX3 value="201" tid="t23" type="DATE">Teens</TIMEX3> ? That sounds stupid.
+
+While we're here, is <TIMEX3 value="2010" tid="t24" type="DATE">next year</TIMEX3> "<TIMEX3 value="2010" tid="t25" type="DATE">two-thousand ten</TIMEX3> " or "<TIMEX3 value="2010" tid="t26" type="DATE">twenty ten</TIMEX3> "? <TIMEX3 value="1910" tid="t27" type="DATE">1910</TIMEX3> was "<TIMEX3 value="1910" tid="t28" type="DATE">nineteen ten</TIMEX3> ", not "<TIMEX3 value="1910" tid="t29" type="DATE">one-thousand nine-hundred ten</TIMEX3> " (for obvious reasons), but what's the deal now? Who decides these things?
+
+5) Who writes all the Wikipedia articles. I don't really get it. There are thorough, well-written articles on basically every possible subject on Wikipedia. And I know that normal people can write and edit articles, but it can't be that all the articles are just written by random people. Is there a massive Wikipedia staff? I've never heard of one, but there has to be, right? Also, I don't really get the whole "Wikipedia should not be a trusted source of information because there is a ton of false information on it" thing. I kind of feel like it's a totally credible source.
+
+6) What a gypsy is. I'm unclear on this. Part of me thinks gypsies are a synonym for nomads. Part of me thinks they're another word for homeless people. Part of me thinks they're fortune tellers. Or magicians. Or druids. Or Romanians. Or traveling salesmen. Or supernatural beings, like elves or goblins or something.
+
+I just really don't know what a gypsy is. I guess I kind of picture a really filthy long-haired Romanian hippy woman that's trying to sell me something. But I'm not sure why I think that.
+
+And are there male gypsies? I only picture women. And then there's the whole "gypped" as a verb thing. So are they dickish? Why did they get the reputation for swindling people? (Glass houses...)
+
+And then there's the fact that gypsies have randomly appeared in lists of people Hitler wanted to kill. Right? Or am I imagining that? I feel like I've heard things like, "Hitler wanted to kill the Jews, Slavs, Poles, and gypsies." What are the gypsies doing in that list?
+
+Even Google is confused. I searched for "gypsy" and found these two pictures, which are incredibly different from one another:
+
+7) How a key copier works. Key copiers are always these little shitty metal machines. How do they do such an advanced task? A key copier has to measure the exact dimensions of a key and then cut another key to those exact dimensions. How does it do either of those things? Where does an espresso machine get off being larger and more complex than a key copier?
+
+8) What "tags" are. A lot of sites have a little box of "tags."
+
+I don't really understand what they are, and why they're there. But most confusing is that they're often written in different sizes. Like a fucking circus. Why?
+
+9) Why it's always <TIMEX3 value="T10:10" tid="t30" type="TIME">10:10</TIMEX3> in all watch ads . Symmetrical, fine. Optimistic-looking, fine. But are ad agencies that terrified to mix it up a little ?
+
+10) Why there's a "hang up" option on automated phone systems. It'll be like, "To hear your account balance, press 1. To report a lost or stolen card, press 2. To speak to a customer service representative, press 3. To hang up, press pound." And then if you press pound it says, "Goodbye" and it hangs up on you. Huh? Are there people out there who enjoy the closure? Are there people that feel bad just hanging up on an automated system without a proper goodbye?
+
+11) What it means when the computer talks about an "unresponsive script." You know those <TIMEX3 tid="t31" type="SET">times</TIMEX3> when the computer gets upset with you and it's like, "Warning: Unresponsive script. A script on this page may be busy, or it may have stopped responding." What the hell is it talking about? What "script"? Where is the "script"? And it stopped responding to whom? Me ?? And then it gives you the options to "Stop script" or "Continue" and I don't know which I'm supposed to do. Is it bad to stop the script or is it bad to continue? It's like when you have a crazy girlfriend and you're like, "WHAT? WHAT DO YOU WANT? I DON'T KNOW WHAT YOU WANT ME TO DO."
+
+Can I start using the script line in real life? Like, when I get caught doing something bad and someone accuses me to my face, can I be like, "Unresponsive script. The script may be busy, or it may have stopped responding" and then just refuse to say anything else? It would be useful, right? Or if you could "unexpectedly quit" with no explanation like applications do on my computer do when they're mad at me?
+
+12) Why bottled water costs more than soda. Is bottled water the biggest rip-off on the planet? It might be, right? There will be a $1.00 soda next to a $1.25 bottle of water. How is that possible?
+
+13) <TIMEX3 value="PT45S" tid="t32" type="DURATION">45-second</TIMEX3> , grotesque verbal disclaimers in prescription drug ads . There's gotta be a better way to disclose the potential side-effects of prescription drugs than to read them aloud during the commercial. It's just ridiculous. So a commercial will start and a woman will be sitting there in the park with her husband and she'll be like, "I used to be depressed. I didn't want to leave the house; I didn't want to spend time with my family; I didn't have the will to make myself happy. But then I discovered Alorex. Alorex let me love life again." And then during the next <TIMEX3 value="PT30S" tid="t33" type="DURATION">30 seconds</TIMEX3> , they'll show her running around the park with her husband and 3-year-old daughter and dog and it'll all be in slow motion and everyone will be smiling and laughing and the sun will be shining. And while this is happening, a voiceover will be like, " Alorex may lead to further depression, low self-esteem, and sudden acts of violence. Alorex may also cause cancer, heart disease, strokes, and being buried alive. In rare cases, Alorex may cause someone to molest children, assassinate the President, and build gas chambers. Don't take Alorex if you take nitrates for chest pain or if you don't want to be potentially possessed by Satan or Hitler ." Then in the final shot, the woman is like, "Because of Alorex, I feel like me again."
+
+Maybe these ads are made by the drug company's competitors?
+
+14) "Defensive indifference" in baseball. In baseball, if the pitching team is up by two in the bottom of the ninth and the leadoff guy gets on, the pitching team will allow him to steal second for free out of "defensive indifference." I don't get it. Sure they're indifferent to him being on second versus first (since the guy at the plate has to score to tie it anyway). But why not have the catcher gun it down to second and try to tag him out? They're not indifferent to getting an out, right? What's the worst that happens? They botch the throw and the guy ends up on third. Or even comes around to score somehow. Who cares? The runner is irrelevant. Unless you can get him out . Right?
+
+15) Why North Korea is allowed to participate in the World Cup and the Olympics. So let's lay out the facts. North Korea refuses to be a normal, adult member of the international community. Instead, it spends its time developing weapons of mass murder that it might decide to use to kill thousands of people. They oppress their people immensely. They're led by one of the most dickish dudes ever.
+
+But then, <TIMEX3 value="P4Y" tid="t34" type="SET" quant="every">every four years</TIMEX3> , they come play sports with the rest of us? What the hell? That's like an uncle that goes off the deep end, starts abusing his wife and kids, moves away from the rest of the family and doesn't respond to anyone's emails except occasionally sending an email to everyone saying, "Just so you know, I have a gun, and I might come murder one of you while you're sleeping." No one hears from him at any other time. But then <TIMEX3 value="XXXX-12-25" tid="t35" type="DATE">Christmas</TIMEX3> rolls around. <TIMEX3 value="XXXX-12-25" tid="t36" type="SET" quant="Every">Every Christmas</TIMEX3> , the crazy murderous uncle shows up, wearing a red sweater over a white turtleneck, brings a pot roast, and mingles with everyone while he and everyone else pretend that everything is normal. Then, <TIMEX3 value="XXXX-WXX" tid="t37" type="DATE" anchorTimeID="t36">the next week</TIMEX3> , he leaves and resumes threatening to slit someone's throat at some point. Odd, right?
+
+And then there's this . Yeah, great addition to the guest list in South Africa.
+
+16) Why there are schizophrenic homeless people scattered all around cities and they don't ever attack anyone. <TIMEX3 tid="t38" type="SET" quant="Every">Every time</TIMEX3> I walk past a homeless person yelling and swearing at no one in particular, I tense up a little, like, "This guy might suddenly sprint at me and bite my ear off." But it never happens. Homeless people are often desperate, and schizophrenic people are often delusional and irrational. So why wouldn't schizophrenic homeless people lunging at someone's purse be commonplace? Don't get me wrong, I'm pleased that it doesn't happen-but you'd think it would. And while we're here...
+
+17) Why criminals in poorer, dangerous areas of big cities mug people in those areas instead of walking a mile to mug people in richer, safer areas. If you're standing around on the corner of 90th Street and Park Avenue at night, you're not really in any danger. But if you walked a couple miles uptown, you would be. Why? Why would a criminal on 140th Street mug some young, possibly tough dude for the $12 in his wallet when he could head to 90th and mug some terrified guy for the $112 in his wallet? Am I basing these questions on any actual knowledge? Do I have any idea who gets mugged on 140th Street or on 90th Street? No. But still.
+
+18) What the hell is going on in a pinball game.
+
+I was at a bar <TIMEX3 value="2009-XX-XXTNI" tid="t39" type="TIME">the other night</TIMEX3> and one of the people I was with started playing pinball. Then I played. I don't really get pinball. There's all this shit everywhere and all these lights and bells and knobs and tubes and tunnels and buzzers and shit-but what does it all mean? And then the board is all loud and freaking out and it's like, " JACKPOT! You've conquered the red castle. But I will DESTROY you!! " And you're like, "Is that...is that good? Am I doing well? Or are they just patronizing me?" And then a little later they're like, "Game Over - 284,427,304,231 points!!!" and I have no idea if I did well or not.
+
+Further, my 10th grade math teacher was the pinball champion of the world.
+
+19) Why a seminar for young people would be held at <TIMEX3 value="XXXX-WXX-6T10:00" tid="t40" type="TIME">10am on a Saturday</TIMEX3> . <TIMEX3 value="2008" tid="t41" type="DATE">Last year</TIMEX3> , I started doing alumni interviewing as a volunteer activity. Because it was my first <TIMEX3 value="XXXX" tid="t42" type="DATE">year</TIMEX3> , I had to go to a mandatory seminar on how to be an interviewer before the <TIMEX3 value="PXX" tid="t43" type="DURATION">interview season</TIMEX3> began. <TIMEX3 value="PRESENT_REF" tid="t44" type="DATE">Now</TIMEX3> I've moved to New York, and because I'm in a new city, they insisted that I attend another mandatory rookie seminar. Which was scheduled at <TIMEX3 value="XXXX-WXX-6T10:00" tid="t45" type="TIME">10am on a Saturday</TIMEX3> . Granted, this isn't that early. But it was in midtown, and to make it on time I had to get up <TIMEX3 value="T08:30" tid="t46" type="TIME">around 8:30</TIMEX3> .
+
+I don't get it. Most of the people there were in their twenties. People in their twenties in New York often go out on <TIMEX3 value="XXXX-WXX-5TNI" tid="t47" type="TIME">Friday night</TIMEX3> , and people who go out in New York often stay out <TIMEX3 value="TNI" tid="t48" type="TIME">late</TIMEX3> . How hard would it have been to schedule it at <TIMEX3 value="T12:00" tid="t49" type="TIME">noon</TIMEX3> ? Or <TIMEX3 value="T14:00" tid="t50" type="TIME">two</TIMEX3> ? Or <TIMEX3 value="T16:00" tid="t51" type="TIME">four</TIMEX3> ?
+
+So it was <TIMEX3 value="XXXX-WXX-6T05:10" tid="t52" type="TIME">Friday night at 5:10am</TIMEX3> and I was with my idiot friend and 20 other drunk idiots at some pizza place, and it hit me that I had to be in midtown in business attire in <TIMEX3 value="PT4H50M" tid="t53" type="DURATION">four hours and 50 minutes</TIMEX3> . Not good.
+
+<TIMEX3 value="T08:30" tid="t54" type="TIME" anchorTimeID="t52">8:30am</TIMEX3> rolls around and my alarm went off and I was like, "Oh you've gotta be fucking kidding me." I got up, in one of those "I'm not really drunk anymore but I'm not sober either" stupors, and threw on my suit. Realizing my black shoes were at my friend's house because I had changed there <TIMEX3 value="XXXX-WXX" tid="t55" type="TIME" anchorTimeID="t52">last week</TIMEX3> , I put on my only other non-sneakers-a shitty pair of brown shoes that a friend once compared to the shitty shoes Andy Dufresne swaps with the nice shoes in Shawshank .
+
+I miserably headed to midtown, only to walk in <TIMEX3 value="PT10M" tid="t56" type="DURATION">10 minutes</TIMEX3> late. I had assumed, incorrectly, that there would be <TIMEX3 value="PT15M" tid="t57" type="DURATION">15 minutes</TIMEX3> of mingling before everyone got settled. Instead, I walked in to see 80 people sitting there silently in their seats as the guy presented, and had to stagger drunkenly across the room in front of everyone, Andy Dufresne shoes and all, while they all watched me intently.
+
+(I really just needed to vent about that story.)
+
+More things I don't understand: Volume 4 . Volume 3 . Volume 2 . Volume 1 .
+
+
+ Anonymous 
+ <TIMEX3 value="T13:35:00" tid="t58" type="TIME">13:35:00</TIMEX3> 
+I laughed out loud at least six times during that. Especially hard at #13.
+
+
+ Olivia 
+ <TIMEX3 value="T14:44:00" tid="t59" type="TIME">14:44:00</TIMEX3> 
+i was just in new york these <TIMEX3 value="XXXX-WXX" tid="t60" type="DATE" anchorTimeID="t59">past week</TIMEX3> for the first time and my aunt who's been living there for <TIMEX3 value="PXX" tid="t61" type="DURATION">a while</TIMEX3> told me that i could go all the way up to 90th street safely but when in 100th to watch my back.
+
+did something very very bad once happened at 91th street? why 90th?
+
+well, glad there's at least you here to think about this shit as much as i do.
+
+"Don't take Alorex if you take nitrates for chest pain or if you don't want to be potentially possessed by Satan or Hitler." sheer awesomeness, totally made my day.
+
+
+ Ryan Gallagher 
+ <TIMEX3 value="T16:26:00" tid="t62" type="TIME">16:26:00</TIMEX3> 
+some ideas:
+
+1. My guess is the '/' in a/c is used to distinguish it from another common abbreviation 'ac' as in alternating current.
+
+2. I think the conventional wisdom here is that with all the running around, the refs need to be able to protect themselves with their hands. A football ref falling to the ground with a controller in his hand could have some painful consequences.
+
+3. not completely sure myself, but im sure the info is easy to come by. Espresso machines are used to create super concentrated shots of coffee and it uses a number of chambers to store, heat, and steam water for this process.
+
+4. we might have to leave this up to VH1 when they create their "i love the ...." nostalgia series. Maybe just the "thousands?"
+
+I wonder how folks verbalized the year <TIMEX3 value="1010" tid="t63" type="DATE">1010</TIMEX3> . There is an obvious syllabic efficiency gained with <TIMEX3 value="1910" tid="t64" type="DATE">nineteenten</TIMEX3> over the alternative that is less apparent with <TIMEX3 value="2010" tid="t65" type="DATE">twentyten</TIMEX3> vs <TIMEX3 value="2010" tid="t66" type="DATE">twothousandten</TIMEX3> . Regardless I vote <TIMEX3 value="2010" tid="t67" type="DATE">twentyten</TIMEX3>
+
+5. smart people with too much time, for whom I am grateful... I wonder how much of it is plagiarized from other credible encyclopedia entries.
+
+6. i've nothing to add here
+
+7. its just tracing and cutting metal essentially, there's no physical reason, like water heating chambers, that would require a key copying machine to be complex.
+
+8. i thought they were just used to increase the likelihood of appearing in search engines. Not sure about the size, i wonder if it is related to the more successful tags.
+
+9. funny, I was just having this conversation... the idea is the symmetry of <TIMEX3 value="T10:10" tid="t68" type="TIME">10:10</TIMEX3> pleasing and some suggest is connotes the idea of a smile or a chalice.
+
+10. no idea. maybe some people with this new fangled technology think if they don't have confirmed closure they suspect the call continues <TIMEX3 value="PXX" tid="t69" type="DURATION">forever</TIMEX3> .
+
+11. all the fancy websites <TIMEX3 value="PRESENT_REF" tid="t70" type="DATE">these days</TIMEX3> are built upon programatic scripts like javascript, or actionscript, or something else. Suffice to say these scripts can be quite buggy and not every web browser interprets them the same.
+
+12. fucking high fructose corn syrup and the abhorrent big corn industry.
+
+13. verbal disclaimers were legally forced upon the pharmaceutical industry because it was too easy to hide the disclaimers in small unreadable text.
+
+14. Defensive indifference with only a two run lead is pretty rare, it is more likely to occur with a several run lead. The game is considered won and the pitcher and the catcher want to focus on the task at hand which is the player at bat.
+
+15. i think its good that the spirit of the olympics are a-political. The athletes of the world are competing, and they don't control the politics of their countries.
+
+16. I believe sometimes they do attack people. I don't have any statistics that show they necessarily attack more than "sane" people, but it does happen:
+
+http://www.theglobeandmail.com/news/national/article700732.ece
+
+17. not sure about NYC, but I lived <TIMEX3 value="P1Y" tid="t71" type="DURATION">a year</TIMEX3> in a nice part of oakland, and criminals always came into our neighborhood to mug.
+
+18. Pinball is the ultimate metaphor for life. You have essentially 3 stages, and sometimes if you are good and lucky you get some extra time. You never really know what you are doing but sometimes you think you do. At the end you have earned what ever you have earned, but ultimately it is Game Over and you never really know if you did well or not.
+
+btw... best math class ever.
+
+19. brutal...
+
+
+ Anonymous 
+ <TIMEX3 value="T11:58:00" tid="t72" type="TIME">11:58:00</TIMEX3> 
+Hahahaha... your posts are always awesome!
+
+
+ Anonymous 
+ <TIMEX3 value="T21:45:00" tid="t73" type="TIME">21:45:00</TIMEX3> 
+Tim, I adore you. WE NEED TO GET TO THE BOTTOM OF #13. What is up with that?
+
+
+ Anonymous 
+ <TIMEX3 value="T03:56:00" tid="t74" type="TIME">03:56:00</TIMEX3> 
+8) I think tags refer to the words/topics on the website/page that appear most often - bigger = more often!
+
+
+ Anonymous 
+ <TIMEX3 value="T11:53:00" tid="t75" type="TIME">11:53:00</TIMEX3> 
+I want to have your babies (3
+
+
+Emperor Paolo 
+ <TIMEX3 value="T03:00:00" tid="t76" type="TIME">03:00:00</TIMEX3> 
+How long does it take you to come up with this shit?
+
+
+ Anonymous 
+ <TIMEX3 value="T12:45:00" tid="t77" type="TIME">12:45:00</TIMEX3> 
+did your math teacher look as much like a young george costanza as he does in the linked photo?
+
+
+ Anonymous 
+ <TIMEX3 value="T10:52:00" tid="t78" type="TIME">10:52:00</TIMEX3> 
+It's "<TIMEX3 value="200" tid="t79" type="DATE">the two thousands</TIMEX3> <TIMEX3 value="201" tid="t80" type="DATE">two
+thousand tens</TIMEX3> " etc etc, <TIMEX3 value="2010" tid="t81" type="DATE">2010</TIMEX3>
+sounds like what my team is
+down by at <TIMEX3 tid="t82" type="TIME">halftime</TIMEX3> .
+
+"<TIMEX3 value="2010" tid="t83" type="DATE">Two thousand ten</TIMEX3> " at once
+sounds more like <TIMEX3 value="P1Y" tid="t2000" type="DURATION">a year</TIMEX3> and
+more like the score at full
+time.
+
+<TIMEX3 value="1973" tid="t84" type="DATE">1973</TIMEX3> ...
+
+
+ Anonymous 
+ <TIMEX3 value="T11:48:00" tid="t85" type="TIME">11:48:00</TIMEX3> 
+Wikipedia "Roma" it's the proper term for gypsies
+
+
+ izzie 
+ <TIMEX3 value="T20:13:00" tid="t86" type="TIME">20:13:00</TIMEX3> 
+the lowering number of posts per year of your blog depresses me.
+
+
+ Bowen Kerins 
+ <TIMEX3 value="T02:28:00" tid="t87" type="TIME">02:28:00</TIMEX3> 
+Man, I got linked to by THE Tim Urban!
+
+The phone system at my work has this: "When you are finished recording, press star, then pound. Or hang up." <TIMEX3 value="PXX" tid="t88" type="SET" quant="Every">Every time</TIMEX3> I want to leave a message for someone, I have to hear that before the beep. You suck, Expressions voicemail.
+
+As for bottled water, some bottled waters are imported. Fiji water comes from Fiji. There's no excuse for the most common brands though.
+
+I am appalled that for pinball you have chosen a video game image! For most people, pinball's intended to give a real quick bite of entertainment, somewhere around <TIMEX3 value="PXM" tid="t89" type="DURATION">3 to 5 minutes</TIMEX3> . And yes, your score looks insane to make you feel better about how you did, no matter how badly it actually went.
+
+One big trick to learn is to stop the ball - use the flippers like a "bunt" in baseball and you'll slow down a ball screaming toward you. Then you can time a shot and actually aim for something.
+
+Or just flail around! Flailing won't get you one of these, though:
+
+http://www.papa.org/papa8/pics/small-STA70564.JPG
+
+Great blog, dude, and glad to see you're as nuts as ever. In a good way. I'll bet you sing better than that other Tim anyway.
+
+- Bowen, goddamn sick of hearing how much he looks like freakin George Costanza
+
+
+ Lance 
+ <TIMEX3 value="T01:28:00" tid="t90" type="TIME">01:28:00</TIMEX3> 
+#18
+If you really want to know what it all means for that particular pinball game pictured (3D Pinball Space Cadet for Windows) check out this site.
+
+http://dlh.net/cheats_30148e.html
+
+</TEXT>
+
+
+
+</TimeML>
