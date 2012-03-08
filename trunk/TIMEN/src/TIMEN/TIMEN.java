@@ -58,7 +58,7 @@ public class TIMEN {
         try {
             // disable sqlite logging
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                System.err.println("Using db: "+program_path + "rules_" + l.getLanguage() + ".db");
+                System.err.println("Using db: " + program_path + "rules_" + l.getLanguage() + ".db");
             }
             Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.OFF);
             db = new SQLiteConnection(new File(program_path + "rules_" + l.getLanguage() + ".db"));
@@ -203,6 +203,8 @@ public class TIMEN {
     }
 
     public ArrayList<Rule> get_rules_from_db(String table, String pattern) {
+        // escape pattern
+        pattern=pattern.replaceAll("'", "");
         ArrayList<Rule> rules_found = new ArrayList<Rule>();
         try {
             SQLiteStatement st = db.prepare("SELECT * FROM " + table + " where pattern='" + pattern + "'");
@@ -394,15 +396,15 @@ public class TIMEN {
     }
 
     public String to_day(String day) {
-        int dayi=Integer.parseInt(day);
-        if(dayi<0 || dayi>31){
+        int dayi = Integer.parseInt(day);
+        if (dayi < 0 || dayi > 31) {
             System.err.println("Day lower than 0 or greater than 31, found: " + day);
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.exit(1);
             }
-            dayi=1;
+            dayi = 1;
         }
-        String output = ""+dayi;
+        String output = "" + dayi;
         if (output.length() == 1) {
             output = "0" + output;
         }
@@ -449,7 +451,7 @@ public class TIMEN {
 
             // get the normalized English name
             String gr = knowledge.TUnits.get(granularity);
-            if(gr!=null){
+            if (gr != null) {
                 granularity = gr;
             }
 
@@ -593,9 +595,11 @@ public class TIMEN {
                 } else {
                     if (result.equals(refdate)) {
                         if (timex_object.getTense().equals("past")) {
-                            //if (locale.getLanguage().equalsIgnoreCase("es")) {
-                            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
-                            //}
+                            // in English Newspapers they talk about the writing day as past
+                            // because newspapers are published the day after
+                            if (locale.getLanguage().equalsIgnoreCase("es")) {
+                                cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+                            }
                         } else {
                             cal.add(GregorianCalendar.WEEK_OF_YEAR, 1);
                         }
@@ -616,7 +620,6 @@ public class TIMEN {
 
         return formatter.format(cal.getTime());
     }
-
 
     public String date_month(String reference, String month, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
@@ -764,7 +767,7 @@ public class TIMEN {
 
 
             // DISAMBIGUATE IF NEEDED
-            if (knowledge.ambiguous_re!=null && timex.matches(knowledge.ambiguous_re)) {
+            if (knowledge.ambiguous_re != null && timex.matches(knowledge.ambiguous_re)) {
                 timex = knowledge.disambiguate(timex);
             }
 

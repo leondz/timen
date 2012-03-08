@@ -96,7 +96,8 @@
 
 <xs:simpleType name="Date">
 	<xs:restriction base="xs:string">
-		<xs:pattern value="[0-9X]{1,4}(-[0-9X]{1,2}(-[0-9X]{1,2})?)?" />			
+		<xs:pattern value="(BC|-)?[0-9X]{1,4}(-[0-9X]{1,2}(-[0-9X]{1,2})?)?" />		
+<!-- Hector Llorens modification (BC|-)? -->		
 	</xs:restriction>
 </xs:simpleType>
 

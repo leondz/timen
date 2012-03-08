@@ -75,9 +75,9 @@ public class OptionHandler {
                     }
                     // limit to one expression, but it could be useful allowing a list for efficiency
                     /*if (input.length == 1) {
-                        System.out.println(timen.normalize(input[0], dctvalue));
+                    System.out.println(timen.normalize(input[0], dctvalue));
                     } else {
-                        System.err.println("Expecting one expression, found " + input.length);
+                    System.err.println("Expecting one expression, found " + input.length);
                     }*/
                 }
                 break;
@@ -180,7 +180,7 @@ public class OptionHandler {
 
     public static File getFeatures(File input_file) {
         File outputfile = null;
-        String dct=null;
+        String dct = null;
         try {
             XMLFile xmlfile = new XMLFile();
             xmlfile.loadFile(input_file);
@@ -201,10 +201,10 @@ public class OptionHandler {
             Element dcte = ((Element) ((NodeList) ((Element) doc.getElementsByTagName("TIMEX3").item(0))));
 
             if (dcte != null) {
-                dct =  dcte.getAttribute("value");
+                dct = dcte.getAttribute("value");
             }
 
-            if(dct==null || dct.length()==0){
+            if (dct == null || dct.length() == 0) {
                 throw new Exception("DCT not found in TimeML file.");
             }
 
@@ -225,7 +225,7 @@ public class OptionHandler {
                 for (int s = 0; s < current_node.getLength(); s++) {
                     Element element = (Element) current_node.item(s);
                     // write line to file
-                    writer.write(element.getAttribute("tid")+"|"+element.getTextContent().replaceAll("\\s+", "_")+"|omit|"+dct+"\n");
+                    writer.write(element.getAttribute("tid") + "|" + element.getTextContent().replaceAll("\\s+", "_") + "|omit|" + dct + "\n");
                 }
             } finally {
                 if (writer != null) {
@@ -349,6 +349,13 @@ public class OptionHandler {
                         String norm_value = timen.normalize(text, dct, tense, ref_val);
                         //outfile.write(pipesline + "|" + norm_value + "\n");
                         normalization.put(id, norm_value);
+                        if (norm_value.matches("[0-9]{4}(-[0-1][0-9](-[0-3][0-9])?)?")) {
+                            ref_val = norm_value;
+                            // check if ISO valid if not... DCT
+                            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                                System.err.println("Ref_time updated: "+ref_val);
+                            }
+                        }
                     }
                 }
             } finally {

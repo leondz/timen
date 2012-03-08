@@ -415,9 +415,19 @@ public class NUMEK {
                 }
             }
 
-            // date spelled number (nineteen eighty == 1980)
-            if ((elements.length == 2 || elements.length == 3) && irregular_tens.containsKey(elements[0]) && !magnitudes.containsKey(elements[1]) && (tens.containsKey(elements[1]))) {
-                Integer value = irregular_tens.get(elements[0]) * 100 + tens.get(elements[1]);
+            // date spelled number (nineteen eighty == 1980, 2010, 1919,2081,1981)
+            if ((elements.length == 2 || elements.length == 3) && (irregular_tens.containsKey(elements[0]) || tens.containsKey(elements[0])) && !magnitudes.containsKey(elements[1]) && (tens.containsKey(elements[1]) || irregular_tens.containsKey(elements[1]))) {
+                Integer value=0;
+                if(irregular_tens.containsKey(elements[0])){
+                    value = irregular_tens.get(elements[0]) * 100;
+                }else{
+                    value = tens.get(elements[0]) * 100;
+                }
+                if(irregular_tens.containsKey(elements[1])){
+                    value+=irregular_tens.get(elements[1]);
+                }else{
+                    value+=tens.get(elements[1]);
+                }
                 if (elements.length == 3 && units.containsKey(elements[2])) {
                     value += units.get(elements[2]);
                 }
