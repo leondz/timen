@@ -265,7 +265,7 @@ did your math teacher look as much like a young george costanza as he does in th
 It's "<TIMEX3 value="200" tid="t79" type="DATE">the two thousands</TIMEX3> <TIMEX3 value="201" tid="t80" type="DATE">two thousand tens</TIMEX3>"
 etc etc, <TIMEX3 value="2010" tid="t81" type="DATE">2010</TIMEX3>
 sounds like what my team is
-down by at <TIMEX3 tid="t82" type="TIME">halftime</TIMEX3> .
+down by at <TIMEX3 tid="t82" type="TIME" value="TXX:XX:XX">halftime</TIMEX3> .
 
 "<TIMEX3 value="2010" tid="t83" type="DATE">Two thousand ten</TIMEX3> " at once
 sounds more like <TIMEX3 value="P1Y" tid="t2000" type="DURATION">a year</TIMEX3> and
