@@ -78,7 +78,7 @@ In any case, spam boggles me. It's one of those things I don't really get. Who d
 
 I don't understand.
 
-And while I'm in the mood, <TIMEX3 tid="t4" type="TIME" value="PRESENT_REF" anchorTimeID="t99">this</TIMEX3> seems like as good a time as any to dive back in. Shall we?
+And while I'm in the mood, <TIMEX3 tid="t4" type="TIME" value="PRESENT_REF">this</TIMEX3> seems like as good a time as any to dive back in. Shall we?
 
 19 more things I don't understand:
 
@@ -122,7 +122,7 @@ I don't really understand what they are, and why they're there. But most confusi
 
 10) Why there's a "hang up" option on automated phone systems. It'll be like, "To hear your account balance, press 1. To report a lost or stolen card, press 2. To speak to a customer service representative, press 3. To hang up, press pound." And then if you press pound it says, "Goodbye" and it hangs up on you. Huh? Are there people out there who enjoy the closure? Are there people that feel bad just hanging up on an automated system without a proper goodbye?
 
-11) What it means when the computer talks about an "unresponsive script." You know those <TIMEX3 tid="t31" type="SET">times</TIMEX3> when the computer gets upset with you and it's like, "Warning: Unresponsive script. A script on this page may be busy, or it may have stopped responding." What the hell is it talking about? What "script"? Where is the "script"? And it stopped responding to whom? Me ?? And then it gives you the options to "Stop script" or "Continue" and I don't know which I'm supposed to do. Is it bad to stop the script or is it bad to continue? It's like when you have a crazy girlfriend and you're like, "WHAT? WHAT DO YOU WANT? I DON'T KNOW WHAT YOU WANT ME TO DO."
+11) What it means when the computer talks about an "unresponsive script." You know <TIMEX3 tid="t31" type="SET" value="TXX:XX" quant="those">those times</TIMEX3> when the computer gets upset with you and it's like, "Warning: Unresponsive script. A script on this page may be busy, or it may have stopped responding." What the hell is it talking about? What "script"? Where is the "script"? And it stopped responding to whom? Me ?? And then it gives you the options to "Stop script" or "Continue" and I don't know which I'm supposed to do. Is it bad to stop the script or is it bad to continue? It's like when you have a crazy girlfriend and you're like, "WHAT? WHAT DO YOU WANT? I DON'T KNOW WHAT YOU WANT ME TO DO."
 
 Can I start using the script line in real life? Like, when I get caught doing something bad and someone accuses me to my face, can I be like, "Unresponsive script. The script may be busy, or it may have stopped responding" and then just refuse to say anything else? It would be useful, right? Or if you could "unexpectedly quit" with no explanation like applications do on my computer do when they're mad at me?
 
@@ -140,7 +140,7 @@ But then, <TIMEX3 value="P4Y" tid="t34" type="SET" quant="every">every four year
 
 And then there's this . Yeah, great addition to the guest list in South Africa.
 
-16) Why there are schizophrenic homeless people scattered all around cities and they don't ever attack anyone. <TIMEX3 tid="t38" type="SET" quant="Every">Every time</TIMEX3> I walk past a homeless person yelling and swearing at no one in particular, I tense up a little, like, "This guy might suddenly sprint at me and bite my ear off." But it never happens. Homeless people are often desperate, and schizophrenic people are often delusional and irrational. So why wouldn't schizophrenic homeless people lunging at someone's purse be commonplace? Don't get me wrong, I'm pleased that it doesn't happen-but you'd think it would. And while we're here...
+16) Why there are schizophrenic homeless people scattered all around cities and they don't ever attack anyone. <TIMEX3 tid="t38" type="SET" quant="Every" value="PXX">Every time</TIMEX3> I walk past a homeless person yelling and swearing at no one in particular, I tense up a little, like, "This guy might suddenly sprint at me and bite my ear off." But it never happens. Homeless people are often desperate, and schizophrenic people are often delusional and irrational. So why wouldn't schizophrenic homeless people lunging at someone's purse be commonplace? Don't get me wrong, I'm pleased that it doesn't happen-but you'd think it would. And while we're here...
 
 17) Why criminals in poorer, dangerous areas of big cities mug people in those areas instead of walking a mile to mug people in richer, safer areas. If you're standing around on the corner of 90th Street and Park Avenue at night, you're not really in any danger. But if you walked a couple miles uptown, you would be. Why? Why would a criminal on 140th Street mug some young, possibly tough dude for the $12 in his wallet when he could head to 90th and mug some terrified guy for the $112 in his wallet? Am I basing these questions on any actual knowledge? Do I have any idea who gets mugged on 140th Street or on 90th Street? No. But still.
 
