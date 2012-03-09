@@ -70,7 +70,7 @@ Um...
 
 What ? What the hell is going on? Was I lying to you? Weird , right?
 
-So <TIMEX3 value="2009-12-10" tid="t3" type="DATE" anchorTimeID="t98">today</TIMEX3> , when I saw our most recent spam subject, "heavy drinking russian brides," I was finally like, "Really? Heavy drinking Russian brides ?" and I decided to click on the link.
+So <TIMEX3 value="2009-12-10" tid="t3" type="DATE">today</TIMEX3> , when I saw our most recent spam subject, "heavy drinking russian brides," I was finally like, "Really? Heavy drinking Russian brides ?" and I decided to click on the link.
 
 It landed me here -a dating service disguised as a mail-order Russian bride service. Or maybe it's a mail-order Russian bride service disguised as a dating service. I can't tell.
 
@@ -78,7 +78,7 @@ In any case, spam boggles me. It's one of those things I don't really get. Who d
 
 I don't understand.
 
-And while I'm in the mood, <TIMEX3 tid="t4" type="PRESENT_REF" anchorTimeID="t99">this</TIMEX3> seems like as good a time as any to dive back in. Shall we?
+And while I'm in the mood, <TIMEX3 tid="t4" type="TIME" value="PRESENT_REF" anchorTimeID="t99">this</TIMEX3> seems like as good a time as any to dive back in. Shall we?
 
 19 more things I don't understand:
 
@@ -150,7 +150,7 @@ I was at a bar <TIMEX3 value="2009-XX-XXTNI" tid="t39" type="TIME">the other nig
 
 Further, my 10th grade math teacher was the pinball champion of the world.
 
-19) Why a seminar for young people would be held at <TIMEX3 value="XXXX-WXX-6T10:00" tid="t40" type="TIME">10am on a Saturday</TIMEX3> . <TIMEX3 value="2008" tid="t41" type="DATE">Last year</TIMEX3> , I started doing alumni interviewing as a volunteer activity. Because it was my first <TIMEX3 value="XXXX" tid="t42" type="DATE">year</TIMEX3> , I had to go to a mandatory seminar on how to be an interviewer before the <TIMEX3 value="PXX" tid="t43" type="DURATION">interview season</TIMEX3> began. <TIMEX3 value="PRESENT_REF" tid="t44" type="DATE">Now</TIMEX3> I've moved to New York, and because I'm in a new city, they insisted that I attend another mandatory rookie seminar. Which was scheduled at <TIMEX3 value="XXXX-WXX-6T10:00" tid="t45" type="TIME">10am on a Saturday</TIMEX3> . Granted, this isn't that early. But it was in midtown, and to make it on time I had to get up <TIMEX3 value="T08:30" tid="t46" type="TIME">around 8:30</TIMEX3> .
+19) Why a seminar for young people would be held at <TIMEX3 value="XXXX-WXX-6T10:00" tid="t40" type="TIME">10am on a Saturday</TIMEX3> . <TIMEX3 value="2008" tid="t41" type="DATE">Last year</TIMEX3> , I started doing alumni interviewing as a volunteer activity. Because it was my first <TIMEX3 value="P1Y" tid="t42" type="DURATION">year</TIMEX3> , I had to go to a mandatory seminar on how to be an interviewer before the <TIMEX3 value="PXM" tid="t43" type="DURATION">interview season</TIMEX3> began. <TIMEX3 value="PRESENT_REF" tid="t44" type="DATE">Now</TIMEX3> I've moved to New York, and because I'm in a new city, they insisted that I attend another mandatory rookie seminar. Which was scheduled at <TIMEX3 value="XXXX-WXX-6T10:00" tid="t45" type="TIME">10am on a Saturday</TIMEX3> . Granted, this isn't that early. But it was in midtown, and to make it on time I had to get up <TIMEX3 value="T08:30" tid="t46" type="TIME" mod="APPROX">around 8:30</TIMEX3> .
 
 I don't get it. Most of the people there were in their twenties. People in their twenties in New York often go out on <TIMEX3 value="XXXX-WXX-5TNI" tid="t47" type="TIME">Friday night</TIMEX3> , and people who go out in New York often stay out <TIMEX3 value="TNI" tid="t48" type="TIME">late</TIMEX3> . How hard would it have been to schedule it at <TIMEX3 value="T12:00" tid="t49" type="TIME">noon</TIMEX3> ? Or <TIMEX3 value="T14:00" tid="t50" type="TIME">two</TIMEX3> ? Or <TIMEX3 value="T16:00" tid="t51" type="TIME">four</TIMEX3> ?
 
