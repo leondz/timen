@@ -49,6 +49,8 @@ public class Knowledge_EN extends Knowledge {
         decades.put("seventies", 197);
         decades.put("eighties", 198);
         decades.put("nineties", 199);
+        decades.put("ougthies", 200);
+        decades.put("teens", 201);
         
         TODs = new HashMap<String, String>();
         TODs.put("morning","TMO");

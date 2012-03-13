@@ -103,7 +103,7 @@
 
 <xs:simpleType name="Time">
 	<xs:restriction base="xs:string">
-		<xs:pattern value="([0-9X]{1,4}-[0-9X]{1,2}-[0-9X]{1,2})?T(([0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)(Z)?|(MO|MI|AF|EV|NI|DT))" />			<!-- Hector Llorens modification Z added for GMT -->
+		<xs:pattern value="([0-9X]{1,4}-[0-9X]{1,2}-[0-9X]{1,2})?T(([0-9X]{2}(:[0-9X]{2}(:[0-9X]{2})?)?)(Z)?|(MO|MI|AF|EV|NI|DT))" />			<!-- Hector Llorens modification Z and X added for GMT -->
 	</xs:restriction>
 </xs:simpleType>
 

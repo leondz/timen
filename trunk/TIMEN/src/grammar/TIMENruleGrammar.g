@@ -25,12 +25,15 @@ rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] :
 	|e=to_year[$timex_object] {$value = $e.value;}
 	|e=to_month[$timen,$timex_object] {$value = $e.value;}
 	|e=to_day[$timen,$timex_object] {$value = $e.value;}
+	|e=to_iso[$timen,$timex_object] {$value = $e.value;}
+	|e=to_time[$timen,$timex_object] {$value = $e.value;}
 	|e=add[$timen, $timex_object] {$value = $e.value;}
 	|e=date_weekday[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month_day[$timen, $timex_object] {$value = $e.value;}
 	|e=to_period[$timen, $timex_object] {$value = $e.value;}
 	|e=get_tod[$timen, timex_object] {$value = $e.value;}
+	|e=fill_zeros[$timex_object] {$value = $e.value;}
 	);
 
 to_period[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
@@ -62,6 +65,14 @@ to_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 to_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 	'TO_DAY' '(' e=pat[$timex_object] ')' {$value = $timen.to_day($e.value);};
 
+to_iso[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+	'TO_ISO' '(' e=pat[$timex_object] ')' {$value = $timen.to_iso($e.value,$timex_object);};
+
+to_time[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+	'TO_TIME' '(' e=pat[$timex_object] ')' {$value = $timen.to_time($e.value);};
+
+fill_zeros[TIMEX_Instance timex_object] returns [String value]:
+	'FILL_ZEROS' '(' e=pat[$timex_object] ',' i=intnumber ')' {$value = TIMEN.fill_zeros($e.value,$i.value);};
 
 add[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:	
          'ADD' '(' r=REFERENCE       ',' GRANULARITY           ',' i=intnumber ')' {$value = $timen.add($REFERENCE.text,$GRANULARITY.text,$i.value, $timex_object);}

@@ -204,7 +204,7 @@ public class TIMEN {
 
     public ArrayList<Rule> get_rules_from_db(String table, String pattern) {
         // escape pattern
-        pattern=pattern.replaceAll("'", "");
+        pattern = pattern.replaceAll("'", "");
         ArrayList<Rule> rules_found = new ArrayList<Rule>();
         try {
             SQLiteStatement st = db.prepare("SELECT * FROM " + table + " where pattern='" + pattern + "'");
@@ -388,7 +388,7 @@ public class TIMEN {
     }
 
     public String to_month(String month) {
-        String output = "" + (knowledge.Yearmonths.get(month)+1);
+        String output = "" + (knowledge.Yearmonths.get(month) + 1);
         if (output.length() == 1) {
             output = "0" + output;
         }
@@ -409,6 +409,322 @@ public class TIMEN {
             output = "0" + output;
         }
         return output;
+    }
+
+    public static String fill_zeros(String str, int quantity) {
+        int filling = quantity - str.length();
+        for (int i = 0; i < filling; i++) {
+            str = "0" + str;
+        }
+        return str;
+    }
+
+    // IMPLEMENT FOR JOURNAL
+    //date = date.replaceAll("mid-", "");
+    //date = " " + date + " ";
+    //if (locale.getLanguage().equalsIgnoreCase("en")) {
+    //date = date.replaceAll(" the ", " ").replaceAll("\\s*-\\s*", "-").replaceAll("\\s*/\\s*", "/").replaceAll("\\s+", " ").trim();
+    //    date = date.replaceAll("^(.*) ([0-9]+)(th|st|nd|rd) (.*)$", "$1 $2 $3 $4");
+    //}
+    //if (locale.getLanguage().equalsIgnoreCase("es")) {
+    //    date = date.replaceAll(" (los|las|el|la|en) ", "").replaceAll("\\s*-\\s*", "-").replaceAll("\\s*/\\s*", "/").replaceAll("\\s+", " ");
+    //    date = date.replaceAll(" (primero|uno) ", " 1 ").trim();
+    //}
+    // centuries
+            /*if (date.matches("^[0-9]+ century$")) {
+    return "" + (Integer.parseInt(date.split(" ")[0].replace("([0-9]{1,2}).*", "$1")));
+    }*/
+    public String to_iso(String date, TIMEX_Instance timex_object) {
+        String iso = null;
+
+        // Check date granularity to return the same
+        // Check language
+
+        //System.out.println(date);
+        try {
+            DateFormat ofmt;
+
+
+
+            // find the parsing format
+            if (!date.contains("_")) { // UNIGRAM (ONE TOKEN DATE)
+                // unformated numeric dates
+                if (date.matches("[0-9]+")) {
+                    switch (date.length()) {
+                        case 2: // 2 digit year
+                            return to_year(date, timex_object);
+                        case 4: // already ISO
+                            return date;
+                    }
+
+                }
+
+
+                // numeric decades
+                if (date.matches("[0-9]+s")) {
+                    switch (date.length()) {
+                        case 3:
+                            int cc=Integer.parseInt(timex_object.dct.getYear().substring(0, 2));
+                            int cdec=Integer.parseInt(timex_object.dct.getYear().substring(2, 3));
+                            int ddec=Integer.parseInt(date.substring(1, 2));
+                            if(cdec==9 && ddec==0 || (cdec==0 || ddec>1)){
+                                cc--;
+                            }
+                            return ""+cc+""+ddec;
+                            //iso = to_year(date.substring(0, 2), timex_object);
+                            //return iso.substring(0, 3);
+                        case 5:
+                            return date.substring(0, 3);
+                        default:
+                            throw new Exception("Unknown expression: " + date);
+                    }
+
+                }
+
+
+
+                // spelled decades
+                if (knowledge.decades.containsKey(date)) {
+                    return knowledge.decades.get(date).toString();
+                }
+
+                //normalize two-digit year
+                if (date.matches("(?:[0-9]{1,2}[./-])?(?:[0-9]{1,2}|" + knowledge.TMonths_re + ")[./-][0-9]{2}")) {
+                    date = date.substring(0, date.length() - 2) + to_year(date.substring(date.length() - 2), timex_object);
+                }
+                //remove "." from dates 10/nov./2001 --> 10/nov/2001
+                date = date.replaceAll("[.]([./-])", "$1");
+
+                // check if it is already ISO but mantain the original with the granularity
+                /*try {
+                fmt = ISODateTimeFormat.dateOptionalTimeParser();
+                fmt.parseDateTime(ISOclean(date));
+                return date;
+                } catch (Exception e) {
+                iso = null; // just NOOP
+                }*/
+
+                /*if(date.matches(".*"+TMonths_re+"[/.-].*")){
+                date=date.replaceAll("(.*)("+TMonths_re+")([/.-].*)", "$1\\I$2$3");
+                }*/
+
+                // Dates with separators / and -
+
+                ofmt = new SimpleDateFormat(granul_seconds);
+                iso = date2iso(date, new SimpleDateFormat("yyyy-MM-dd't'HH:mm:ss"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+
+                ofmt = new SimpleDateFormat(granul_time);
+                iso = date2iso(date, new SimpleDateFormat("yyyy-MM-dd't'HH:mm"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+
+
+                ofmt = new SimpleDateFormat(granul_days);
+
+                iso = date2iso(date, new SimpleDateFormat("yyyy-MM-dd"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("dd-MM-yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("dd/MM/yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("dd-MMMM-yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("dd/MMMM/yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("MM-dd-yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("MM/dd/yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+
+
+                ofmt = new SimpleDateFormat(granul_months);
+
+                iso = date2iso(date, new SimpleDateFormat("MM-yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("MM/yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("MMMM-yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+                iso = date2iso(date, new SimpleDateFormat("MMMM/yyyy"), ofmt);
+                if (iso != null) {
+                    return iso;
+                }
+
+
+
+
+
+            }/* else { // multiword date/time
+            if (locale.getLanguage().equalsIgnoreCase("en") && date.matches("(?i)(a good part of|end of|this|that|YEAR|(the )?early|(the )?late|fiscal) [0-9]+(s)?")) {
+            return toISO8601(date.substring(date.lastIndexOf(' ') + 1), loc);
+            }
+            if (locale.getLanguage().equalsIgnoreCase("es") && date.matches("(?i)(una buena parte|al final de|este|ese|(el )?año|(a )?principios de|(a )?finales de) ([0-9]+|" + Decades_re + ")(s)?")) {
+            return toISO8601(date.substring(date.lastIndexOf(' ') + 1), loc);
+            }
+
+
+            // useful replacements
+            date = " " + date + " ";
+            if (locale.getLanguage().equalsIgnoreCase("en")) {
+            date = date.replaceAll(" of ", " ").replaceAll("[.,]", " ").replaceAll("\\s+", " ").trim();
+            }
+            if (locale.getLanguage().equalsIgnoreCase("es")) {
+            date = date.replaceAll(" (?:el|la|los|las) ", " ").replaceAll(" de(?:l)? ", " ").replaceAll("[.,]", " ").replaceAll(" día ", " ").replaceAll("\\s+", " ").trim();
+            }
+
+
+            // spelled decades (spanish). HACK, todo década de los...
+            if (date.matches(".*años.*")) {
+            String date_ = date.replaceAll(" ", "_");
+            date_ = date_.substring(date_.indexOf("años"));
+            if (decades.containsKey(date_)) {
+            return decades.get(date_).toString();
+            }
+            }
+
+
+            // MMMM yyyy
+            try {
+            fmt = DateTimeFormat.forPattern("MMMM yyyy");
+            DateTimeFormatter fmt_localized = fmt.withLocale(locale);
+            return fmt_localized.parseDateTime(date).toString("yyyy-MM");
+            } catch (Exception e) {
+            iso = null;
+            }
+
+            // MMMM dd yyyy
+            try {
+            fmt = DateTimeFormat.forPattern("MMMM dd yyyy");
+            DateTimeFormatter fmt_localized = fmt.withLocale(locale);
+            return fmt_localized.parseDateTime(date).toString("yyyy-MM-dd");
+            } catch (Exception e) {
+            iso = null;
+            }
+
+            // dd MMMM yyyy
+            try {
+            fmt = DateTimeFormat.forPattern("dd MMMM yyyy");
+            DateTimeFormatter fmt_localized = fmt.withLocale(locale);
+            return fmt_localized.parseDateTime(date).toString("yyyy-MM-dd");
+            } catch (Exception e) {
+            iso = null;
+            }
+
+            // Seasons
+            if (locale.getLanguage().equalsIgnoreCase("en") && date.matches("(.* )?" + Seasons_re + " [0-9]{4}")) {
+            String[] temp = date.split(" ");
+            if (date.matches(".*winter.*")) {
+            return temp[temp.length - 1] + "-WI";
+            }
+            if (date.matches(".*spring.*")) {
+            return temp[temp.length - 1] + "-SP";
+            }
+            if (date.matches(".*summer.*")) {
+            return temp[temp.length - 1] + "-SU";
+            }
+            if (date.matches(".*(autumn|fall).*")) {
+            return temp[temp.length - 1] + "-FA";
+            }
+            }
+            if (locale.getLanguage().equalsIgnoreCase("es") && date.matches("(.* )?" + Seasons_re + " (de(l)? )?[0-9]{4}")) {
+            String[] temp = date.split(" ");
+            if (date.matches(".*invierno.*")) {
+            return temp[temp.length - 1] + "-WI";
+            }
+            if (date.matches(".*primavera.*")) {
+            return temp[temp.length - 1] + "-SP";
+            }
+            if (date.matches(".*verano.*")) {
+            return temp[temp.length - 1] + "-SU";
+            }
+            if (date.matches(".*otoño.*")) {
+            return temp[temp.length - 1] + "-FA";
+            }
+            }
+
+            }*/
+
+
+        } catch (Exception e) {
+            System.err.println("Warnings found (TIMEK):\n\t" + e.toString() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+            return "PRESENT_REF"; // by default
+        }
+
+        return "PRESENT_REF"; // by default
+
+    }
+
+    public String date2iso(String date, DateFormat ifmt, DateFormat ofmt) {
+        try {
+            ifmt.setLenient(false);
+            Date d = ifmt.parse(date);
+            return ofmt.format(d);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String to_time(String timex) {
+        String ret = "12:00";
+        boolean pm = false;
+        timex = timex.replaceAll("\\.", "");
+        if (timex.contains("pm")) {
+            pm = true;
+        }
+        timex = timex.replaceAll("[ap]m", "");
+
+        String[] time_arr = timex.split(":");
+
+        for (int i = 0; i < 3; i++) {
+            if (time_arr.length > i) {
+                if (i == 0) {
+                    ret = "";
+                    if (pm) {
+                        time_arr[i] = "" + (Integer.parseInt(time_arr[i]) + 12);
+                    }
+                } else {
+                    ret += ":";
+                }
+                if (time_arr[i].length() == 1) {
+                    time_arr[i] = "0" + time_arr[i];
+                }
+                ret += time_arr[i];
+            }
+        }
+
+        if (ret.length() == 2) {
+            ret += ":00";
+        }
+
+        return ret;
     }
 
     /**
@@ -756,7 +1072,7 @@ public class TIMEN {
             timex = timex.replaceAll("([0-9]+)s", "$1_s");
 
             // Special adjective periods (e.g., 10-hour), and special quarter
-            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + "|quarter)", "$1_$2");
+            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + "|quarter|second)", "$1_$2");
 
             // Special for fractions (only one is normalized because there should be no more than one per timex)
             if (timex.matches("(?:.*_)?(?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*_" + knowledge.TUnit_re + ".*")) {
@@ -797,33 +1113,40 @@ public class TIMEN {
                     if (tempex_arr[i].matches(knowledge.Seasons_re)) {
                         currentPat = "Season";
                     } else {
-
-                        if (tempex_arr[i].matches(knowledge.TUnit_re)) {
-                            tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
-                            currentPat = "TUnit";
+                        if (tempex_arr[i].matches(knowledge.Decades_re)) {
+                            currentPat = "Decade";
                         } else {
-                            if (tempex_arr[i].matches(knowledge.TMonths_re)) {
-                                tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
-                                currentPat = "TMonth";
+                            if (tempex_arr[i].matches(knowledge.TUnit_re)) {
+                                tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
+                                currentPat = "TUnit";
                             } else {
-                                if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
+                                if (tempex_arr[i].matches(knowledge.TMonths_re)) {
                                     tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
-                                    currentPat = "TWeekday";
+                                    currentPat = "TMonth";
                                 } else {
-                                    if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
-                                        currentPat = "Time";
+                                    if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
+                                        tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
+                                        currentPat = "TWeekday";
                                     } else {
-                                        if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
-                                                || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
-                                                || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
-                                                || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9]") // ISO
-                                                ) {
-                                            currentPat = "Date";
+                                        if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:[.:][0-5][0-9])?(?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
+                                            currentPat = "Time";
                                         } else {
-                                            if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
-                                                currentPat = "Num";
+                                            if (tempex_arr[i].matches("(?:[0-2])?[0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?)")) {
+                                                currentPat = "Time";
                                             } else {
-                                                currentPat = tempex_arr[i].toLowerCase();
+                                                if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
+                                                        || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
+                                                        || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
+                                                        || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9](?:(T|_)[0-2][0-9][.:][0-5][0-9](?:[.:][0-5][0-9])?)?(?:Z)?") // ISO
+                                                        ) {
+                                                    currentPat = "Date";
+                                                } else {
+                                                    if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
+                                                        currentPat = "Num";
+                                                    } else {
+                                                        currentPat = tempex_arr[i].toLowerCase();
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -875,5 +1198,62 @@ public class TIMEN {
 
         return (normText.trim() + "|" + pattern.trim()).replaceAll(" ", "_");
 
+    }
+
+    //////////////////////////////////77
+    // DEPRECATED
+    /**
+     * Returns an ISO8601 without abbreviations such as WI, Q1, SU, etc. then it can be represented as an exact GregorianCaledar reference
+     * @param date
+     * @return
+     */
+    public static String ISOclean(String date) {
+        if (date.matches("(?i)[0-9]{4}-(WI|SP|SU|AU|FA|Q(1|2|3|4)|H(1|2))")) {
+            if (date.matches("(?i).*-(WI|Q1|H1)")) {
+                date = date.substring(0, 4) + "-01";
+            }
+            if (date.matches("(?i).*-(SP|Q2)")) {
+                date = date.substring(0, 4) + "-03";
+            }
+            if (date.matches("(?i).*-(SU|Q3|H2)")) {
+                date = date.substring(0, 4) + "-06";
+            }
+            if (date.matches("(?i).*-(AU|FA|Q4)")) {
+                date = date.substring(0, 4) + "-09";
+            }
+        }
+
+        if (date.matches("(?i)[0-9]{4}-[0-9]{2}-[0-9]{2}T(MO|AF|EV|NI)")) {
+            // MORNING 5-12
+            if (date.matches("(?i).*TMO")) {
+                date = date.substring(0, 10) + "T05:00";
+            }
+            // NOON 12-13
+            if (date.matches("(?i).*TAF")) {
+                date = date.substring(0, 10) + "T13:00";
+            }
+            // DEPEND ON WORK BREAKS
+            if (date.matches("(?i).*TEV")) {
+                date = date.substring(0, 10) + "T18:00";
+            }
+            // AFTER WORK... GOING BACK HOME...
+            if (date.matches("(?i).*TNI")) {
+                date = date.substring(0, 10) + "T21:00";
+            }
+        }
+
+        // TODO: IN THE FUTURE TREAT BETTER THIS DATES
+        // GET THE DATE WITHOUT WE AND THEN SET DAY TO SATURDAY...
+        // GET BACK THE DATE IN STRING FORMAT WITH DAY GRANULARITY
+        if (date.matches("(?i).*-WE")) {
+            date = date.substring(0, date.length() - 3);
+        }
+
+        // JODA TIME RARE ERROR
+        if (date.equals("1901")) {
+            date = "1901-01-02";
+        }
+
+        return date;
     }
 }
