@@ -163,6 +163,7 @@ public class OptionHandler {
                     /*
                      * This creates a knowledge_XX.java file from SQLite knowledge dbs where XX is the language code
                      */
+                    System.err.println("Under development");
                 }
                 break;
             }
