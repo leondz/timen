@@ -1,5 +1,5 @@
 LICENSE
-	AGPL Apache
+	AGPL/Apache
 
 AUTHORS
 	Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
@@ -24,14 +24,22 @@ java -jar "/path2jar/TIMEN_CONSUMER.jar" [options]
 Examples:
 --------
 
+Normalize a single expression: this outputs the normalized value
 java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday"
 java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday" -ap dct=1999-12-04
+java -jar "/path2jar/TIMEN_CONSUMER.jar" "Monday" -ap dct=1999-12-04,tense=past
+
+Normalize file/s: this outputs file/s in the same path in TIMEN-output/ folder with added/updated normalized values
 java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml
 java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
 
-You just have to put TimeBank or TBAQ files in a folder and run 
+
+For evaluation just  put TimeBank or TBAQ files in a folder and run 
 java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml folder/*.tml
-Then use the evaluation scripts to evaluate...
+Then use the evaluation scripts to evaluate KEY-files against TIMEN-output files
+
+
+
 
 
 Additional instructions for developers:

@@ -59,6 +59,7 @@ public class OptionHandler {
             switch (Action.valueOf(action.toUpperCase())) {
 
 
+
                 /* This is a non-NLP baseline, the only context info is dct */
                 case NORMALIZE_EXPR: {
                     /* Set DCT */

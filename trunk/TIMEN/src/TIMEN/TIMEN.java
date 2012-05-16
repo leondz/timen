@@ -34,11 +34,12 @@ public class TIMEN {
 
         // load knowledge (in the future the knowledge should be a sqlite db)
         // The sqlite is loaded into a hash in construction and then it is fast if used in tml files
+        //System.out.println(locale+" "+locale.getLanguage().toUpperCase());
         Class c;
         try {
             String lang = l.getLanguage().toUpperCase();
             c = Class.forName("Knowledge.Knowledge_" + lang);
-            knowledge = (Knowledge) c.newInstance();
+            knowledge = (Knowledge) c.getConstructor(Locale.class).newInstance(locale);
         } catch (Exception e) {
             System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -47,7 +48,8 @@ public class TIMEN {
             }
             // try taking default
             try {
-                knowledge = (Knowledge) (Class.forName("Knowledge.Knowledge_EN")).newInstance();
+                locale=Locale.getDefault();
+                knowledge = (Knowledge) (Class.forName("Knowledge.Knowledge_EN")).getConstructor(Locale.class).newInstance(locale);
             } catch (Exception ex) {
                 System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + ex.getMessage() + "\n");
                 e.printStackTrace(System.err);
