@@ -80,7 +80,7 @@ public abstract class Knowledge {
         Yearmonths = new HashMap<String, Integer>();
         temp = new DateFormatSymbols(l).getMonths();
         for (int i = 0; i < temp.length - 1; i++) {
-            //System.out.println(i+temp[i]);
+            //System.out.println(i+temp[i]+ " "+l.toString());
             Yearmonths.put(temp[i].toLowerCase(l), i);
         }
         temp = new DateFormatSymbols(l).getShortMonths();

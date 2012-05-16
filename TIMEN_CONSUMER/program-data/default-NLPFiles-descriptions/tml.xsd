@@ -96,7 +96,7 @@
 
 <xs:simpleType name="Date">
 	<xs:restriction base="xs:string">
-		<xs:pattern value="(BC|-)?[0-9X]{1,4}(-[0-9X]{1,2}(-[0-9X]{1,2})?)?" />		
+		<xs:pattern value="(BC|-)?[0-9X]{1,4}(-[0-9X]{1,2}(-[0-9X]{1,2})?)?" />	
 <!-- Hector Llorens modification (BC|-)? -->		
 	</xs:restriction>
 </xs:simpleType>
@@ -106,6 +106,7 @@
 		<xs:pattern value="([0-9X]{1,4}-[0-9X]{1,2}-[0-9X]{1,2})?T(([0-9X]{2}(:[0-9X]{2}(:[0-9X]{2})?)?)(Z)?|(MO|MI|AF|EV|NI|DT))" />			<!-- Hector Llorens modification Z and X added for GMT -->
 	</xs:restriction>
 </xs:simpleType>
+
 
 <xs:simpleType name="WeekDate">
 	<xs:restriction base="xs:string">
@@ -127,7 +128,7 @@
 
 <xs:simpleType name="PartOfYear">
 	<xs:restriction base="xs:string">
-		<xs:pattern value="[0-9X]{1,4}-(H[1-2X]|Q[1-4X])"/>
+		<xs:pattern value="[0-9X]{1,4}-(H[1-2X]|Q[1-4X]|T[1-4X])"/>
 	</xs:restriction>
 </xs:simpleType>
 
@@ -141,7 +142,9 @@
 
 <xs:simpleType name="Duration">
 	<xs:restriction base="xs:string">
-		<xs:pattern value="P((((\p{Nd}+|X{1,2})Y)?((\p{Nd}+|X{1,2})M)?((\p{Nd}+|X{1,2})D)?(T((\p{Nd}+|X{1,2})H)?((\p{Nd}+|X{1,2})M)?((\p{Nd}+|X{1,2})S)?(NI)?)?)|((\p{Nd}+|X{1,2}))(W|L|E|C|Q)|XX)"/> <!-- added last XX --> 
+		<!--original <xs:pattern value="P((((\p{Nd}+|X{1,2})Y)?((\p{Nd}+|X{1,2})M)?((\p{Nd}+|X{1,2})D)?(T((\p{Nd}+|X{1,2})H)?((\p{Nd}+|X{1,2})M)?((\p{Nd}+|X{1,2})S)?)?)|((\p{Nd}+|X{1,2}))(W|L|E|C|Q))"/> -->
+		<!-- Hector Llorens: includes float numbers, includes M for millennia, C for centuries, and T for quatrimesters, XX for indefinite -->
+		<xs:pattern value="P((((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})C)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})Y)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})T)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})Q)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})D)?(T((\p{Nd}+(\.\p{Nd}+)?|X{1,2})H)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})S)?(NI)?)?)|((\p{Nd}+(\.\p{Nd}+)?|X{1,2}))(W|L|E|C|Q)|XX)"/> <!-- added last XX --> 
 		<xs:minLength value="3"/>
 	</xs:restriction>
 </xs:simpleType>
@@ -326,6 +329,8 @@
 					<xs:enumeration value="PERFECTIVE_PROGRESSIVE" />
 					<xs:enumeration value="IMPERFECTIVE" /> <!-- Hector Llorens modification for Spanish -->
 					<xs:enumeration value="IMPERFECTIVE_PROGRESSIVE" /> <!-- Hector Llorens modification for Spanish -->
+					<!--English has neither a simple perfective or imperfective aspect; see imperfective and perfective for some basic English equivalents of this distinction. When translating from a language which has these aspects, they will sometimes be given separate verbs in English. For example, in Ancient Greek the imperfective sometimes adds the notion of "try to do something" (the so-called conative imperfect); hence the same verb root, in the imperfective (present or imperfect) and aorist, respectively, is translated as look and see, search and find, listen and hear (ἠκούομεν ēkoúomen "we listened" vs. ἠκούσαμεν ēkoúsamen "we heard"). Spanish is similar, with imperfect and preterite sabía "I knew" vs. supe "I found out", podía "I was able to" vs. pude "I succeeded", quería "I wanted to" vs. quise "I tried to", no quería "I did not want to" vs. no quise "I refused". Such distinctions are often highly language-specific. 
+					-->
 					<xs:enumeration value="NONE" />
 				</xs:restriction>
 			</xs:simpleType>
@@ -340,6 +345,7 @@
 					<xs:enumeration value="PREPOSITION" />
 					<xs:enumeration value="OTHER" />
 					<xs:enumeration value="UNKNOWN" /> <!-- Hector Llorens modification for AQUAINT -->
+					<xs:enumeration value="PREP" /> <!-- Hector Llorens modification for Spanish -->
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>			
@@ -360,7 +366,7 @@
 			<xs:attribute name="tid" type="TimeID" use="required" />
 			<xs:attribute name="sentID" type="xs:integer" />
 
-			<xs:attribute name="type"> <!--use="required" removed to allow timex recognition without attributes-->
+			<xs:attribute name="type" use="required">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
 						<xs:enumeration value="DATE" />
@@ -387,7 +393,7 @@
 
 			<xs:attribute name="temporalFunction" type="xs:boolean" default="false" />
 
-			<xs:attribute name="value"> <!--use="required" removed to allow timex recognition without attributes-->
+			<xs:attribute name="value" use="required">
 				<xs:simpleType>
 					<xs:union memberTypes="Date Time WeekDate WeekTime Season PartOfYear PaPrFu Duration"/>
 				</xs:simpleType>
@@ -487,9 +493,14 @@
 					<xs:enumeration value="PROGRESSIVE" />
 					<xs:enumeration value="PERFECTIVE" />
 					<xs:enumeration value="PERFECTIVE_PROGRESSIVE" />
+					<xs:enumeration value="IMPERFECTIVE" /> <!-- Hector Llorens modification for Spanish -->
+					<xs:enumeration value="IMPERFECTIVE_PROGRESSIVE" /> <!-- Hector Llorens modification for Spanish -->
+					<!--English has neither a simple perfective or imperfective aspect; see imperfective and perfective for some basic English equivalents of this distinction. When translating from a language which has these aspects, they will sometimes be given separate verbs in English. For example, in Ancient Greek the imperfective sometimes adds the notion of "try to do something" (the so-called conative imperfect); hence the same verb root, in the imperfective (present or imperfect) and aorist, respectively, is translated as look and see, search and find, listen and hear (ἠκούομεν ēkoúomen "we listened" vs. ἠκούσαμεν ēkoúsamen "we heard"). Spanish is similar, with imperfect and preterite sabía "I knew" vs. supe "I found out", podía "I was able to" vs. pude "I succeeded", quería "I wanted to" vs. quise "I tried to", no quería "I did not want to" vs. no quise "I refused". Such distinctions are often highly language-specific. 
+					-->
 					<xs:enumeration value="NONE" />
 				</xs:restriction>
 			</xs:simpleType>
+
 		</xs:attribute>
 
 		<xs:attribute name="pos" use="required">
@@ -501,6 +512,7 @@
 					<xs:enumeration value="PREPOSITION" />
 					<xs:enumeration value="OTHER" />
 					<xs:enumeration value="UNKNOWN" /> <!-- Hector Llorens modification for AQUAINT -->
+					<xs:enumeration value="PREP" /> <!-- Hector Llorens modification for Spanish -->
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>			
@@ -546,6 +558,7 @@
 					<xs:enumeration value="BEFORE-OR-OVERLAP" /> <!-- Hector Llorens modification for Spanish -->
 					<xs:enumeration value="OVERLAP-OR-AFTER" /> <!-- Hector Llorens modification for Spanish -->
 					<xs:enumeration value="VAGUE" /> <!-- Hector Llorens modification for Spanish -->
+					<xs:enumeration value="NONE" /> <!-- Hector Llorens modification -->
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>

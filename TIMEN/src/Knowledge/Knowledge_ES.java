@@ -12,7 +12,8 @@ import java.util.*;
  */
 public class Knowledge_ES extends Knowledge {
 
-    public Knowledge_ES() {
+    public Knowledge_ES(Locale l) {
+        super(l);
         TUnit_re = "(?i)(?:segundos|minuto|hora|día|semana|mes(?:es)?|trimestre|semestre|año|década|siglo|milenio)s?";
         // hack "segundos" because the ambiguity with ordinal
         TMonths_re = "(?:(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)|(?:ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)(?:\\.)?)";

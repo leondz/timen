@@ -12,7 +12,8 @@ import java.util.*;
  */
 public class Knowledge_EN extends Knowledge {
 
-    public Knowledge_EN() {
+    public Knowledge_EN(Locale l) {
+        super(l);
         TUnit_re = "(?i)(?:seconds|minute|hour|day|week|month|semester|year|decade|centur(y|ies)|millennium)s?"; // quarter ambiguous
         // hack "seconds" because the ambiguity with ordinal
         // abbreviations? h min sec
