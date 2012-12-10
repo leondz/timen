@@ -5,10 +5,10 @@ import NUMEK.NUMEK;
 import Rules.*;
 import com.almworks.sqlite4java.*;
 import java.io.*;
+import java.net.*;
 import java.text.*;
 import java.util.*;
 import java.util.logging.*;
-import utils_bk.*;
 
 /**
  *
@@ -17,11 +17,64 @@ import utils_bk.*;
  */
 public class TIMEN {
 
-    public static String program_path = FileUtils.getApplicationPath() + "program-data" + File.separator;
+    public static String ApplicationPath = null;
+    public static String program_path = getApplicationPath() + "program-data" + File.separator;
     private Locale locale;
     private NUMEK numek;
     private SQLiteConnection db;
     private Knowledge knowledge;
+
+    // borrowed from utils basic kit
+    /*
+     * The path in which the application code/class/jar/executable is located
+     */
+    public static String getApplicationPath() {
+        try {
+            String innerpath = ApplicationPath;
+            if (ApplicationPath == null) {
+                //innerpath = FileUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+                //innerpath = FileUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
+            URL url = TIMEN.class.getProtectionDomain().getCodeSource().getLocation();
+            innerpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
+
+                //System.out.println("dfdf "+innerpath);
+                if (innerpath.contains(".jar")) {
+                    innerpath = innerpath.substring(0, innerpath.lastIndexOf(File.separator) + 1);
+                    if (innerpath.endsWith(File.separator+"lib"+File.separator)) {
+                        innerpath = innerpath.substring(0, innerpath.length() - 4);
+                    }
+                    // When you release the final dist you must use a name different than "dist"
+                    // NOOOO YOU MUST say to ant (build.xml) that lib and program-data must be copied to dist
+                    /*if (innerpath.endsWith("dist"+File.separator)) {
+                        innerpath = innerpath.substring(0, innerpath.length() - 5);
+                    }*/
+                } else {
+                    /*if (innerpath.endsWith("/lib/")) {
+                    innerpath = innerpath.substring(0, innerpath.length() - 4);
+                    }*/
+                    if (innerpath.endsWith("build"+File.separator+"classes"+File.separator)) {
+                        innerpath = innerpath.substring(0, innerpath.length() - 14);
+                    }
+                }
+                if (innerpath.matches(".*Utils_BasicKit.*")) {
+                // Hack for debugging (executed from NetBeans... and project added, not compiled)
+                innerpath = "/home/hector/Dropbox/JApplications/TIMEE/";
+                //System.err.println("utils_bk FileUtils.java. This must be solved in some other way.");
+                //System.exit(0);
+                }
+                ApplicationPath = innerpath;
+            }
+            return innerpath;
+        } catch (Exception e) {
+            System.err.println("Errors found (FileUtils):\n\tApplication path not found: " + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+            }
+            return "";
+        }
+    }
+
 
     public TIMEN() {
         this(Locale.getDefault());
@@ -1258,4 +1311,19 @@ public class TIMEN {
 
         return date;
     }
+
+    /**
+     * DON'T DO THIS NOW. Compare 2 dates to a reference and return the closest one
+     * @param key
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Date getClosestDate(Date key, Date a, Date b){
+        Date ret=a;
+
+        return a;
+    }
+
+
 }

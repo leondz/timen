@@ -379,10 +379,10 @@ public class NUMEK {
             // already numeric expression
             if (locale.getLanguage().equalsIgnoreCase("es")) {
                 snumber = snumber.replaceFirst(",", ".");
-                if (utils_bk.StringUtils.countOccurrencesOf(snumber, '.') > 1) {
+                if (countOccurrencesOf(snumber, '.') > 1) {
                     do {
                         snumber = snumber.replaceFirst("\\.", "");
-                    } while (utils_bk.StringUtils.countOccurrencesOf(snumber, '.') > 1);
+                    } while (countOccurrencesOf(snumber, '.') > 1);
                 }
             }
 
@@ -644,4 +644,23 @@ public class NUMEK {
         }
         return 0;
     }
+
+    // borrowed from utils basic kit
+        public static int countOccurrencesOf(String source, char pattern) {
+        int count = 0;
+        if (source != null) {
+            int found = -1;
+            int start = 0;
+
+
+            while ((found = source.indexOf(pattern, start)) != -1) {
+                start = found + 1;
+                count++;
+            }
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
 }
