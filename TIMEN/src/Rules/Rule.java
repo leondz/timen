@@ -3,7 +3,7 @@ package Rules;
 
 /**
  *
- * @author hector
+ * @author hector llorens
  */
 public class Rule {
     private int id;
