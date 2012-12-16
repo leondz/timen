@@ -1,7 +1,6 @@
 package Rules;
 
 import TIMEN.*;
-import com.almworks.sqlite4java.*;
 import grammar.*;
 import java.io.*;
 import org.antlr.runtime.*;
@@ -11,11 +10,6 @@ import org.antlr.runtime.*;
  * @author hector
  */
 public class Rule_Engine {
-
-    public static boolean check_rule_db(SQLiteConnection db) {
-        // bucle loop load each rule and run rule.is_well_formed
-        return false;
-    }
 
     /**
      * Appy a valid rule:

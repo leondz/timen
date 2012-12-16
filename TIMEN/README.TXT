@@ -1,14 +1,24 @@
 TIMEN LIBRARY
 
 LICENSE
-	AGPL Apache
+	AGPL/Apache
 
 AUTHORS
 	Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
 
 
-Building the library jar:
-------------------------
+USAGE
+
+Just include into your project the TIMEN.jar library and its dependences lib/*.jar
+
+
+
+
+DEVELOPMENT INFORMATION
+------------------------------------------------------------------------------------------------------------
+
+Building the library jar from source code:
+-----------------------------------------
 cd TIMEN; ant
 
 
