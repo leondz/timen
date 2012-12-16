@@ -26,7 +26,7 @@ public class Main {
             //addOption(String opt, boolean hasArg, String description)
             opt.addOption("h", "help", false, "Print this help");
             opt.addOption("l", "lang", true, "Language code (default \"EN\" [English])");
-            opt.addOption("a", "action", true, "Action/s to be done (normalize_tml, obtain knowledge-java from db)");
+            opt.addOption("a", "action", true, "Action/s to be done (normalize_expr [default], normalize_tml, or obtain knowledge-java from db)");
             opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (dct=2012-05-14,output_folder=myfolder,use_nlp=true)");
             opt.addOption("d", "debug", false, "Debug mode: Output errors stack trace (default: disabled)");
 
@@ -35,7 +35,7 @@ public class Main {
             input = cl_options.getArgs();
             HelpFormatter hf = new HelpFormatter();
             if (cl_options.hasOption('h')) {
-                hf.printHelp("TIMEN", opt);
+                hf.printHelp("TIMEN_CONSUMER", opt);
                 System.exit(0);
             } else {
                 if (cl_options.hasOption('d')) {
@@ -67,7 +67,7 @@ public class Main {
 
 
             if (input == null || input.length==0) {
-                hf.printHelp("TIMEN", opt);
+                hf.printHelp("TIMEN_CONSUMER", opt);
                 throw new Exception("Missing input file/s or expressions.");
             }
 
