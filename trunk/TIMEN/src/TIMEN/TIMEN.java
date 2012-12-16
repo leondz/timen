@@ -73,6 +73,13 @@ public class TIMEN implements Closeable {
             // If there is an external database in res use it otherwise try to find it in resources (all-in-one)
             URL url = TIMEN.class.getProtectionDomain().getCodeSource().getLocation();
             String applicationpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
+            if (applicationpath.contains(".jar")) {
+                    // means that TIMEN is used as a library
+                    applicationpath = applicationpath.substring(0, applicationpath.lastIndexOf(File.separator) + 1);
+                    if (applicationpath.endsWith(File.separator+"lib"+File.separator)) {
+                        applicationpath = applicationpath.substring(0, applicationpath.length() - 5);
+                    }
+            }
             if (applicationpath.endsWith("build"+File.separator+"classes")) {
                 applicationpath = applicationpath.substring(0, applicationpath.length() - 14);
             }
