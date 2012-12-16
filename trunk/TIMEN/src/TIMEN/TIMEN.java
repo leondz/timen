@@ -3,78 +3,28 @@ package TIMEN;
 import Knowledge.*;
 import NUMEK.NUMEK;
 import Rules.*;
-import com.almworks.sqlite4java.*;
 import java.io.*;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+//import java.sql.Statement;
 import java.text.*;
 import java.util.*;
-import java.util.logging.*;
 
 /**
  *
  * @author Hector Llorens
  * @since 2012
  */
-public class TIMEN {
+public class TIMEN implements Closeable {
 
-    public static String ApplicationPath = null;
-    public static String program_path = getApplicationPath() + "program-data" + File.separator;
     private Locale locale;
     private NUMEK numek;
-    private SQLiteConnection db;
     private Knowledge knowledge;
-
-    // borrowed from utils basic kit
-    /*
-     * The path in which the application code/class/jar/executable is located
-     */
-    public static String getApplicationPath() {
-        try {
-            String innerpath = ApplicationPath;
-            if (ApplicationPath == null) {
-                //innerpath = FileUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-                //innerpath = FileUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
-            URL url = TIMEN.class.getProtectionDomain().getCodeSource().getLocation();
-            innerpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
-
-                //System.out.println("dfdf "+innerpath);
-                if (innerpath.contains(".jar")) {
-                    innerpath = innerpath.substring(0, innerpath.lastIndexOf(File.separator) + 1);
-                    if (innerpath.endsWith(File.separator+"lib"+File.separator)) {
-                        innerpath = innerpath.substring(0, innerpath.length() - 4);
-                    }
-                    // When you release the final dist you must use a name different than "dist"
-                    // NOOOO YOU MUST say to ant (build.xml) that lib and program-data must be copied to dist
-                    /*if (innerpath.endsWith("dist"+File.separator)) {
-                        innerpath = innerpath.substring(0, innerpath.length() - 5);
-                    }*/
-                } else {
-                    /*if (innerpath.endsWith("/lib/")) {
-                    innerpath = innerpath.substring(0, innerpath.length() - 4);
-                    }*/
-                    if (innerpath.endsWith("build"+File.separator+"classes"+File.separator)) {
-                        innerpath = innerpath.substring(0, innerpath.length() - 14);
-                    }
-                }
-                if (innerpath.matches(".*Utils_BasicKit.*")) {
-                // Hack for debugging (executed from NetBeans... and project added, not compiled)
-                innerpath = "/home/hector/Dropbox/JApplications/TIMEE/";
-                //System.err.println("utils_bk FileUtils.java. This must be solved in some other way.");
-                //System.exit(0);
-                }
-                ApplicationPath = innerpath;
-            }
-            return innerpath;
-        } catch (Exception e) {
-            System.err.println("Errors found (FileUtils):\n\tApplication path not found: " + e.getMessage() + "\n");
-            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                e.printStackTrace(System.err);
-            }
-            return "";
-        }
-    }
-
+    private Connection connection;
 
     public TIMEN() {
         this(Locale.getDefault());
@@ -110,27 +60,55 @@ public class TIMEN {
             }
         }
 
+        
+        String databaseName = String.format("rules_%s.db", locale.getLanguage());
+        // load the driver class for SQLite
         try {
-            // disable sqlite logging
-            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                System.err.println("Using db: " + program_path + "rules_" + l.getLanguage() + ".db");
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        // establish the connection to the database
+        try {
+            // If there is an external database in res use it otherwise try to find it in resources (all-in-one)
+            URL url = TIMEN.class.getProtectionDomain().getCodeSource().getLocation();
+            String applicationpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
+            if (applicationpath.endsWith("build"+File.separator+"classes")) {
+                applicationpath = applicationpath.substring(0, applicationpath.length() - 14);
             }
-            Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.OFF);
-            db = new SQLiteConnection(new File(program_path + "rules_" + l.getLanguage() + ".db"));
-            db.open(true);
-        } catch (SQLiteException ex) {
-            System.err.println("Instantiation SQLiteException: " + ex.getMessage());
+            String dbpath=applicationpath+File.separator+"res"+File.separator+databaseName;
+            //System.out.println(dbpath);
+            if((new File(dbpath)).exists()){
+                // NOTE that if it is a file out of the classpath only on : is used
+                connection = DriverManager.getConnection("jdbc:sqlite:" + "./res"+File.separator+databaseName);
+            }else{
+                connection = DriverManager.getConnection("jdbc:sqlite::resource:" + databaseName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public void close() {
+        knowledge = null;
+        locale = null;
+        numek = null;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     // destructor
+    /**
+     * @deprecated Use {@link #close()} instead. 
+     */
+    @Deprecated
     public void dispose() {
-        knowledge = null;
-        locale = null;
-        numek = null;
-        db.dispose();
-
+      this.close();
     }
+    
     public static String granul_years = "yyyy";
     public static String granul_months = "yyyy-MM";
     public static String granul_days = "yyyy-MM-dd";
@@ -257,31 +235,45 @@ public class TIMEN {
         return locale;
     }
 
-    public ArrayList<Rule> get_rules_from_db(String table, String pattern) {
-        // escape pattern
-        pattern = pattern.replaceAll("'", "");
+    public ArrayList<Rule> get_rules_from_db(String table, String pattern) throws SQLException {
         ArrayList<Rule> rules_found = new ArrayList<Rule>();
-        try {
+        // Unsafe!! it allows sql injection
+        //Statement statement = connection.createStatement();
+        //pattern = pattern.replaceAll("'", ""); // this is too simple and removes '
+        // normally scaping is '' but it may vary among DBMSs, better use a standard way
+        // SOLUTION: PreparedStatement
+        String query = "SELECT * FROM " + table + " where pattern = ?";
+        PreparedStatement ps = connection.prepareStatement (query);
+        ps.setString(1,pattern);
+        //ResultSet resultSet = statement.executeQuery(query);
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            rules_found.add(new Rule(
+                resultSet.getInt("id"),
+                resultSet.getString("pattern"),
+                resultSet.getString("rule_type"),
+                resultSet.getString("rule"),
+                resultSet.getString("rule_condition")));
+                //System.err.println("\t"+st.columnInt(0) + " " + st.columnString(1)+" rule to apply: "+st.columnString(2));
+        }
+        return rules_found;
+
+        //DEPRECATED sqlite4java alternative
+        /* try {
             SQLiteStatement st = db.prepare("SELECT * FROM " + table + " where pattern='" + pattern + "'");
             try {
-                // st.bind(1, minimumQuantity);
                 while (st.step()) {
-                    //orders.add(
                     rules_found.add(new Rule(st.columnInt(0), st.columnString(1), st.columnString(2), st.columnString(3), st.columnString(4)));
-                    //System.err.println("\t"+st.columnInt(0) + " " + st.columnString(1)+" rule to apply: "+st.columnString(2));
-                    //);
                 }
-            } finally {
-                st.dispose();
-            }
+            } finally {    st.dispose();    }
         } catch (Exception e) {
-            System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
+           System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 e.printStackTrace(System.err);
             }
             System.exit(1);
-        }
-        return rules_found;
+        }*/
+
     }
 
     public String apply_rules(ArrayList<Rule> rules_found, String pattern, TIMEX_Instance timex_object) {

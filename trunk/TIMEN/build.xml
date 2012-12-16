@@ -71,6 +71,21 @@
     nbproject/build-impl.xml file. 
 
     -->
-   <copy file="./lib/libsqlite4java-linux-i386.so" todir="./dist/lib"/>
-   <copy file="./lib/libsqlite4java-linux-amd64.so" todir="./dist/lib"/>
+   <!--<copy file="./lib/libsqlite4java-linux-i386.so" todir="./dist/lib"/>
+   <copy file="./lib/libsqlite4java-linux-amd64.so" todir="./dist/lib"/>-->
+   <copy file="./README.TXT" todir="./dist/"/>
+   <copy todir="./dist/res">
+    <fileset dir="./res"/>
+   </copy>
+   
+   <target name="-post-jar" depends="compile">
+	  <property location="./dist-all-in-one" name="dist-all-in-one.dir"/>
+          <mkdir dir="${dist-all-in-one.dir}"/>
+	  <jar destfile="${dist-all-in-one.dir}/TIMEN.jar" >
+	    <fileset dir="${build.classes.dir}"/>
+            <fileset dir="./res" />
+	    <fileset file="README.TXT" />
+	  </jar>
+    </target>
+
 </project>
