@@ -2,7 +2,9 @@ LICENSE
 	AGPL/Apache
 
 AUTHORS
-	Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
+	Original Code:	Hector Llorens, Leon Derczynski
+	Original paper: Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
+	Current code:	Hector Llorens, Leon Derczynski, Steven Bethard
 
 Prerequisites (ONLY IF YOU WANT TO USE THE NLP OPTION):
 ------------------------------------------------------
