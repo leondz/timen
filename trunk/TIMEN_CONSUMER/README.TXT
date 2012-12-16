@@ -4,46 +4,45 @@ LICENSE
 AUTHORS
 	Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
 
-Prerequisites:
--------------
-  Only if you want to use the NLP version you need to:
+Prerequisites (ONLY IF YOU WANT TO USE THE NLP OPTION):
+------------------------------------------------------
 	1) copy the Treetagger program-data/Tretagger/script in the Treetagger folder
 	2) specify the Treetagger path in the program-data/confing.properties
 	3) Remove from Treetagger/lib/english-abberviations     "days."
 
-
-Installation/Building:
----------------------
-cd TIMEN_CONSUMER; ant
-
 Usage:
 -----
-java -jar "/path2jar/TIMEN_CONSUMER.jar" [options]
+	Copy the jar distribution to a folder of your choice.	
+
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" [options]
 
 
 Examples:
 --------
+	Normalize a single expression: this outputs the normalized value
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday"
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday" -ap dct=1999-12-04
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" "Monday" -ap dct=1999-12-04,tense=past
 
-Normalize a single expression: this outputs the normalized value
-java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday"
-java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday" -ap dct=1999-12-04
-java -jar "/path2jar/TIMEN_CONSUMER.jar" "Monday" -ap dct=1999-12-04,tense=past
-
-Normalize file/s: this outputs file/s in the same path in TIMEN-output/ folder with added/updated normalized values
-java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml
-java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
+	Normalize file/s: this outputs file/s in the same path in TIMEN-output/ folder with added/updated normalized values
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
 
 
-For evaluation just  put TimeBank or TBAQ files in a folder and run 
-java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml folder/*.tml
-Then use the evaluation scripts to evaluate KEY-files against TIMEN-output files
-
+	For evaluation just  put TimeBank or TBAQ files in a folder and run 
+	java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml folder/*.tml
+	Then use the evaluation scripts to evaluate KEY-files against TIMEN-output files
 
 
 
 
 Additional instructions for developers:
 ---------------------------------------
+
+Installation/Building:
+---------------------
+cd TIMEN_CONSUMER; ant
+
 
 COMPILING TIMEN GRAMMAR (REMOVE ALREADY INCLUDED IN TIMEN README)
 ---------------------

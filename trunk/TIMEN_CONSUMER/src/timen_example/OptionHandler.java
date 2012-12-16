@@ -95,6 +95,12 @@ public class OptionHandler {
                         use_nlp = null;
                     }
 
+                    /* Set tense parameter */
+                    String tense = getParameter(action_parameters, "tense");
+                    if (tense != null && !tense.equalsIgnoreCase("closest")) {
+                        tense = null;
+                    }
+
                     /* Create an output folder */
                     String output_folder_string = getParameter(action_parameters, "output_folder");
                     if (output_folder_string == null) {
@@ -143,9 +149,12 @@ public class OptionHandler {
                         if (use_nlp != null) {
                             outputfile = getNLPfeatures(input_file, lang);
                         } else {
-                            outputfile = getFeatures(input_file);
+                            if(tense!=null){
+                                outputfile = getFeatures(input_file,tense);
+                            }else{
+                                outputfile = getFeatures(input_file,"omit");
+                            }
                         }
-
                         /* get normalized values -- ids need to be specified*/
                         HashMap<String, String> normalization = contextaware_normalization(outputfile);
                         if (System.getProperty("DEBUG") == null || !System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -180,7 +189,7 @@ public class OptionHandler {
 
     }
 
-    public static File getFeatures(File input_file) {
+    public static File getFeatures(File input_file, String tense) {
         File outputfile = null;
         String dct = null;
         try {
@@ -227,7 +236,7 @@ public class OptionHandler {
                 for (int s = 0; s < current_node.getLength(); s++) {
                     Element element = (Element) current_node.item(s);
                     // write line to file
-                    writer.write(element.getAttribute("tid") + "|" + element.getTextContent().replaceAll("\\s+", "_") + "|omit|" + dct + "\n");
+                    writer.write(element.getAttribute("tid") + "|" + element.getTextContent().replaceAll("\\s+", "_") + "|"+tense+"|" + dct + "\n");
                 }
             } finally {
                 if (writer != null) {

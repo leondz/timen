@@ -20,7 +20,7 @@ xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3">
 
 
 
-	<!--override-->
+	<!--override this copies the librarires and stuff-->
 <!-- target depends="init,compile,-pre-pre-jar,-pre-jar" if="manifest.available+main.class+mkdist.available" name="-do-jar-with-libraries" -->
      <target depends="init,compile,-pre-jar,-post-jar" description="Build JAR." name="jar">
         <property location="${build.classes.dir}" name="build.classes.dir.resolved"/>
@@ -120,15 +120,18 @@ xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3">
     nbproject/build-impl.xml file. 
 
     -->
-   <copy file="./lib/libsqlite4java-linux-i386.so" todir="./dist/lib"/>
+<!--   <copy file="./lib/libsqlite4java-linux-i386.so" todir="./dist/lib"/>
    <copy file="./lib/libsqlite4java-linux-amd64.so" todir="./dist/lib"/>
-
    <copy file="./lib/libsqlite4java-osx.jnilib" todir="./dist/lib"/>
    <copy file="./lib/libsqlite4java-osx-10.4.jnilib" todir="./dist/lib"/>
    <copy file="./lib/libsqlite4java-osx-ppc.jnilib" todir="./dist/lib"/>
    <copy file="./lib/sqlite4java-win32-x64.dll" todir="./dist/lib"/>
-   <copy file="./lib/sqlite4java-win32-x86.dll" todir="./dist/lib"/>
+   <copy file="./lib/sqlite4java-win32-x86.dll" todir="./dist/lib"/>-->
   <copy todir="./dist/program-data">
     <fileset dir="./program-data"/>
   </copy>
+  <copy todir="./dist/res">
+    <fileset dir="./res"/>
+  </copy>  
+  
 </project>
