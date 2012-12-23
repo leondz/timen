@@ -89,7 +89,7 @@ public class TIMEN implements Closeable {
                 // NOTE that if it is a file out of the classpath only on : is used
                 connection = DriverManager.getConnection("jdbc:sqlite:" + "."+File.separator+"res"+File.separator+"rule-bases"+File.separator+databaseName);
             }else{
-                connection = DriverManager.getConnection("jdbc:sqlite::resource:" + databaseName);
+                connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases"+File.separator+databaseName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
