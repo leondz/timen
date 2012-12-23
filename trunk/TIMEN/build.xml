@@ -79,9 +79,9 @@
    </copy>
    
    <target name="-post-jar" depends="compile">
-	  <property location="./dist-all-in-one" name="dist-all-in-one.dir"/>
-          <mkdir dir="${dist-all-in-one.dir}"/>
-	  <jar destfile="${dist-all-in-one.dir}/TIMEN.jar" >
+	  <property location="./dist-ant-all-in-one" name="dist-ant-all-in-one.dir"/>
+          <mkdir dir="${dist-ant-all-in-one.dir}"/>
+	  <jar destfile="${dist-ant-all-in-one.dir}/TIMEN.jar" >
 	    <fileset dir="${build.classes.dir}"/>
             <fileset dir="./res" />
 	    <fileset file="README.TXT" />
