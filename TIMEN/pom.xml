@@ -6,7 +6,7 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>TIMEN</name>
-	<description>Converts temporal expressions in text to their normalized values in TimeML (an extension of ISO 8601)</description>
+	<description>Converts text temporal expressions into their normalized values (standard: ISO 8601 extension used in TimeML)</description>
 	<url>http://www.timen.org/</url>
 	<licenses>
 		<license>
@@ -45,6 +45,8 @@
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
+	
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -53,7 +55,24 @@
 				<directory>res</directory>
 			</resource>
 		</resources>
+		<plugins>
+		<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-gpg-plugin</artifactId>
+		<executions>
+		  <execution>
+		    <id>sign-artifacts</id>
+		    <phase>verify</phase>
+		    <goals>
+		      <goal>sign</goal>
+		    </goals>
+		  </execution>
+		</executions>
+		</plugin>
+		</plugins>		
 	</build>
+	
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.antlr</groupId>
