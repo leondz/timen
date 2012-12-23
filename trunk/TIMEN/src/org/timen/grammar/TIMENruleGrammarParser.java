@@ -1,7 +1,7 @@
 // $ANTLR 3.4 TIMENruleGrammar.g 2012-03-09 16:33:47
 
-    package grammar;
-    import TIMEN.*;
+    package org.timen.grammar;
+    import org.timen.*;
 
 
 import org.antlr.runtime.*;

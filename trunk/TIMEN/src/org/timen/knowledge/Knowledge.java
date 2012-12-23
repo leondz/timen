@@ -1,4 +1,4 @@
-package Knowledge;
+package org.timen.knowledge;
 
 import java.text.*;
 import java.util.*;

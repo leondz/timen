@@ -1,5 +1,5 @@
 
-package Rules;
+package org.timen.rules;
 
 /**
  *

@@ -1,5 +1,5 @@
 // $ANTLR 3.4 TIMENruleGrammar.g 2012-03-09 16:33:48
-package grammar;
+package org.timen.grammar;
 
 import org.antlr.runtime.*;
 import java.util.Stack;

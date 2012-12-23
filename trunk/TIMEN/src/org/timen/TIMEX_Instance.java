@@ -1,6 +1,6 @@
-package TIMEN;
+package org.timen;
 
-import TIMEN.TIMEXCalendarRef;
+import org.timen.TIMEXCalendarRef;
 
 /**
  *

@@ -1,4 +1,4 @@
-package TIMEN;
+package org.timen;
 
 import java.text.*;
 import java.util.*;
