@@ -1,7 +1,7 @@
-package Rules;
+package org.timen.rules;
 
-import TIMEN.*;
-import grammar.*;
+import org.timen.*;
+import org.timen.grammar.*;
 import java.io.*;
 import org.antlr.runtime.*;
 
@@ -17,11 +17,9 @@ public class Rule_Engine {
      * The language has different variables and keywords to read
      *
      * @param rule
-     * @param normText
-     * @param tense
-     * @param dct
-     * @param ref_val
-     * @return
+     * @param timen_object
+     * @param timex_object
+     * @return String consisting of the normalized value for the timex_object
      */
     public static String apply(Rule rule, TIMEN timen_object, TIMEX_Instance timex_object) {
         String result = "";

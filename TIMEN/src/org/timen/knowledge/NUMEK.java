@@ -1,4 +1,4 @@
-package NUMEK;
+package org.timen.knowledge;
 
 import java.util.*;
 
@@ -336,7 +336,7 @@ public class NUMEK {
     /**
      * Returns value of a fraction (e.g., 1/2 --> 0.5) or the sum of a number and a fraction (e.g., 2 1/2 --> 2.5).
      *
-     * @param number (separator is whitespace " ")
+     * @param snumber string number (separator is whitespace " ")
      *
      * @return result
      */

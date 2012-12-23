@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import TIMEN.TIMEN;
 
 public class TIMENTest {
 

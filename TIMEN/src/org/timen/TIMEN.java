@@ -1,8 +1,8 @@
-package TIMEN;
+package org.timen;
 
-import Knowledge.*;
-import NUMEK.NUMEK;
-import Rules.*;
+import org.timen.knowledge.*;
+import org.timen.knowledge.NUMEK;
+import org.timen.rules.*;
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
@@ -41,7 +41,7 @@ public class TIMEN implements Closeable {
         Class c;
         try {
             String lang = l.getLanguage().toUpperCase();
-            c = Class.forName("Knowledge.Knowledge_" + lang);
+            c = Class.forName("org.timen.knowledge.Knowledge_" + lang);
             knowledge = (Knowledge) c.getConstructor(Locale.class).newInstance(locale);
         } catch (Exception e) {
             System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
@@ -52,7 +52,7 @@ public class TIMEN implements Closeable {
             // try taking default
             try {
                 locale=Locale.getDefault();
-                knowledge = (Knowledge) (Class.forName("Knowledge.Knowledge_EN")).getConstructor(Locale.class).newInstance(locale);
+                knowledge = (Knowledge) (Class.forName("org.timen.knowledge.Knowledge_EN")).getConstructor(Locale.class).newInstance(locale);
             } catch (Exception ex) {
                 System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + ex.getMessage() + "\n");
                 e.printStackTrace(System.err);
@@ -127,7 +127,7 @@ public class TIMEN implements Closeable {
      * Simplified version of normalize (no tense, no context)
      * @param expr          the temporal expression text (multiwords use "_" for concat)
      * @param dct           date creation time
-     * @return
+     * @return normalization (value)
      */
     public String normalize(String expr, String dct) {
         return this.normalize(expr, dct, "omit", dct);
@@ -138,8 +138,8 @@ public class TIMEN implements Closeable {
      * @param expr          the temporal expression text (multiwords use "_" for concat)
      * @param dct           date creation time
      * @param tense         sentence tense (optional)
-     * @param ref_val       reference point - last time ref (optional)
-     * @return
+     * @param reftime       reference point - last time ref (optional)
+     * @return normalization (value)
      */
     public String normalize(String expr, String dct, String tense, String reftime) {
         /*      
@@ -403,7 +403,7 @@ public class TIMEN implements Closeable {
     /**
      * Returns a 4 digit year guessed from a less than 4 digit representation.
      * @param year
-     * @return
+     * @return string consisting of a 4-digit year
      */
     public static String to_year(String year, TIMEX_Instance timex_object) {
         year = year.trim();
@@ -785,7 +785,7 @@ public class TIMEN implements Closeable {
      * Returns a valid TimeML period format
      * @param num
      * @param TUnit
-     * @return
+     * @return String (valid TimeML period format)
      */
     public String to_period(String num, String TUnit) {
         String ret = "";
@@ -807,7 +807,7 @@ public class TIMEN implements Closeable {
      * @param reference
      * @param granularity
      * @param quantity
-     * @return
+     * @return String (operated reference)
      */
     public String add(String reference, String granularity, int quantity, TIMEX_Instance timex_object) {
         Calendar cal = timex_object.dct.getCalendar();
@@ -906,7 +906,7 @@ public class TIMEN implements Closeable {
      * @param reference
      * @param weekday
      * @param quantity
-     * @return
+     * @return String (operated reference)
      */
     public String add_weekday(String reference, String weekday, int quantity, TIMEX_Instance timex_object) {
         Calendar cal = timex_object.dct.getCalendar();
@@ -1259,7 +1259,7 @@ public class TIMEN implements Closeable {
     /**
      * Returns an ISO8601 without abbreviations such as WI, Q1, SU, etc. then it can be represented as an exact GregorianCaledar reference
      * @param date
-     * @return
+     * @return String (ISO 8601 without TimeML abbrev like WE, SU, etc.)
      */
     public static String ISOclean(String date) {
         if (date.matches("(?i)[0-9]{4}-(WI|SP|SU|AU|FA|Q(1|2|3|4)|H(1|2))")) {
@@ -1312,15 +1312,14 @@ public class TIMEN implements Closeable {
     }
 
     /**
-     * DON'T DO THIS NOW. Compare 2 dates to a reference and return the closest one
+     * TODO: DON'T DO THIS NOW. Compare 2 dates to a reference and return the closest one
      * @param key
      * @param a
      * @param b
-     * @return
+     * @return closest date
      */
     public static Date getClosestDate(Date key, Date a, Date b){
         Date ret=a;
-
         return a;
     }
 
