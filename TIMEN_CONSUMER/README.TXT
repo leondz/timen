@@ -18,6 +18,9 @@ Usage:
 
 	java -jar "/path2jar/TIMEN_CONSUMER.jar" [options]
 
+	If you want to override the rulebases in cluded in TIMEN.jar, you have to put your own in rule-base for each language in res/rule-bases/*.db
+
+
 
 Examples:
 --------
