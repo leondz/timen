@@ -86,7 +86,7 @@ public class TIMEN implements Closeable {
             String dbpath=applicationpath+File.separator+"res"+File.separator+File.separator+"rule-bases"+File.separator+databaseName;
             //System.out.println(dbpath);
             if((new File(dbpath)).exists()){
-                // NOTE that if it is a file out of the classpath only on : is used
+                // NOTE that if there is a rule-base out of the classpath it will be used (override the  one included in timen jar)
                 connection = DriverManager.getConnection("jdbc:sqlite:" + "."+File.separator+"res"+File.separator+"rule-bases"+File.separator+databaseName);
             }else{
                 connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases"+File.separator+databaseName);
