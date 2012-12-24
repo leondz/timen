@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.timen</groupId>
-	<artifactId>timen</artifactId>
-	<version>1.0.0</version>
+	<modelVersion>4.0.0</modelVersion> <!--maven model type (see schema above) -->
+	<groupId>org.timen</groupId>	   <!-- base package uri -->
+	<artifactId>timen</artifactId>     <!-- the project name (id) -->
+	<version>1.0.0-SNAPSHOT</version>  <!-- version. NOTE: must be -SNAPSHOT. Maven automatically removes that when release:prepare/perform -->
 	<packaging>jar</packaging>
-	<name>TIMEN</name>
+	<name>TIMEN</name>		   <!-- Full name (not id) -->
 	<description>Converts text temporal expressions into their normalized values (standard: ISO 8601 extension used in TimeML)</description>
 	<url>http://www.timen.org/</url>
 	<licenses>
@@ -18,7 +18,7 @@
 			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
 		</license>
 	</licenses>
-	<scm>
+	<scm>  <!-- source code management -->
 		<url>https://timen.googlecode.com/svn/trunk/TIMEN</url>
 		<connection>scm:svn:http://timen.googlecode.com/svn/trunk/TIMEN</connection>
 		<developerConnection>scm:svn:https://timen.googlecode.com/svn/trunk/TIMEN</developerConnection>
@@ -35,15 +35,15 @@
 			<email>leon@dcs.shef.ac.uk</email>
 		</developer>
 	</developers>
-	<parent>
+	<parent> <!-- central repository -->
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
 	
 	
@@ -56,19 +56,22 @@
 			</resource>
 		</resources>
 		<plugins>
-		<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-gpg-plugin</artifactId>
-		<executions>
-		  <execution>
-		    <id>sign-artifacts</id>
-		    <phase>verify</phase>
-		    <goals>
-		      <goal>sign</goal>
-		    </goals>
-		  </execution>
-		</executions>
-		</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>
+			<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-gpg-plugin</artifactId>
+			<executions>
+			  <execution>
+			    <id>sign-artifacts</id>
+			    <phase>verify</phase>
+			    <goals>
+			      <goal>sign</goal>
+			    </goals>
+			  </execution>
+			</executions>
+			</plugin>
 		</plugins>		
 	</build>
 	
