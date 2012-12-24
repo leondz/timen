@@ -1,7 +1,7 @@
 package timen_example;
 
 import FeatureBuilder.*;
-import TIMEN.TIMEN;
+import org.timen.TIMEN;
 import TimeML_BasicKit.TML_file_utils;
 import java.io.*;
 import java.text.*;
