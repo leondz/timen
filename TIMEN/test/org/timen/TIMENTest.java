@@ -21,6 +21,7 @@ public class TIMENTest {
     assertEquals("2010-03", timen.normalize("march 2010", documentCreationTime));
     assertEquals("PRESENT_REF", timen.normalize("currently", documentCreationTime));
     assertEquals("2011", timen.normalize("last year", documentCreationTime));
+    assertEquals("2012-07", timen.normalize("five month now", documentCreationTime));
     timen.close();
   }
 
