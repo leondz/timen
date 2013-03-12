@@ -51,7 +51,7 @@ public class TIMEN implements Closeable {
             }
             // try taking default
             try {
-                locale=Locale.getDefault();
+                locale = Locale.getDefault();
                 knowledge = (Knowledge) (Class.forName("org.timen.knowledge.Knowledge_EN")).getConstructor(Locale.class).newInstance(locale);
             } catch (Exception ex) {
                 System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + ex.getMessage() + "\n");
@@ -60,7 +60,7 @@ public class TIMEN implements Closeable {
             }
         }
 
-        
+
         String databaseName = String.format("rules_%s.db", locale.getLanguage());
         // load the driver class for SQLite
         try {
@@ -74,28 +74,28 @@ public class TIMEN implements Closeable {
             URL url = TIMEN.class.getProtectionDomain().getCodeSource().getLocation();
             String applicationpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
             if (applicationpath.contains(".jar")) {
-                    // means that TIMEN is used as a library
-                    applicationpath = applicationpath.substring(0, applicationpath.lastIndexOf(File.separator) + 1);
-                    if (applicationpath.endsWith(File.separator+"lib"+File.separator)) {
-                        applicationpath = applicationpath.substring(0, applicationpath.length() - 5);
-                    }
+                // means that TIMEN is used as a library
+                applicationpath = applicationpath.substring(0, applicationpath.lastIndexOf(File.separator) + 1);
+                if (applicationpath.endsWith(File.separator + "lib" + File.separator)) {
+                    applicationpath = applicationpath.substring(0, applicationpath.length() - 5);
+                }
             }
-            if (applicationpath.endsWith("build"+File.separator+"classes")) {
+            if (applicationpath.endsWith("build" + File.separator + "classes")) {
                 applicationpath = applicationpath.substring(0, applicationpath.length() - 14);
             }
-            String dbpath=applicationpath+File.separator+"res"+File.separator+File.separator+"rule-bases"+File.separator+databaseName;
+            String dbpath = applicationpath + File.separator + "res" + File.separator + File.separator + "rule-bases" + File.separator + databaseName;
             //System.out.println(dbpath);
-            if((new File(dbpath)).exists()){
+            if ((new File(dbpath)).exists()) {
                 // NOTE that if there is a rule-base out of the classpath it will be used (override the  one included in timen jar)
-                connection = DriverManager.getConnection("jdbc:sqlite:" + "."+File.separator+"res"+File.separator+"rule-bases"+File.separator+databaseName);
-            }else{
-                connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases"+File.separator+databaseName);
+                connection = DriverManager.getConnection("jdbc:sqlite:" + "." + File.separator + "res" + File.separator + "rule-bases" + File.separator + databaseName);
+            } else {
+                connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases" + File.separator + databaseName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    
+
     public void close() {
         knowledge = null;
         locale = null;
@@ -113,9 +113,8 @@ public class TIMEN implements Closeable {
      */
     @Deprecated
     public void dispose() {
-      this.close();
+        this.close();
     }
-    
     public static String granul_years = "yyyy";
     public static String granul_months = "yyyy-MM";
     public static String granul_days = "yyyy-MM-dd";
@@ -250,35 +249,35 @@ public class TIMEN implements Closeable {
         // normally scaping is '' but it may vary among DBMSs, better use a standard way
         // SOLUTION: PreparedStatement
         String query = "SELECT * FROM " + table + " where pattern = ?";
-        PreparedStatement ps = connection.prepareStatement (query);
-        ps.setString(1,pattern);
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setString(1, pattern);
         //ResultSet resultSet = statement.executeQuery(query);
         ResultSet resultSet = ps.executeQuery();
         while (resultSet.next()) {
             rules_found.add(new Rule(
-                resultSet.getInt("id"),
-                resultSet.getString("pattern"),
-                resultSet.getString("rule_type"),
-                resultSet.getString("rule"),
-                resultSet.getString("rule_condition")));
-                //System.err.println("\t"+st.columnInt(0) + " " + st.columnString(1)+" rule to apply: "+st.columnString(2));
+                    resultSet.getInt("id"),
+                    resultSet.getString("pattern"),
+                    resultSet.getString("rule_type"),
+                    resultSet.getString("rule"),
+                    resultSet.getString("rule_condition")));
+            //System.err.println("\t"+st.columnInt(0) + " " + st.columnString(1)+" rule to apply: "+st.columnString(2));
         }
         return rules_found;
 
         //DEPRECATED sqlite4java alternative
         /* try {
-            SQLiteStatement st = db.prepare("SELECT * FROM " + table + " where pattern='" + pattern + "'");
-            try {
-                while (st.step()) {
-                    rules_found.add(new Rule(st.columnInt(0), st.columnString(1), st.columnString(2), st.columnString(3), st.columnString(4)));
-                }
-            } finally {    st.dispose();    }
+        SQLiteStatement st = db.prepare("SELECT * FROM " + table + " where pattern='" + pattern + "'");
+        try {
+        while (st.step()) {
+        rules_found.add(new Rule(st.columnInt(0), st.columnString(1), st.columnString(2), st.columnString(3), st.columnString(4)));
+        }
+        } finally {    st.dispose();    }
         } catch (Exception e) {
-           System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
-            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                e.printStackTrace(System.err);
-            }
-            System.exit(1);
+        System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
+        if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+        e.printStackTrace(System.err);
+        }
+        System.exit(1);
         }*/
 
     }
@@ -302,8 +301,8 @@ public class TIMEN implements Closeable {
                 if (rules_found.size() == 1) {
                     //apply
                     norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
-                    if(norm_value==null){
-                        throw new Exception("[ERROR] Malformed rule in the used rules_xx.db: "+rules_found.get(0).get_rule());
+                    if (norm_value == null) {
+                        throw new Exception("[ERROR] Malformed rule in the used rules_xx.db: " + rules_found.get(0).get_rule());
                     }
                     if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                         System.err.println("result: " + norm_value);
@@ -374,6 +373,9 @@ public class TIMEN implements Closeable {
                         if (select) {
                             //apply
                             norm_value = Rule_Engine.apply(rule, this, timex_object);
+                            if (norm_value == null) {
+                                throw new Exception("[ERROR] Malformed rule in the used rules_xx.db: " + rules_found.get(0).get_rule());
+                            }
                             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                                 System.err.println("result (rule " + rule.get_id() + "): " + norm_value);
                             }
@@ -522,15 +524,15 @@ public class TIMEN implements Closeable {
                 if (date.matches("[0-9]+s")) {
                     switch (date.length()) {
                         case 3:
-                            int cc=Integer.parseInt(timex_object.dct.getYear().substring(0, 2));
-                            int cdec=Integer.parseInt(timex_object.dct.getYear().substring(2, 3));
-                            int ddec=Integer.parseInt(date.substring(1, 2));
-                            if(cdec==9 && ddec==0 || (cdec==0 || ddec>1)){
+                            int cc = Integer.parseInt(timex_object.dct.getYear().substring(0, 2));
+                            int cdec = Integer.parseInt(timex_object.dct.getYear().substring(2, 3));
+                            int ddec = Integer.parseInt(date.substring(1, 2));
+                            if (cdec == 9 && ddec == 0 || (cdec == 0 || ddec > 1)) {
                                 cc--;
                             }
-                            return ""+cc+""+ddec;
-                            //iso = to_year(date.substring(0, 2), timex_object);
-                            //return iso.substring(0, 3);
+                            return "" + cc + "" + ddec;
+                        //iso = to_year(date.substring(0, 2), timex_object);
+                        //return iso.substring(0, 3);
                         case 5:
                             return date.substring(0, 3);
                         default:
@@ -1322,10 +1324,8 @@ public class TIMEN implements Closeable {
      * @param b
      * @return closest date
      */
-    public static Date getClosestDate(Date key, Date a, Date b){
-        Date ret=a;
+    public static Date getClosestDate(Date key, Date a, Date b) {
+        Date ret = a;
         return a;
     }
-
-
 }
