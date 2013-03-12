@@ -302,6 +302,9 @@ public class TIMEN implements Closeable {
                 if (rules_found.size() == 1) {
                     //apply
                     norm_value = Rule_Engine.apply(rules_found.get(0), this, timex_object);
+                    if(norm_value==null){
+                        throw new Exception("[ERROR] Malformed rule in the used rules_xx.db: "+rules_found.get(0).get_rule());
+                    }
                     if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                         System.err.println("result: " + norm_value);
                     }
@@ -388,8 +391,9 @@ public class TIMEN implements Closeable {
             System.err.println("Errors found (" + this.getClass().getSimpleName() + "):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 e.printStackTrace(System.err);
+                System.exit(1);
             }
-            System.exit(1);
+            return "default_norm";
         }
         return norm_value;
 
