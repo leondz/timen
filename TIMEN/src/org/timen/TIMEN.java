@@ -814,8 +814,8 @@ public class TIMEN implements Closeable {
         } else {
             ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
         }
-        ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
 
+       
         return ret;
     }
 
