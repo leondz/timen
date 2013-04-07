@@ -18,9 +18,9 @@
                 </license>
         </licenses>
         <scm>  <!-- source code management -->
-                <url>https://timen.googlecode.com/svn/trunk/TIMEN</url>
-                <connection>scm:svn:http://timen.googlecode.com/svn/trunk/TIMEN</connection>
-                <developerConnection>scm:svn:https://timen.googlecode.com/svn/trunk/TIMEN</developerConnection>
+                <url>https://timen.googlecode.com/svn/trunk/</url>
+                <connection>scm:svn:http://timen.googlecode.com/svn/trunk/</connection>
+                <developerConnection>scm:svn:https://timen.googlecode.com/svn/trunk/</developerConnection>
         </scm>
         <developers>
                 <developer>
