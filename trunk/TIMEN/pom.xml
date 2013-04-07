@@ -2,7 +2,7 @@
         <modelVersion>4.0.0</modelVersion> <!--maven model type (see schema above) -->
         <groupId>org.timen</groupId>       <!-- base package uri -->
         <artifactId>timen</artifactId>     <!-- the project name (id) -->
-        <version>1.0.2-SNAPSHOT</version>  <!-- version. NOTE: must be -SNAPSHOT. Maven automatically removes that when release:prepare/perform -->
+        <version>1.0.3-SNAPSHOT</version>  <!-- version. NOTE: must be -SNAPSHOT. Maven automatically removes that when release:prepare/perform -->
         <packaging>jar</packaging>
         <name>TIMEN</name>                 <!-- Full name (not id) -->
         <description>Converts text temporal expressions into their normalized values (standard: ISO 8601 extension used in TimeML)</description>
