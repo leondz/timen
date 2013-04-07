@@ -40,6 +40,18 @@ public class Knowledge_EN extends Knowledge {
         TUnits.put("hour", "hour");
         TUnits.put("minute", "minute");
         TUnits.put("second","second");
+        TUnits.put("millennia", "millennium");
+        TUnits.put("centuries", "century");
+        TUnits.put("decades", "decade");
+        TUnits.put("years", "year");
+        TUnits.put("semesters", "semester");
+        TUnits.put("quarters", "quarter"); // ambiguous
+        TUnits.put("months", "month");
+        TUnits.put("weeks", "week");
+        TUnits.put("days", "day");
+        TUnits.put("hours", "hour");
+        TUnits.put("minutes", "minute");
+        TUnits.put("seconds","second");
 
         decades = new HashMap<String, Integer>();
         decades.put("twenties", 192);

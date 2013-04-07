@@ -795,14 +795,25 @@ public class TIMEN implements Closeable {
      */
     public String to_period(String num, String TUnit) {
         String ret = "";
-        if (TUnit.matches("(hour|minute|second)")) {
+        if (TUnit.matches("(hour|minute|second)(s)?")) {
             ret += "T";
         }
 
         // must translate e.g. 120 min into 2h?? probably not... just leave it as it is
         // knowledge main file needs TUnit equivalence relations...
+        // OTHER LANGS TUNITS ARE IN KNOWLEDE FILES
 
         ret += num;
+        String punit = knowledge.TUnits.get(TUnit).substring(0, 3).toUpperCase();
+        if (punit.matches("(DEC|CEN|MIL)")) {
+            punit = knowledge.TUnits.get(TUnit).substring(0, 2).toUpperCase();
+            if (punit.equals("MI")) {
+                punit = "ML";
+            }
+            ret += punit;
+        } else {
+            ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
+        }
         ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
 
         return ret;

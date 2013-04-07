@@ -39,6 +39,18 @@ public class Knowledge_ES extends Knowledge {
         TUnits.put("hora", "hour");
         TUnits.put("minuto", "minute");
         TUnits.put("segundo","second");
+        TUnits.put("milenios", "millennium");
+        TUnits.put("siglos", "century");
+        TUnits.put("décadas", "decade");
+        TUnits.put("años", "year");
+        TUnits.put("semestres", "semester");
+        TUnits.put("trimestres", "quarter"); // ambiguous...
+        TUnits.put("meses", "month");
+        TUnits.put("semanas", "week");
+        TUnits.put("días", "day");
+        TUnits.put("horas", "hour");
+        TUnits.put("minutos", "minute");
+        TUnits.put("segundos","second");
 
 
         decades = new HashMap<String, Integer>();
