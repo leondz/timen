@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TimeML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://timeml.org/timeMLdocs/TimeML_1.2.1.xsd">
+
+
+<DOCID> AFP_ENG_20070814.0534.LDC2009T13 </DOCID>
+<DCT><TIMEX3 temporalFunction="false" functionInDocument="CREATION_TIME" value="2007-08-14" tid="t0" type="DATE">2007-08-14</TIMEX3></DCT>
+
+
+
+<TEXT>
+
+Germany's economy grew by a lower-than- expected rate of 0.3
+percent in the <TIMEX3 value="2007-Q2" tid="t6" type="DATE">second quarter</TIMEX3> , compared with growth of 0.5
+percent in the <TIMEX3 value="2007-Q1" tid="t7" type="DATE">previous quarter</TIMEX3> , official figures showed <TIMEX3 value="2007-08-14" tid="t4" type="DATE">Tuesday</TIMEX3> .
+
+
+It was the slowest growth since <TIMEX3 value="XXXX-Q4" tid="t1" type="DATE">the last quarter</TIMEX3> of <TIMEX3 value="2005" tid="t3" type="DATE">2005</TIMEX3> , the
+federal statistics office said in a statement.
+
+</TEXT>
+
+
+
+</TimeML>

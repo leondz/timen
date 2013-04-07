@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TimeML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://timeml.org/timeMLdocs/TimeML_1.2.1.xsd">
+
+
+<DOCID> LTW_ENG_20070825.0054.LDC2009T13 </DOCID>
+<DCT><TIMEX3 value="2007-08-14" functionInDocument="CREATION_TIME" tid="t0" type="DATE">2007-08-14</TIMEX3></DCT>
+
+
+
+<TEXT>
+
+A Los Angeles Times   article on new treatments for Crohn's
+disease said the experimental drug Cimzia  needed to be taken
+only <TIMEX3 value="P2M" tid="t1" type="SET" quant="every other">every other month</TIMEX3> . It is taken every <TIMEX3 value="P4W" tid="t3" type="SET" quant="every">four weeks</TIMEX3> .
+
+</TEXT>
+
+
+
+</TimeML>

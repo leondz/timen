@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TimeML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://timeml.org/timeMLdocs/TimeML_1.2.1.xsd">
+
+
+<DOCID> APW_ENG_20080505.0727.LDC2009T13 </DOCID>
+<DCT><TIMEX3 temporalFunction="false" functionInDocument="CREATION_TIME" value="2008-05-05" tid="t0" type="DATE">2008-05-05</TIMEX3></DCT>
+
+
+
+<TEXT>
+
+CHICAGO <TIMEX3 value="2008-05-05T16:51:57" tid="t13" type="TIME">2008-05-05 16:51:57 UTC</TIMEX3>
+
+
+The Chicago Symphony Orchestra Association named Italian maestro
+Riccardo Muti on <TIMEX3 value="2008-05-05" tid="t3" type="DATE">Monday</TIMEX3> as the next music director of the CSO,
+the 10th conductor to hold the prestigious post.
+
+
+CSO Association President Deborah Card announced that Muti, 66,
+had signed a <TIMEX3 value="P5Y" tid="t29" type="DURATION">five-year</TIMEX3> contract to serve as music director
+beginning in <TIMEX3 value="2010-09" tid="t1" type="DATE">September</TIMEX3> of the <TIMEX3 value="2010" tid="t37" type="DATE">2010</TIMEX3> - <TIMEX3 value="2011" tid="t38" type="DATE">2011</TIMEX3> <TIMEX3 value="PXM" tid="t30" type="DURATION">season</TIMEX3>. The post has been  
+vacant since Daniel Barenboim retired in <TIMEX3 value="2006" tid="t5" type="DATE">2006</TIMEX3> .
+
+
+Under the terms of the contract, Muti will conduct a minimum of
+<TIMEX3 value="P10W" tid="t8" type="DURATION">10 weeks</TIMEX3> of CSO subscription concerts <TIMEX3 value="P1Y" tid="t31" type="SET" quant="EACH">each season</TIMEX3> , plus lead the
+orchestra in domestic and international tours.
+
+
+As music director designate, Muti will lead the CSO and its
+chorus in performances of the Verdi Requiem <TIMEX3 value="2009-01-15" tid="t2" type="DATE">next Jan. 15</TIMEX3> , <TIMEX3 value="2009-11-16" tid="t32" type="DATE" anchorTimeID="t2">16</TIMEX3> and
+<TIMEX3 value="2009-11-17" tid="t33" type="DATE" anchorTimeID="t2">17</TIMEX3> , Card said.
+
+
+Muti, a native of Naples, first led the CSO as a guest conductor
+at the Ravinia Festival in <TIMEX3 value="1973" tid="t16" type="DATE">1973</TIMEX3> , but didn't return to Chicago
+until <TIMEX3 value="2007" tid="t12" type="DATE">last year</TIMEX3> . Rumors that he was being considered for the top
+post began circulating after he led the orchestra in a sold-out
+opening night gala for the <TIMEX3 value="2007" tid="t34" type="DATE">2007</TIMEX3> - <TIMEX3 value="2008" tid="t35" type="DATE">2008</TIMEX3> <TIMEX3 value="PXM" tid="t36" type="DURATION">season</TIMEX3> and later a
+triumphant European tour.
+
+
+"I had the experience of conducting this fine orchestra <TIMEX3 value="2007" tid="t14" type="DATE">last
+year</TIMEX3> . Making music with these fine musicians was fantastic," Muti
+told The Associated Press by telephone from Salzburg, Austria,
+where he signed the Chicago contract while preparing for the
+Salzburg Whitsun Baroque Festival, a brief <TIMEX3 value="XXXX-SP" tid="t6" type="DATE">spring</TIMEX3> adjunct to the
+main <TIMEX3 value="XXXX-SU" tid="t21" type="DATE">summer</TIMEX3> festival.
+
+
+Muti said he had decided <TIMEX3 value="PAST_REF" tid="t17" type="DATE">several years ago</TIMEX3> not to make any long-
+term conducting commitments, but began re-examining that decision
+after the CSO European tour.
+
+
+"The atmosphere was so wonderful that I changed my mind," he
+said.
+
+
+Card, also in Salzburg, said she was delighted that Muti accepted
+the post <TIMEX3 value="PAST_REF" tid="t20" type="DATE">once</TIMEX3> held by such luminaries as the late Fritz Reiner
+and Sir Georg Solti.
+
+
+"To imagine, he hadn't come to us in <TIMEX3 value="P34Y" tid="t9" type="DURATION">34 years</TIMEX3> , and <TIMEX3 value="PRESENT_REF" tid="t4" type="DATE">now</TIMEX3> this,"
+Card said. "I'm ecstatic, and so are all the musicians and staff
+in Chicago."
+
+
+Muti first came to the attention of critics in <TIMEX3 value="1967" tid="t10" type="DATE">1967</TIMEX3> when he won a
+major competition for conductors in Milan. He soon was appointed
+to important positions in Florence and London. He has been a
+regular guest conductor at the Salzburg Festival since <TIMEX3 value="1971" tid="t11" type="DATE">1971</TIMEX3> , and
+is regarded by many critics as an outstanding Mozart interpreter.
+
+
+In the U.S., Muti is best known for his work as music director of
+the Philadelphia Orchestra from <TIMEX3 value="1980" tid="t7" type="DATE">1980</TIMEX3> to <TIMEX3 value="1992" tid="t19" type="DATE">1992</TIMEX3> . During his tenure
+there, traditionalists objected to his deliberate stripping away
+of the lush high-Romantic "Philadelphia sound" made famous by the
+late Leopold Stokowski and Eugene Ormandy. Supporters, though,
+praised Muti's leaner sound and said he often came closer to
+composers' original concepts.
+
+
+Muti's most prestigious appointment, as music director of Milan's
+La Scala, began in <TIMEX3 value="1986" tid="t15" type="DATE">1986</TIMEX3> and ended when he resigned in <TIMEX3 value="2005-04" tid="t22" type="DATE">April 2005</TIMEX3>
+amid bitter controversy after artistic and programming
+differences with the opera house's former general manager, Carlo
+Fontana, led to open conflict with the musicians after Fontana
+was dismissed.
+
+
+------
+
+
+On the Net:
+
+</TEXT>
+
+
+
+</TimeML>
