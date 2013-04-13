@@ -1137,11 +1137,15 @@ public class TIMEN implements Closeable {
             cal.setTime(refdate);
             cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month)+1);
             cal.set(GregorianCalendar.DAY_OF_MONTH, -1);
+            Date bug=cal.getTime(); // BUG: Three consecutive sets without a get make the 2nd set useless
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
             int rmonth = cal.get(GregorianCalendar.MONTH);
+            //System.out.println(cal.getTime());
             // if month is different than the provided (not greater because could be december-january), then substract one week
             if(rmonth!=knowledge.Yearmonths.get(month))
 	            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+            //System.out.println(cal.getTime());
+
         } catch (Exception e) {
             System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
