@@ -1096,6 +1096,65 @@ public class TIMEN implements Closeable {
         return formatter.format(cal.getTime());
     }
 
+    public String date_weeknum_weekday_month(String reference, String num, String weekday, String month, TIMEX_Instance timex_object) {
+        Calendar cal = new GregorianCalendar();
+        Date refdate = timex_object.dct.getCalendar().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
+        try {
+            if (reference.equalsIgnoreCase("REFTIME")) {
+                refdate = timex_object.reftime.getCalendar().getTime();
+            }
+            cal.setTime(refdate);
+            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            cal.set(GregorianCalendar.DAY_OF_MONTH, 0);
+            int dayofweekday1 = cal.get(GregorianCalendar.DAY_OF_WEEK);
+            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            // if first weekday of month is lower or equal than the given weekday, then substract one week (first (1) Monday will add already 1 week)
+            if(dayofweekday1<=knowledge.Weekdays.get(weekday))
+	            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+            cal.add(GregorianCalendar.WEEK_OF_YEAR, Integer.parseInt(num));
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+
+        return formatter.format(cal.getTime());
+    }
+
+
+
+    public String date_last_weekday_month(String reference, String weekday, String month, TIMEX_Instance timex_object) {
+        Calendar cal = new GregorianCalendar();
+        Date refdate = timex_object.dct.getCalendar().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
+        try {
+            if (reference.equalsIgnoreCase("REFTIME")) {
+                refdate = timex_object.reftime.getCalendar().getTime();
+            }
+            cal.setTime(refdate);
+            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month)+1);
+            cal.set(GregorianCalendar.DAY_OF_MONTH, -1);
+            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            int rmonth = cal.get(GregorianCalendar.MONTH);
+            // if month is different than the provided (not greater because could be december-january), then substract one week
+            if(rmonth!=knowledge.Yearmonths.get(month))
+	            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+        } catch (Exception e) {
+            System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+                System.exit(1);
+            }
+        }
+
+        return formatter.format(cal.getTime());
+    }
+
+
+
     /*******************************************************************
      *  NORMALIZING TEXT INPUT
      ******************************************************************/

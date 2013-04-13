@@ -1,9 +1,9 @@
 grammar TIMENruleGrammar;
 
-@lexer::header{package grammar;}
+@lexer::header{package org.timen.grammar;}
 @parser::header{
-    package grammar;
-    import TIMEN.*;
+    package org.timen.grammar;
+    import org.timen.*;
 }
 
 /*------------------------------------------------------------------
@@ -31,6 +31,8 @@ rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] :
 	|e=date_weekday[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month[$timen, $timex_object] {$value = $e.value;}
 	|e=date_month_day[$timen, $timex_object] {$value = $e.value;}
+	|e=date_weeknum_weekday_month[$timen, $timex_object] {$value = $e.value;}
+	|e=date_last_weekday_month[$timen, $timex_object] {$value = $e.value;}
 	|e=to_period[$timen, $timex_object] {$value = $e.value;}
 	|e=get_tod[$timen, timex_object] {$value = $e.value;}
 	|e=fill_zeros[$timex_object] {$value = $e.value;}
@@ -94,6 +96,12 @@ date_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 
 date_month_day[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
          'DATE_MONTH_DAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object] ')' {$value = $timen.date_month_day($REFERENCE.text,$e.value,$d.value, $timex_object);};
+
+date_weeknum_weekday_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+         'DATE_WEEKNUM_WEEKDAY_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object] ',' f=pat[$timex_object] ')' {$value = $timen.date_weeknum_weekday_month($REFERENCE.text,$e.value,$d.value,$f.value, $timex_object);};
+
+date_last_weekday_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+         'DATE_LAST_WEEKDAY_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object] ' ')' {$value = $timen.date_last_weekday_month($REFERENCE.text,$e.value,$d.value, $timex_object);};
 
 
 pat[TIMEX_Instance timex_object] returns [String value]:

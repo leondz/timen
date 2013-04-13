@@ -25,7 +25,7 @@ public class Rule_Engine {
         String result = "";
 
         try {
-
+            
         ANTLRInputStream rule_input = new ANTLRInputStream(new ByteArrayInputStream((rule.get_rule()).getBytes("UTF-8")));
         TIMENruleGrammarLexer rule_lexer = new TIMENruleGrammarLexer(rule_input);
         CommonTokenStream rule_tokens = new CommonTokenStream(rule_lexer);
