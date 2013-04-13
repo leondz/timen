@@ -101,7 +101,7 @@ date_weeknum_weekday_month[TIMEN timen, TIMEX_Instance timex_object] returns [St
          'DATE_WEEKNUM_WEEKDAY_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object] ',' f=pat[$timex_object] ')' {$value = $timen.date_weeknum_weekday_month($REFERENCE.text,$e.value,$d.value,$f.value, $timex_object);};
 
 date_last_weekday_month[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
-         'DATE_LAST_WEEKDAY_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object] ' ')' {$value = $timen.date_last_weekday_month($REFERENCE.text,$e.value,$d.value, $timex_object);};
+         'DATE_LAST_WEEKDAY_MONTH' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' d=pat[$timex_object]  ')' {$value = $timen.date_last_weekday_month($REFERENCE.text,$e.value,$d.value, $timex_object);};
 
 
 pat[TIMEX_Instance timex_object] returns [String value]:
