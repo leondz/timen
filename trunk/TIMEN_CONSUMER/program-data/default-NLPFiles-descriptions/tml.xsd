@@ -5,7 +5,7 @@
 	Variation of the original to suport both original TimeML and TimeML(TEXT) formats.
 	Note: with <TLINKs> outside <TEXT>; and without <s> tags.
 
-	Moreover, the leid attribute for LINKs is adet to prevent the declaration of superfluos MAKEINSTANCES
+	Moreover, the leid attribute for LINKs is added to prevent the declaration of superfluos MAKEINSTANCES
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en" version="1.2">
 
@@ -143,8 +143,8 @@
 <xs:simpleType name="Duration">
 	<xs:restriction base="xs:string">
 		<!--original <xs:pattern value="P((((\p{Nd}+|X{1,2})Y)?((\p{Nd}+|X{1,2})M)?((\p{Nd}+|X{1,2})D)?(T((\p{Nd}+|X{1,2})H)?((\p{Nd}+|X{1,2})M)?((\p{Nd}+|X{1,2})S)?)?)|((\p{Nd}+|X{1,2}))(W|L|E|C|Q))"/> -->
-		<!-- Hector Llorens: includes float numbers, includes M for millennia, C for centuries, and T for quatrimesters, XX for indefinite -->
-		<xs:pattern value="P((((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})C)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})Y)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})T)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})Q)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})D)?(T((\p{Nd}+(\.\p{Nd}+)?|X{1,2})H)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})S)?(NI)?)?)|((\p{Nd}+(\.\p{Nd}+)?|X{1,2}))(W|L|E|C|Q)|XX)"/> <!-- added last XX --> 
+		<!-- Hector Llorens: includes float numbers, includes M[L] for millennia, C[E] for centuries, DE for decades, and T for quatrimesters, XX for indefinite -->
+		<xs:pattern value="P((((\p{Nd}+(\.\p{Nd}+)?|X{1,2})(M|ML))?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})(C|CE))?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})(DE))?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})Y)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})T)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})Q)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})D)?(T((\p{Nd}+(\.\p{Nd}+)?|X{1,2})H)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})M)?((\p{Nd}+(\.\p{Nd}+)?|X{1,2})S)?(NI)?)?)|((\p{Nd}+(\.\p{Nd}+)?|X{1,2}))(W|L|E|C|Q)|XX)"/> <!-- added last XX --> 
 		<xs:minLength value="3"/>
 	</xs:restriction>
 </xs:simpleType>
@@ -268,13 +268,14 @@
 
 
 <xs:element name="EVENT">
-
 	<xs:complexType>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
 
 				<xs:attribute name="eid" type="EventID" use="required" />
 				<xs:attribute name="stem" type="xs:string" />
+				<xs:attribute name="voice" type="xs:string" />
+				<xs:attribute name="ont_type" type="xs:string" />
 				<xs:attribute name="sentID" type="xs:integer" />
 
 				<xs:attribute name="class" use="required">
@@ -358,7 +359,6 @@
 
 
 <xs:element name="TIMEX3">
-
 	<xs:complexType>
 		<xs:simpleContent>
 		<xs:extension base="xs:string">
@@ -463,7 +463,8 @@
 		<xs:attribute name="signalID" type="SignalID" />
 		<xs:attribute name="cardinality" type="xs:string" />
 		<xs:attribute name="modality" type="xs:string" />
-
+		<xs:attribute name="ont_type" type="xs:string" /> <!-- Naushad's modification for his own sake --> 
+		<xs:attribute name="voice" type="xs:string" /> <!-- Naushad's modification for his own sake -->
 		<xs:attribute name="polarity" default="POS">
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
@@ -500,7 +501,6 @@
 					<xs:enumeration value="NONE" />
 				</xs:restriction>
 			</xs:simpleType>
-
 		</xs:attribute>
 
 		<xs:attribute name="pos" use="required">
@@ -559,6 +559,15 @@
 					<xs:enumeration value="OVERLAP-OR-AFTER" /> <!-- Hector Llorens modification for Spanish -->
 					<xs:enumeration value="VAGUE" /> <!-- Hector Llorens modification for Spanish -->
 					<xs:enumeration value="NONE" /> <!-- Hector Llorens modification -->
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute name="changed" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="TRUE" />
+					<xs:enumeration value="FALSE" />
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
