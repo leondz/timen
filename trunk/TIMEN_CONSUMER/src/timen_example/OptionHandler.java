@@ -224,6 +224,9 @@ public class OptionHandler {
                 throw new Exception("More than one TEXT tag found.");
             }
             Element TextElmnt = (Element) text.item(0); // If not ELEMENT NODE will throw exception
+            if(TextElmnt==null){
+                throw  new Exception("No text element found");
+            }
 
             // normalize timexes
             NodeList current_node = TextElmnt.getElementsByTagName("TIMEX3");
