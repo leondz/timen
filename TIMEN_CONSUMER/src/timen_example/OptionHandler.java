@@ -21,12 +21,7 @@ import org.w3c.dom.NodeList;
  */
 public class OptionHandler {
 
-    public static enum Action {
-
-        NORMALIZE_EXPR,
-        NORMALIZE_TML,
-        CREATE_KNOWLEDGE_FILE;
-    }
+    public static enum Action {  NORMALIZE_EXPR,     NORMALIZE_TML,     CREATE_KNOWLEDGE_FILE    };
     private static TIMEN timen;
     private static SimpleDateFormat dct_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
