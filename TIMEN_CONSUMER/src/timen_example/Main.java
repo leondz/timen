@@ -68,7 +68,7 @@ public class Main {
 
             if (input == null || input.length==0) {
                 hf.printHelp("TIMEN_CONSUMER", opt);
-                throw new Exception("Missing input file/s or expressions.\n(e.g., \"tomorrow\")");
+                throw new Exception("Missing input file/s or expressions.\n\t(e.g., \"tomorrow\" or \"file.tml\")");
             }
 
 
