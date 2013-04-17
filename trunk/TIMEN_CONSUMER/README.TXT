@@ -14,12 +14,13 @@ Prerequisites (ONLY IF YOU WANT TO USE THE NLP OPTION):
 
 Usage:
 -----
-	Copy the jar distribution to a folder of your choice.	
+	If you don't have the jar distribution generate it (cd TIMEN_CONSUMER; mvn package).
+	Copy the jar distribution (in target/ folder) to a folder of your choice.
 
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" [options]
+	java -jar "/path2jar/TIMEN_CONSUMER...version.jar" [options]
 
 	If you want to override the rulebases in cluded in TIMEN.jar, you have to put your own in rule-base for each language in res/rule-bases/*.db
-
+	and then you regenerate the jar distribution (rules reside inside the jar)
 
 
 Examples:

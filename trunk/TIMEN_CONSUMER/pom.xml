@@ -36,7 +36,7 @@
 			<version>2.4.3</version>
 			<executions>
 			  <execution>
-			    <id>copy-resources</id>
+			    <id>copy-program-data</id>
 			    <phase>package</phase>
 			    <goals>
 			      <goal>copy-resources</goal>
@@ -51,7 +51,23 @@
 			      </resources>              
 			    </configuration>            
 			  </execution>
-			</executions>
+			  <!--<execution>
+			    <id>copy-resources</id>
+			    <phase>package</phase>
+			    <goals>
+			      <goal>copy-resources</goal>
+			    </goals>
+			    <configuration>
+			      <outputDirectory>${basedir}/target/res</outputDirectory>
+			      <resources>          
+				<resource>
+				  <directory>res</directory>
+				  <filtering>true</filtering>
+				</resource>
+			      </resources>              
+			    </configuration>            
+			  </execution>-->
+			 </executions>
 		      </plugin>			
 		      
 			<plugin>
@@ -71,6 +87,7 @@
 		</plugins>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
+		<!--To have the rule-bases inside the jar -->
 		<resources>
 			<resource>
 				<targetPath>res/</targetPath>
