@@ -9,8 +9,9 @@ AUTHORS
 
 USAGE
 
-NEW: Now timen is available in Maven central repositories (https://oss.sonatype.org).
-Just include into your project the TIMEN.jar library and its dependences (either in lib/*.jar or in the classpath)
+NEW, NO NEED FOR LOCAL COPY: Now timen is available in Maven central repositories (https://oss.sonatype.org).
+LOCAL: Just include into your project the TIMEN.jar library and its dependences (either in lib/*.jar or in the classpath)
+
 If you want to override the rulebases in cluded in TIMEN.jar, you have to put your own in rule-base for each language in res/rule-bases/*.db
 
 
@@ -20,10 +21,6 @@ DEVELOPMENT INFORMATION
 
 Building the library jar from source code:
 -----------------------------------------
-cd TIMEN; ant
-
-or
-
 cd TIMEN; mvn package
 
 
