@@ -29,13 +29,53 @@
 			</manifest>
 			</archive>
 			</configuration>
-			</plugin>	            
+			</plugin>
+			
+		      <plugin>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>2.4.3</version>
+			<executions>
+			  <execution>
+			    <id>copy-resources</id>
+			    <phase>package</phase>
+			    <goals>
+			      <goal>copy-resources</goal>
+			    </goals>
+			    <configuration>
+			      <outputDirectory>${basedir}/target/program-data</outputDirectory>
+			      <resources>          
+				<resource>
+				  <directory>program-data</directory>
+				  <filtering>true</filtering>
+				</resource>
+			      </resources>              
+			    </configuration>            
+			  </execution>
+			</executions>
+		      </plugin>			
+		      
+			<plugin>
+			<artifactId>maven-dependency-plugin</artifactId>
+			    <executions>
+				<execution>
+				    <phase>package</phase>
+				    <goals>
+					<goal>copy-dependencies</goal>
+				    </goals>
+				    <configuration>
+					<outputDirectory>${basedir}/target/lib</outputDirectory>
+				    </configuration>
+				</execution>
+			    </executions>
+			</plugin>				            
 		</plugins>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
 		<resources>
 			<resource>
-				<directory>program-data</directory>
+				<targetPath>res/</targetPath>
+				<filtering>false</filtering>
+				<directory>${basedir}/res</directory>
 			</resource>
 		</resources>
 	</build>

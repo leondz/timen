@@ -27,7 +27,7 @@ public class Main {
             opt.addOption("h", "help", false, "Print this help");
             opt.addOption("l", "lang", true, "Language code (default \"EN\" [English])");
             opt.addOption("a", "action", true, "Action/s to be done (normalize_expr [default], normalize_tml, or obtain knowledge-java from db)");
-            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (dct=2012-05-14,output_folder=myfolder,use_nlp=true)");
+            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (e.g., dct=2012-05-14,tense=past,output_folder=myfolder,use_nlp=true)");
             opt.addOption("d", "debug", false, "Debug mode: Output errors stack trace (default: disabled)");
 
             PosixParser parser = new PosixParser();
@@ -68,7 +68,7 @@ public class Main {
 
             if (input == null || input.length==0) {
                 hf.printHelp("TIMEN_CONSUMER", opt);
-                throw new Exception("Missing input file/s or expressions.");
+                throw new Exception("Missing input file/s or expressions.\n(e.g., \"tomorrow\")");
             }
 
 
