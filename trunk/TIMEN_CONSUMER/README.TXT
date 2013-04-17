@@ -46,7 +46,7 @@ Additional instructions for developers:
 
 Installation/Building:
 ---------------------
-cd TIMEN_CONSUMER; ant
+cd TIMEN_CONSUMER; mvn package
 
 
 COMPILING TIMEN GRAMMAR (REMOVE ALREADY INCLUDED IN TIMEN README)
