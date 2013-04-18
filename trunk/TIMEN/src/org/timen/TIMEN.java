@@ -87,9 +87,15 @@ public class TIMEN implements Closeable {
             //System.out.println(dbpath);
             if ((new File(dbpath)).exists()) {
                 // NOTE that if there is a rule-base out of the classpath it will be used (override the  one included in timen jar)
+                if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                    System.err.println("Using: "+"jdbc:sqlite:" + "." + File.separator + "res" + File.separator + "rule-bases" + File.separator + databaseName);
+                }
                 connection = DriverManager.getConnection("jdbc:sqlite:" + "." + File.separator + "res" + File.separator + "rule-bases" + File.separator + databaseName);
             } else {
-                connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases" + File.separator + databaseName);
+                if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                    System.err.println("Using (same in win and linux): "+"jdbc:sqlite::resource:rule-bases/"+ databaseName);
+                }
+                connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases/" + databaseName);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

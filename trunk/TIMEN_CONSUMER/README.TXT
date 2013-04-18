@@ -19,8 +19,10 @@ Usage:
 
 	java -jar "/path2jar/TIMEN_CONSUMER...version.jar" [options]
 
-	If you want to override the rulebases in cluded in TIMEN.jar, you have to put your own in rule-base for each language in res/rule-bases/*.db
-	and then you regenerate the jar distribution (rules reside inside the jar)
+	OPTIONAL: If you want to override the rulebases included in TIMEN.jar, you have 2 options:
+		- Easy: put your own in rule-base for each language in res/rule-bases/*.db and copy res/ folder into target/ folder
+		  or
+		- Advanced: put them in the TIMEN distribution, and regenerate the jar to include rulebases inside the jar
 
 
 Examples:
