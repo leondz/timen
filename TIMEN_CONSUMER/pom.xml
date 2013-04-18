@@ -102,8 +102,8 @@
 		</resources>-->
 	</build>
 	<dependencies>
-		<!-- Dependencies for TIMEN library -->
-                <dependency>
+		<!-- Dependencies for TIMEN library (These are automatically included when TIMEN is included not-locally ) -->
+                <!--<dependency>
                         <groupId>org.antlr</groupId>
                         <artifactId>antlr</artifactId>
                         <version>3.4</version>
@@ -118,7 +118,7 @@
                         <groupId>org.xerial</groupId>
                         <artifactId>sqlite-jdbc</artifactId>
                         <version>3.7.2</version>
-                </dependency>
+                </dependency>-->
 		<!-- Dependencies for TIMEN_CONSUMER-->
 		<dependency>
 			<groupId>commons-cli</groupId>
