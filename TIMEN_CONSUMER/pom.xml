@@ -4,6 +4,15 @@
 	<groupId>org.timen</groupId>
 	<artifactId>timen-consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>	
+		<repositories>
+		  <repository>
+		    <id>fake-local-repo</id>
+		    <url>file://${basedir}/local-lib-repo</url>
+		  </repository>
+		</repositories>	
 	<build>
 		<plugins>
 			<plugin>
@@ -17,19 +26,20 @@
 			</plugin>
 
 			<plugin>
-			<!-- Build an executable JAR -->
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-jar-plugin</artifactId>
-			<version>2.4</version>
-			<configuration>
-			<archive>
-			<manifest>
-			<addClasspath>true</addClasspath>
-			<classpathPrefix>lib/</classpathPrefix>
-			  <mainClass>timen_example.Main</mainClass>
-			</manifest>
-			</archive>
-			</configuration>
+				<!-- Build an executable JAR -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+					<manifest>
+					<!--TODO: System scope libs are not added to the classpath... why? repair...-->
+					<addClasspath>true</addClasspath>
+					<classpathPrefix>lib/</classpathPrefix>
+					  <mainClass>timen_example.Main</mainClass>
+					</manifest>
+					</archive>
+				</configuration>
 			</plugin>
 			
 		      <plugin>
@@ -130,34 +140,30 @@
 			<artifactId>timen</artifactId>
 			<version>1.0.6</version>
 		</dependency>
-		<!-- These are local -->
+		<!-- These are local: remember to generate the repo distribution with mvn install:install-file -->
 		<dependency>
 			<groupId>FeatureBuilder</groupId>
 			<artifactId>FeatureBuilder</artifactId>
 			<version>0.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/FeatureBuilder.jar</systemPath>
+			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>Utils_BasicKit</groupId>
 			<artifactId>Utils_BasicKit</artifactId>
 			<version>0.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/Utils_BasicKit.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>NLP_BasicKit</groupId>
 			<artifactId>NLP_BasicKit</artifactId>
 			<version>0.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/NLP_BasicKit.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>TimeML_BasicKit</groupId>
 			<artifactId>TimeML_BasicKit</artifactId>
 			<version>0.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/TimeML_BasicKit.jar</systemPath>
+			<!-- BAD PRACTICE: All deps should be globally accessible, if not, use a local repository to fake it -->
+			<!--<scope>system</scope>
+			<systemPath>${basedir}/lib/TimeML_BasicKit.jar</systemPath>-->
 		</dependency>
 	</dependencies>
 </project>
