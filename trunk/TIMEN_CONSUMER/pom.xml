@@ -33,7 +33,6 @@
 				<configuration>
 					<archive>
 					<manifest>
-					<!--TODO: System scope libs are not added to the classpath... why? repair...-->
 					<addClasspath>true</addClasspath>
 					<classpathPrefix>lib/</classpathPrefix>
 					  <mainClass>timen_example.Main</mainClass>
@@ -138,7 +137,7 @@
                 <dependency>
 			<groupId>org.timen</groupId>
 			<artifactId>timen</artifactId>
-			<version>1.0.6</version>
+			<version>1.0.8</version>
 		</dependency>
 		<!-- These are local: remember to generate the repo distribution with mvn install:install-file -->
 		<dependency>
