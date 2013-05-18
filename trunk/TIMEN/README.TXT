@@ -36,12 +36,9 @@ Additional instructions for developers:
 		cd path2timen/src/org/timen/grammar/
 		java org.antlr.Tool TIMENruleGrammar.g
 
-	3) If you generated these files in the java folder when you rebuild TIMEN (with ant) the new grammar will be included
+	3) If you generated these files in the java folder when you rebuild TIMEN (with ant or mvn) the new grammar will be included
 
-
-
-To edit the grammar you can use the visual editor "ANTLR-works":
-	java -jar antlrworks-1.4.3.jar
+optional graphical interface to edit the grammar: java -jar antlrworks-1.4.3.jar
 
 
 Advanced debugging notes (Net Beans/Eclipse)
