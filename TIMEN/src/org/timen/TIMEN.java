@@ -517,7 +517,7 @@ public class TIMEN implements Closeable {
                 case 2:
                     int cc = Integer.parseInt(timex_object.dct.getYear().substring(0, 2));
                     int cdec = Integer.parseInt(timex_object.dct.getYear().substring(2, 3));
-                    int ddec = Integer.parseInt(date.substring(1, 2));
+                    int ddec = Integer.parseInt(date.substring(0,1));
                     if (cdec == 9 && ddec == 0 || (cdec == 0 || ddec > 1)) {
                         cc--;
                     }
