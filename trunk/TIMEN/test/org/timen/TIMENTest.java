@@ -1,9 +1,7 @@
 package org.timen;
 
 import static org.junit.Assert.*;
-
 import java.util.Locale;
-
 import org.junit.Test;
 
 
@@ -22,6 +20,7 @@ public class TIMENTest {
     assertEquals("PRESENT_REF", timen.normalize("currently", documentCreationTime));
     assertEquals("2011", timen.normalize("last year", documentCreationTime));
     assertEquals("2012-07", timen.normalize("five month now", documentCreationTime));
+    //assertEquals("199", timen.normalize("1990s", documentCreationTime));
     timen.close();
   }
 

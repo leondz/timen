@@ -88,12 +88,12 @@ public class TIMEN implements Closeable {
             if ((new File(dbpath)).exists()) {
                 // NOTE that if there is a rule-base out of the classpath it will be used (override the  one included in timen jar)
                 if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                    System.err.println("Using: "+"jdbc:sqlite:" + "." + File.separator + "res" + File.separator + "rule-bases" + File.separator + databaseName);
+                    System.err.println("Using: " + "jdbc:sqlite:" + "." + File.separator + "res" + File.separator + "rule-bases" + File.separator + databaseName);
                 }
                 connection = DriverManager.getConnection("jdbc:sqlite:" + "." + File.separator + "res" + File.separator + "rule-bases" + File.separator + databaseName);
             } else {
                 if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                    System.err.println("Using (same in win and linux): "+"jdbc:sqlite::resource:rule-bases/"+ databaseName);
+                    System.err.println("Using (same in win and linux): " + "jdbc:sqlite::resource:rule-bases/" + databaseName);
                 }
                 connection = DriverManager.getConnection("jdbc:sqlite::resource:rule-bases/" + databaseName);
             }
@@ -496,10 +496,46 @@ public class TIMEN implements Closeable {
     //    date = date.replaceAll(" (los|las|el|la|en) ", "").replaceAll("\\s*-\\s*", "-").replaceAll("\\s*/\\s*", "/").replaceAll("\\s+", " ");
     //    date = date.replaceAll(" (primero|uno) ", " 1 ").trim();
     //}
-    // centuries
-            /*if (date.matches("^[0-9]+ century$")) {
-    return "" + (Integer.parseInt(date.split(" ")[0].replace("([0-9]{1,2}).*", "$1")));
-    }*/
+    public String to_century(String date) {
+        // centuries this would be 21st or something like that
+        String word_for_century = knowledge.TUnits.get(date.split(" ")[1]);
+        if (word_for_century != null && word_for_century.equals("century")) {
+            date = date.replaceAll(date.split(" ")[1] + "", "century");
+        }
+        if (date.matches("^[0-9]+ century$")) {
+            return "" + (Integer.parseInt(date.split(" ")[0].replace("([0-9]{1,2}).*", "$1")));
+
+        }
+        return "default_norm";
+    }
+
+    public String to_decade(String date, TIMEX_Instance timex_object) {
+        // numeric decades
+        String ret = "decade";
+        if (date.matches("[0-9]+")) {
+            switch (date.length()) {
+                case 2:
+                    int cc = Integer.parseInt(timex_object.dct.getYear().substring(0, 2));
+                    int cdec = Integer.parseInt(timex_object.dct.getYear().substring(2, 3));
+                    int ddec = Integer.parseInt(date.substring(1, 2));
+                    if (cdec == 9 && ddec == 0 || (cdec == 0 || ddec > 1)) {
+                        cc--;
+                    }
+                    return "" + cc + "" + ddec;
+                //iso = to_year(date.substring(0, 2), timex_object);
+                //return iso.substring(0, 3);
+                case 4:
+                    return date.substring(0, 3);
+            }
+
+        }
+        // spelled decades
+        if (knowledge.decades.containsKey(date)) {
+            return knowledge.decades.get(date).toString();
+        }
+        return ret;
+    }
+
     public String to_iso(String date, TIMEX_Instance timex_object) {
         String iso = null;
 
@@ -526,33 +562,6 @@ public class TIMEN implements Closeable {
                 }
 
 
-                // numeric decades
-                if (date.matches("[0-9]+s")) {
-                    switch (date.length()) {
-                        case 3:
-                            int cc = Integer.parseInt(timex_object.dct.getYear().substring(0, 2));
-                            int cdec = Integer.parseInt(timex_object.dct.getYear().substring(2, 3));
-                            int ddec = Integer.parseInt(date.substring(1, 2));
-                            if (cdec == 9 && ddec == 0 || (cdec == 0 || ddec > 1)) {
-                                cc--;
-                            }
-                            return "" + cc + "" + ddec;
-                        //iso = to_year(date.substring(0, 2), timex_object);
-                        //return iso.substring(0, 3);
-                        case 5:
-                            return date.substring(0, 3);
-                        default:
-                            throw new Exception("Unknown expression: " + date);
-                    }
-
-                }
-
-
-
-                // spelled decades
-                if (knowledge.decades.containsKey(date)) {
-                    return knowledge.decades.get(date).toString();
-                }
 
                 //normalize two-digit year
                 if (date.matches("(?:[0-9]{1,2}[./-])?(?:[0-9]{1,2}|" + knowledge.TMonths_re + ")[./-][0-9]{2}")) {
@@ -821,7 +830,7 @@ public class TIMEN implements Closeable {
             ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
         }
 
-       
+
         return ret;
     }
 
@@ -1116,8 +1125,9 @@ public class TIMEN implements Closeable {
             int dayofweekday1 = cal.get(GregorianCalendar.DAY_OF_WEEK);
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
             // if first weekday of month is lower or equal than the given weekday, then substract one week (first (1) Monday will add already 1 week)
-            if(dayofweekday1<=knowledge.Weekdays.get(weekday))
-	            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+            if (dayofweekday1 <= knowledge.Weekdays.get(weekday)) {
+                cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+            }
             cal.add(GregorianCalendar.WEEK_OF_YEAR, Integer.parseInt(num));
         } catch (Exception e) {
             System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
@@ -1130,8 +1140,6 @@ public class TIMEN implements Closeable {
         return formatter.format(cal.getTime());
     }
 
-
-
     public String date_last_weekday_month(String reference, String weekday, String month, TIMEX_Instance timex_object) {
         Calendar cal = new GregorianCalendar();
         Date refdate = timex_object.dct.getCalendar().getTime();
@@ -1141,15 +1149,16 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month)+1);
+            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month) + 1);
             cal.set(GregorianCalendar.DAY_OF_MONTH, -1);
-            Date bug=cal.getTime(); // BUG: Three consecutive sets without a get make the 2nd set useless
+            Date bug = cal.getTime(); // BUG: Three consecutive sets without a get make the 2nd set useless
             cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
             int rmonth = cal.get(GregorianCalendar.MONTH);
             //System.out.println(cal.getTime());
             // if month is different than the provided (not greater because could be december-january), then substract one week
-            if(rmonth!=knowledge.Yearmonths.get(month))
-	            cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+            if (rmonth != knowledge.Yearmonths.get(month)) {
+                cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
+            }
             //System.out.println(cal.getTime());
 
         } catch (Exception e) {
@@ -1162,8 +1171,6 @@ public class TIMEN implements Closeable {
 
         return formatter.format(cal.getTime());
     }
-
-
 
     /*******************************************************************
      *  NORMALIZING TEXT INPUT
