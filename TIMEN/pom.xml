@@ -55,21 +55,33 @@
                         </resource>
                 </resources>
                 <plugins>
+				<!-- TODO needs execution and goals definition to work properly... 
+				http://www.sonatype.com/books/nexus-book/reference/staging-sect-deployment.html -->			
+			<!--<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.2</version>
+				<extensions>true</extensions>
+				<configuration>
+				<serverId>sonatype-nexus-staging</serverId>
+				<nexusUrl>https://oss.sonatype.org</nexusUrl>
+				</configuration>
+			</plugin>-->			
                         <plugin>
                                 <artifactId>maven-release-plugin</artifactId>
                         </plugin>
                         <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                          <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                              <goal>sign</goal>
-                            </goals>
-                          </execution>
-                        </executions>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-gpg-plugin</artifactId>
+		                <executions>
+		                  <execution>
+		                    <id>sign-artifacts</id>
+		                    <phase>verify</phase>
+		                    <goals>
+		                      <goal>sign</goal>
+		                    </goals>
+		                  </execution>
+		                </executions>
                         </plugin>
                 </plugins>              
         </build>
