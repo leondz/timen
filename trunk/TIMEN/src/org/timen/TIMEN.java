@@ -201,7 +201,7 @@ public class TIMEN implements Closeable {
             String normText = normTextandPattern_arr[0];
             String pattern = normTextandPattern_arr[1];
 
-                System.err.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
+                //System.err.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.err.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
             }
@@ -305,11 +305,11 @@ public class TIMEN implements Closeable {
             } else {
                 // debug
                 for (Rule rule : rules_found) {
-                    //if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                         System.err.println("\t" + rule.get_id() + " " + rule.get_pattern() + " rule to apply: " + rule.get_rule());
                         //System.err.println(timex_object);
                                 //, this, timex_object
-                    //}
+                    }
                 }
 
                 if (rules_found.size() == 1) {
