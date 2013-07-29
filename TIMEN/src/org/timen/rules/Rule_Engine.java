@@ -31,7 +31,7 @@ public class Rule_Engine {
         TIMENruleGrammarLexer rule_lexer = new TIMENruleGrammarLexer(rule_input);
         CommonTokenStream rule_tokens = new CommonTokenStream(rule_lexer);
         TIMENruleGrammarParser rule_parser = new TIMENruleGrammarParser(rule_tokens);
-        System.out.println("rule: "+rule_parser);
+        //System.out.println("rule: "+rule_parser);
 
         // TODO currently this switch is quite useless
 
@@ -45,7 +45,7 @@ public class Rule_Engine {
                     //System.out.println("timen"+timen_object);
                     //System.out.println("timex"+timex_object);
                     result=rule_parser.run(timen_object, timex_object);
-                    System.out.println("hola");
+                    //System.out.println("hola");
                 }
                 break;
 
