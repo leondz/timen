@@ -1,7 +1,5 @@
 package org.timen;
 
-import org.timen.knowledge.*;
-import org.timen.knowledge.NUMEK;
 import org.timen.rules.*;
 import java.io.*;
 import java.net.*;
@@ -13,6 +11,9 @@ import java.sql.SQLException;
 //import java.sql.Statement;
 import java.text.*;
 import java.util.*;
+import org.timen.knowledge.numbers.Numek;
+import org.timen.knowledge.time.Timek;
+import org.timen.knowledge.time.TimexNormalizer;
 
 /**
  *
@@ -22,8 +23,9 @@ import java.util.*;
 public class TIMEN implements Closeable {
 
     private Locale locale;
-    private NUMEK numek;
-    private Knowledge knowledge;
+    private Numek numek;
+    private Timek timek;
+    private TimexNormalizer timex_normalizer;
     private Connection connection;
 
     public TIMEN() {
@@ -32,13 +34,16 @@ public class TIMEN implements Closeable {
 
     // constructor
     public TIMEN(Locale l) {
-        numek = new NUMEK(l);
+        numek = new Numek(l);
+        timek = new Timek(l);
         locale = l;
 
         // load knowledge (in the future the knowledge should be a sqlite db)
         // The sqlite is loaded into a hash in construction and then it is fast if used in tml files
         //System.out.println(locale+" "+locale.getLanguage().toUpperCase());
-        Class c;
+        //             hacer como en nlpbk pero guardar este trozo como curiosid de java
+
+        /*Class c;
         try {
             String lang = l.getLanguage().toUpperCase();
             c = Class.forName("org.timen.knowledge.Knowledge_" + lang);
@@ -58,9 +63,9 @@ public class TIMEN implements Closeable {
                 e.printStackTrace(System.err);
                 System.exit(1);
             }
-        }
+        }*/
 
-
+        timex_normalizer=new TimexNormalizer(l);
         String databaseName = String.format("rules_%s.db", locale.getLanguage());
         // load the driver class for SQLite
         try {
@@ -103,7 +108,7 @@ public class TIMEN implements Closeable {
     }
 
     public void close() {
-        knowledge = null;
+        //knowledge = null;
         locale = null;
         numek = null;
         try {
@@ -188,7 +193,7 @@ public class TIMEN implements Closeable {
                     }
                 }
             }
-            String normTextandPattern = this.getNormTextandPattern(expr);
+            String normTextandPattern = timex_normalizer.getNormTextandPattern(expr);
             if (normTextandPattern == null) {
                 throw new Exception("Problem obtaining NormText and Pattern from: " + expr);
             }
@@ -196,6 +201,7 @@ public class TIMEN implements Closeable {
             String normText = normTextandPattern_arr[0];
             String pattern = normTextandPattern_arr[1];
 
+                System.err.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.err.println("\n\ntimex:" + expr + "  normtext:" + normText + "  pattern:" + pattern + "  dct:" + dct + "  reftime:" + reftime + "  tense:" + tense + "\nfound rules:");
             }
@@ -212,9 +218,9 @@ public class TIMEN implements Closeable {
             }
 
             // reduce left-right
-            while (pattern.split("_").length > 1 && norm_value.equals("default_norm")) {
-                normText = normText.replaceFirst("[^_]+_", "");
-                pattern = pattern.replaceFirst("[^_]+_", "");
+            while (pattern.split(" ").length > 1 && norm_value.equals("default_norm")) {
+                normText = normText.replaceFirst("[^ ]+ ", "");
+                pattern = pattern.replaceFirst("[^ ]+ ", "");
                 timex_object = new TIMEX_Instance(normText, tense, dct, reftime);
                 for (int level = 1; level <= 3; level++) {
                     rules_found = get_rules_from_db("RULES_LEVEL" + level, pattern);
@@ -291,17 +297,19 @@ public class TIMEN implements Closeable {
     public String apply_rules(ArrayList<Rule> rules_found, String pattern, TIMEX_Instance timex_object) {
         String norm_value = "default_norm";
         try {
-            if (rules_found.size() == 0) {
+            if (rules_found.isEmpty()) {
                 // debugg (return default)
                 if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                     System.err.println("\tNo rules found for: " + pattern);
                 }
             } else {
-                // debugg
+                // debug
                 for (Rule rule : rules_found) {
-                    if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                    //if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                         System.err.println("\t" + rule.get_id() + " " + rule.get_pattern() + " rule to apply: " + rule.get_rule());
-                    }
+                        //System.err.println(timex_object);
+                                //, this, timex_object
+                    //}
                 }
 
                 if (rules_found.size() == 1) {
@@ -454,7 +462,7 @@ public class TIMEN implements Closeable {
     }
 
     public String to_month(String month) {
-        String output = "" + (knowledge.Yearmonths.get(month) + 1);
+        String output = "" + (timek.Java_Yearmonths.get(month.toLowerCase(locale)) + 1);
         if (output.length() == 1) {
             output = "0" + output;
         }
@@ -498,7 +506,7 @@ public class TIMEN implements Closeable {
     //}
     public String to_century(String date) {
         // centuries this would be 21st or something like that
-        String word_for_century = knowledge.TUnits.get(date.split(" ")[1]);
+        String word_for_century = timek.phraselists.get("tunit").getMap().get(date.split(" ")[1]);
         if (word_for_century != null && word_for_century.equals("century")) {
             date = date.replaceAll(date.split(" ")[1] + "", "century");
         }
@@ -530,8 +538,8 @@ public class TIMEN implements Closeable {
 
         }
         // spelled decades
-        if (knowledge.decades.containsKey(date)) {
-            return knowledge.decades.get(date).toString();
+        if (timek.phraselists.get("decade").getMap().containsKey(date)) {
+            return timek.phraselists.get("decade").getMap().get(date).toString();
         }
         return ret;
     }
@@ -564,7 +572,7 @@ public class TIMEN implements Closeable {
 
 
                 //normalize two-digit year
-                if (date.matches("(?:[0-9]{1,2}[./-])?(?:[0-9]{1,2}|" + knowledge.TMonths_re + ")[./-][0-9]{2}")) {
+                if (date.matches("(?:[0-9]{1,2}[./-])?(?:[0-9]{1,2}|" + timek.phraselists.get("month").getRE() + ")[./-][0-9]{2}")) {
                     date = date.substring(0, date.length() - 2) + to_year(date.substring(date.length() - 2), timex_object);
                 }
                 //remove "." from dates 10/nov./2001 --> 10/nov/2001
@@ -819,15 +827,15 @@ public class TIMEN implements Closeable {
         // OTHER LANGS TUNITS ARE IN KNOWLEDE FILES
 
         ret += num;
-        String punit = knowledge.TUnits.get(TUnit).substring(0, 3).toUpperCase();
+        String punit = timek.phraselists.get("tunit").getMap().get(TUnit).substring(0, 3).toUpperCase();
         if (punit.matches("(DEC|CEN|MIL)")) {
-            punit = knowledge.TUnits.get(TUnit).substring(0, 2).toUpperCase();
+            punit = timek.phraselists.get("tunit").getMap().get(TUnit).substring(0, 2).toUpperCase();
             if (punit.equals("MI")) {
                 punit = "ML";
             }
             ret += punit;
         } else {
-            ret += knowledge.TUnits.get(TUnit).substring(0, 1).toUpperCase();
+            ret += timek.phraselists.get("tunit").getMap().get(TUnit).substring(0, 1).toUpperCase();
         }
 
 
@@ -852,7 +860,7 @@ public class TIMEN implements Closeable {
             }
 
             // get the normalized English name
-            String gr = knowledge.TUnits.get(granularity);
+            String gr = timek.phraselists.get("tunit").getMap().get(granularity);
             if (gr != null) {
                 granularity = gr;
             }
@@ -948,8 +956,10 @@ public class TIMEN implements Closeable {
             if (reference.equalsIgnoreCase("REFTIME")) {
                 cal = timex_object.reftime.getCalendar();
             }
+            //System.out.println(reference+weekday+quantity+timex_object+"---");
+            //System.out.println(reference+weekday+quantity+timex_object+"---"+timek.Java_Weekdays);
             formatter = new SimpleDateFormat(granul_days);
-            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
             cal.add(GregorianCalendar.DAY_OF_MONTH, quantity);
 
         } catch (Exception e) {
@@ -966,7 +976,7 @@ public class TIMEN implements Closeable {
     public String getTOD(String tod) {
         String result = "";
         try {
-            result = knowledge.TODs.get(tod);
+            result = timek.phraselists.get("time_of_day").getMap().get(tod);
         } catch (Exception e) {
             System.err.println("Errors found (TIMEN):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -987,7 +997,7 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
             Date result = cal.getTime();
             if (!timex_object.getTense().startsWith("omit")) {
                 if (result.before(refdate)) {
@@ -1032,7 +1042,7 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)));
             Date result = cal.getTime();
             if (!timex_object.getTense().startsWith("omit")) {
                 if (result.before(refdate)) {
@@ -1075,7 +1085,7 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)));
             cal.set(GregorianCalendar.DAY_OF_MONTH, Integer.parseInt(day));
             Date result = cal.getTime();
             if (!timex_object.getTense().startsWith("omit")) {
@@ -1120,12 +1130,12 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month));
+            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)));
             cal.set(GregorianCalendar.DAY_OF_MONTH, 0);
             int dayofweekday1 = cal.get(GregorianCalendar.DAY_OF_WEEK);
-            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
             // if first weekday of month is lower or equal than the given weekday, then substract one week (first (1) Monday will add already 1 week)
-            if (dayofweekday1 <= knowledge.Weekdays.get(weekday)) {
+            if (dayofweekday1 <= timek.Java_Weekdays.get(weekday.toLowerCase(locale))) {
                 cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
             }
             cal.add(GregorianCalendar.WEEK_OF_YEAR, Integer.parseInt(num));
@@ -1149,14 +1159,14 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, knowledge.Yearmonths.get(month) + 1);
+            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)) + 1);
             cal.set(GregorianCalendar.DAY_OF_MONTH, -1);
             Date bug = cal.getTime(); // BUG: Three consecutive sets without a get make the 2nd set useless
-            cal.set(GregorianCalendar.DAY_OF_WEEK, knowledge.Weekdays.get(weekday));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
             int rmonth = cal.get(GregorianCalendar.MONTH);
             //System.out.println(cal.getTime());
             // if month is different than the provided (not greater because could be december-january), then substract one week
-            if (rmonth != knowledge.Yearmonths.get(month)) {
+            if (rmonth != timek.Java_Yearmonths.get(month.toLowerCase(locale))) {
                 cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
             }
             //System.out.println(cal.getTime());
@@ -1172,180 +1182,6 @@ public class TIMEN implements Closeable {
         return formatter.format(cal.getTime());
     }
 
-    /*******************************************************************
-     *  NORMALIZING TEXT INPUT
-     ******************************************************************/
-    /**
-     * Obtains the normalized text (NormText) and Patter from a given timex textual expression
-     * @param timex    the timex textual expression
-     * @return         the feature-values for NormText and Pattern
-     */
-    @SuppressWarnings("static-access")
-    public String getNormTextandPattern(String timex) {
-        String normText = "";
-        String pattern = "";
-        try {
-            // ONLY FOR SECURITY. re-normalize spaces (ensure no spaces)
-            timex = timex.replaceAll("\\s+", "_"); // ONLY FOR SECURITY
-            // ONLY FOR SECURITY (we expect _ already)
-
-            timex = "_" + timex + "_";
-
-            // remove useless symbols
-            timex = timex.replaceAll("_,", ""); // tokenized commas
-            timex = timex.replaceAll(",_", "_"); // untokenized commas
-
-            // ordinals disambiguation
-            /*ordinals always use "the" before... we distinguish...
-            or even distinguish at number level (...) (Num and Ord)*/
-
-            // Numeric ordinals to numbers
-            timex = timex.replaceAll("([0-9]+)(?:_)?(?:st|nd|rd|th)", "$1");
-
-            // Check for separate date/time separators -> UNIFY
-            timex = timex.replaceAll("([0-9]+)_([-/:])_([0-9]+|" + knowledge.TMonths_re + ")_([-/:])_([0-9]+)", "$1$2$3$4$5");
-            timex = timex.replaceAll("([0-9]+[-/:])_((?:[0-9]+|" + knowledge.TMonths_re + ")[-/:])_([0-9]+)", "$1$2$3");
-            timex = timex.replaceAll("([0-9]+)_([-/:](?:[0-9]+|" + knowledge.TMonths_re + "))_([-/:][0-9]+)", "$1$2$3");
-            timex = timex.replaceAll("([0-9]+|" + knowledge.TMonths_re + ")_([-/:])_([0-9]+)", "$1$2$3");
-            timex = timex.replaceAll("((?:[0-9]+|" + knowledge.TMonths_re + ")[-/:])_([0-9]+)", "$1$2");
-            timex = timex.replaceAll("([0-9]+|" + knowledge.TMonths_re + ")_([-/:][0-9]+)", "$1$2");
-
-
-            // Special for mids
-            timex = timex.replaceAll("mid(?:-)?([0-9]+)", "mid_$1");
-            timex = timex.replaceAll("mid-(.+)", "mid_$1");
-
-            //Special for 80s, etc.
-            timex = timex.replaceAll("([0-9]+)s", "$1_s");
-
-            // Special adjective periods (e.g., 10-hour), and special quarter
-            timex = timex.replaceAll("([^_]+)-(" + knowledge.TUnit_re + "|quarter|second)", "$1_$2");
-
-            // Special for fractions (only one is normalized because there should be no more than one per timex)
-            if (timex.matches("(?:.*_)?(?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*_" + knowledge.TUnit_re + ".*")) {
-                String nums2norm = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$2");
-                String normalizedfrac = "" + NUMEK.calc_and_sum_frac(nums2norm.replaceAll("_", " "));
-                timex = timex.replaceFirst("(.*_)?((?:[0-9]*_)?[1-9][0-9]*/[1-9][0-9]*)(_" + knowledge.TUnit_re + ".*)", "$1" + normalizedfrac + "$3");
-            }
-
-
-            // DISAMBIGUATE IF NEEDED
-            if (knowledge.ambiguous_re != null && timex.matches(knowledge.ambiguous_re)) {
-                timex = knowledge.disambiguate(timex);
-            }
-
-            // remove useless tokens (language - specific)
-            // TODO... perhaps articles do not have to be removed (distinguish dates and periods)
-            // the week DATE, week PERIOD
-            if (locale.getLanguage().equalsIgnoreCase("en")) {
-                timex = timex.replaceAll("_of_", "_"); //.replaceAll("_the_", "_"); // consider not omitting for disambiguation
-            }
-            if (locale.getLanguage().equalsIgnoreCase("es")) {
-                timex = timex.replaceAll("_de_", "_"); //.replaceAll("_del_", "_").replaceAll("_el_", "_").replaceAll("_la_", "_").replaceAll("_los_", "_").replaceAll("_las_", "_");
-            }
-
-            timex = timex.substring(1, timex.length() - 1);
-
-            String[] tempex_arr = timex.split("_");
-
-            // check spelled nums and repair other elements (mid, sept., etc.)
-            // spelled nums (e.g., one million or 25 hundred)
-            // ([0-9]+(\\.[0-9]+_spelledMagnitude_))?(spelled_)+, if after [0-9] there is no spell leave as it is.
-            String spelledNum = "";
-            String currentPat = "";
-            for (int i = 0; i < tempex_arr.length; i++) {
-                if (tempex_arr[i].matches(knowledge.TOD_re)) {
-                    currentPat = "TOD";
-                } else {
-                    if (tempex_arr[i].matches(knowledge.Seasons_re)) {
-                        currentPat = "Season";
-                    } else {
-                        if (tempex_arr[i].matches(knowledge.Decades_re)) {
-                            currentPat = "Decade";
-                        } else {
-                            if (tempex_arr[i].matches(knowledge.TUnit_re)) {
-                                tempex_arr[i] = knowledge.normalizeTUnit(tempex_arr[i]);
-                                currentPat = "TUnit";
-                            } else {
-                                if (tempex_arr[i].matches(knowledge.TMonths_re)) {
-                                    tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
-                                    currentPat = "TMonth";
-                                } else {
-                                    if (tempex_arr[i].matches(knowledge.TWeekdays_re)) {
-                                        tempex_arr[i] = tempex_arr[i].replaceAll("\\.", "");
-                                        currentPat = "TWeekday";
-                                    } else {
-                                        if (tempex_arr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:[.:][0-5][0-9])?(?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?")) {
-                                            currentPat = "Time";
-                                        } else {
-                                            if (tempex_arr[i].matches("(?:[0-2])?[0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?)")) {
-                                                currentPat = "Time";
-                                            } else {
-                                                if (tempex_arr[i].matches("(?:[0-3])?[0-9][./-](?:(?:[0-3])?[0-9]|" + knowledge.TMonths_re + ")[./-][0-9]+") // dd-mm-yyyy
-                                                        || tempex_arr[i].matches(knowledge.TMonths_re + "[/-][0-9]+") // MM-yyyy
-                                                        || tempex_arr[i].matches("(?:1[0-2]|(?:0)?[1-9])[/-][1-2][0-9]{3}") // mm-yyyy
-                                                        || tempex_arr[i].matches("[0-9]{4}[./-](?:1[0-2]|(?:0)?[1-9])[./-](?:[0-3])?[0-9](?:(T|_)[0-2][0-9][.:][0-5][0-9](?:[.:][0-5][0-9])?)?(?:Z)?") // ISO
-                                                        ) {
-                                                    currentPat = "Date";
-                                                } else {
-                                                    if (tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || tempex_arr[i].matches("(" + numek.numbers_re + "|" + numek.tens_re + "-" + numek.units_re + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + numek.ordinals_re + ").*") && tempex_arr[i].matches(numek.numdelim))) {
-                                                        currentPat = "Num";
-                                                    } else {
-                                                        currentPat = tempex_arr[i].toLowerCase();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // check if a spellednum ends
-                if (!spelledNum.equals("") && (!currentPat.equals("Num") || tempex_arr[i].matches("[0-9]+(?:\\.[0-9]+)?") || spelledNum.trim().matches(numek.ordinals_re) || tempex_arr[i].trim().matches(numek.ordinals_re))) {
-                    //if (!spelledNum.trim().matches(numek.ordinals_re)) {
-                    normText += " " + numek.text2number(spelledNum.trim());
-                    //} else {
-                    //    normText += " " + spelledNum.trim();
-                    //}
-                    pattern += " Num";
-                    spelledNum = ""; // initialize
-                }
-
-                // add to normTE or to spelled num
-                if (currentPat.equalsIgnoreCase("Num")) {
-                    spelledNum += " " + tempex_arr[i];
-                } else {
-                    // Month could be replaced by a number eg Oct by 08 but since Java manages Month names is OK.
-                    normText += " " + tempex_arr[i].toLowerCase().replaceAll("^sept(\\.)?$", "sep"); //.replaceFirst("^.*s$", tempex_arr[i].toLowerCase().substring(0, tempex_arr[i].length() - 1));
-                    pattern += " " + currentPat;
-                }
-            }
-
-            // add last spellednum if exists
-            if (!spelledNum.equals("")) {
-                //if (!spelledNum.trim().matches(numek.ordinals_re)) {
-                normText += " " + numek.text2number(spelledNum.trim());
-                //} else {
-                //    normText += " " + spelledNum.trim();
-                //}
-                pattern += " Num";
-            }
-
-        } catch (Exception e) {
-            System.err.println("Errors found (TIMEN):\n\t" + e.toString() + "\n");
-            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                e.printStackTrace(System.err);
-                System.exit(1);
-            }
-            return null;
-        }
-
-        return (normText.trim() + "|" + pattern.trim()).replaceAll(" ", "_");
-
-    }
 
     //////////////////////////////////77
     // DEPRECATED

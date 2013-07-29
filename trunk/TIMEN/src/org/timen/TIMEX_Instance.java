@@ -18,8 +18,9 @@ public class TIMEX_Instance {
 
     public TIMEX_Instance(String nt, String t, String d, String r){
         try{
-        normText=nt.replaceAll("_+", "_");
-        normTextArr=nt.split("_");
+        //System.out.println(nt+t+d+r);
+        normText=nt.replaceAll("\\s+", " ");
+        normTextArr=normText.split(" ");
         tense=t;
         if(!tense.matches(validTenses)){
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
