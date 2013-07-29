@@ -1,0 +1,3 @@
+TODO TODO
+          SET_re = "(?i)(?:cada(?:\\s|_)+.*|todos(?:\\s|_)+los.*|.*" + TWeekdays_re + "s.*|(?:diari|diaria|semanal|mensual|trimestral|anual|bienal)(?:mente|(?:a|e|o)(?:s)?))";
+

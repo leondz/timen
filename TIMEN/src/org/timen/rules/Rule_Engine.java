@@ -24,12 +24,14 @@ public class Rule_Engine {
     public static String apply(Rule rule, TIMEN timen_object, TIMEX_Instance timex_object) {
         String result = "";
 
+        
         try {
             
         ANTLRInputStream rule_input = new ANTLRInputStream(new ByteArrayInputStream((rule.get_rule()).getBytes("UTF-8")));
         TIMENruleGrammarLexer rule_lexer = new TIMENruleGrammarLexer(rule_input);
         CommonTokenStream rule_tokens = new CommonTokenStream(rule_lexer);
         TIMENruleGrammarParser rule_parser = new TIMENruleGrammarParser(rule_tokens);
+        System.out.println("rule: "+rule_parser);
 
         // TODO currently this switch is quite useless
 
@@ -40,7 +42,10 @@ public class Rule_Engine {
                 break;
 
                 case implicit_deictic: {
+                    //System.out.println("timen"+timen_object);
+                    //System.out.println("timex"+timex_object);
                     result=rule_parser.run(timen_object, timex_object);
+                    System.out.println("hola");
                 }
                 break;
 
