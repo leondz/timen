@@ -333,7 +333,7 @@ public class TIMEN implements Closeable {
                         if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                             System.err.println("\t" + rule.get_id() + " rule to apply: " + rule.get_rule() + " conditions: " + rule.get_rule_condition());
                         }
-                        if (rule.get_rule_condition() != null) {
+                        if (rule.get_rule_condition() != null && !rule.get_rule_condition().equals("")) {
                             // TODO: WE SHOULD CREATE A CONDITION GRAMMAR TOO...
                             //BUT FOR THE MOMENT WE CAN ALLOW ONLY ONLY ONE CONDITION
                             String condition = rule.get_rule_condition().replaceAll("\\s+", "");
