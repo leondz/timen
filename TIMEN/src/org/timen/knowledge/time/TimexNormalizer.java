@@ -42,7 +42,7 @@ public class TimexNormalizer {
      * @return the feature-values for NormText and Pattern (i.e., normtext|pattern)
      */
     public String getNormTextandPattern(String timex_text) {
-        return getNormTextandPattern(timex_text, Boolean.TRUE);
+        return getNormTextandPattern(timex_text, Boolean.FALSE);
     }
 
     
