@@ -57,12 +57,12 @@ public class Timek {
             }
             String app_path = CognitionisFileUtils.getApplicationPath(); //.replaceAll(extra + File.separator + "classes", "");
             String res_path = app_path + File.separator + "knowledge-bases" + File.separator + "time" + File.separator + lang + File.separator;
-            ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist");
-            useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist");
+            ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist",false, locale);
+            useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist",false, locale);
             //weekdays=new PhraselistFile(this.getClass().getResource("/time/"+lang+"/weekdays.phraselist").toURI().getPath()); // does not work if Phraselist requires a File as input
 
             for(String phra:phraselists_names){
-                phraselists.put(phra, new PhraselistFile(res_path + phra+".phraselist"));
+                phraselists.put(phra, new PhraselistFile(res_path + phra+".phraselist",false, locale));
                 repeated_keys.addAll(phraselists.get(phra).intersectPhraselist(all_keys));
                 all_keys.addAll(phraselists.get(phra).keySet());
             }
