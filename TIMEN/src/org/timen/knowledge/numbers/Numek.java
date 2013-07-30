@@ -79,40 +79,40 @@ public class Numek {
                 // this can be done dynamically given .conf json file (requiring specific files...)
                 // I understand more why VLINGO is how it is
                 // This then could be a FOR loop
-                delimiters = new PhraselistFile(res_path + "delimiters.phraselist");
+                delimiters = new PhraselistFile(res_path + "delimiters.phraselist",false, locale);
                 all_keys.addAll(delimiters.keySet());
-                units = new PhraselistFile(res_path + "units.phraselist");
+                units = new PhraselistFile(res_path + "units.phraselist",false, locale);
                 repeated_keys.addAll(units.intersectPhraselist(all_keys));
                 all_keys.addAll(units.keySet());              
-                tens = new PhraselistFile(res_path + "tens.phraselist");
+                tens = new PhraselistFile(res_path + "tens.phraselist",false, locale);
                 repeated_keys.addAll(tens.intersectPhraselist(all_keys));                
                 all_keys.addAll(tens.keySet());
-                magnitudes = new PhraselistFile(res_path + "magnitudes.phraselist");
+                magnitudes = new PhraselistFile(res_path + "magnitudes.phraselist",false, locale);
                 repeated_keys.addAll(magnitudes.intersectPhraselist(all_keys));
                 all_keys.addAll(magnitudes.keySet());
-                decimal_point_separator = new PhraselistFile(res_path + "decimal_point_separator.phraselist");
+                decimal_point_separator = new PhraselistFile(res_path + "decimal_point_separator.phraselist",false, locale);
                 repeated_keys.addAll(decimal_point_separator.intersectPhraselist(all_keys));                
                 all_keys.addAll(decimal_point_separator.keySet());
-                ordinals = new PhraselistFile(res_path + "ordinals.phraselist");
+                ordinals = new PhraselistFile(res_path + "ordinals.phraselist",false, locale);
                 repeated_keys.addAll(ordinals.intersectPhraselist(all_keys));                
                 all_keys.addAll(ordinals.keySet());
                 if (new File(res_path + "irregular_tens.phraselist").exists()) {
-                    irregular_tens = new PhraselistFile(res_path + "irregular_tens.phraselist");
+                    irregular_tens = new PhraselistFile(res_path + "irregular_tens.phraselist",false, locale);
                     repeated_keys.addAll(irregular_tens.intersectPhraselist(all_keys));                
                     all_keys.addAll(irregular_tens.keySet());
                 }
                 if (new File(res_path + "special_groups.phraselist").exists()) {
-                    special_groups = new PhraselistFile(res_path + "special_groups.phraselist");
+                    special_groups = new PhraselistFile(res_path + "special_groups.phraselist",false, locale);
                     repeated_keys.addAll(special_groups.intersectPhraselist(all_keys));                
                     all_keys.addAll(special_groups.keySet());
                 }
                 if (new File(res_path + "group_separators.phraselist").exists()) {
-                    group_separators = new PhraselistFile(res_path + "group_separators.phraselist");
+                    group_separators = new PhraselistFile(res_path + "group_separators.phraselist",false, locale);
                     repeated_keys.addAll(group_separators.intersectPhraselist(all_keys));                
                     all_keys.addAll(group_separators.keySet());
                 }
                 if (new File(res_path + "restrictions.phraselist").exists()) {
-                    restrictions = new PhraselistFile(res_path + "restrictions.phraselist"); // do not count for ambiguity
+                    restrictions = new PhraselistFile(res_path + "restrictions.phraselist",false, locale); // do not count for ambiguity
                 }
 
                 if(!repeated_keys.isEmpty()){

@@ -33,20 +33,38 @@ public class TimexNormalizer {
      * NORMALIZING TEXT INPUT
      * ****************************************************************
      */
+    
+    /**
+     * Obtains the normalized text (NormText) and Patter from a given timex
+     * textual expression
+     *
+     * @param timex the timex textual expression (by default it is case insensitive)
+     * @return the feature-values for NormText and Pattern (i.e., normtext|pattern)
+     */
+    public String getNormTextandPattern(String timex_text) {
+        return getNormTextandPattern(timex_text, Boolean.TRUE);
+    }
+
+    
     /**
      * Obtains the normalized text (NormText) and Patter from a given timex
      * textual expression
      *
      * @param timex the timex textual expression
+     * @param case_sensitive boolean selector (by default it is false == case insensitive)
+     * 
      * @return the feature-values for NormText and Pattern (i.e., normtext|pattern)
      */
-    public String getNormTextandPattern(String timex_text) {
+    public String getNormTextandPattern(String timex_text, Boolean case_sensitive) {
         String timex_normtext = "";
         String timex_pattern = "";
         String modifiers = ""; // mid,late,early,almost,approx... 
         try {
             // BASIC CLEAN-UP  -----------------------------------------------------------------------------------
-            timex_text = " " + timex_text.replaceAll("\\s+", " ") + " "; // Ensure correct tokenization
+            timex_text = " " + timex_text.replaceAll("\\s+", " ") + " "; // Ensure correct tokenization 
+            if(!case_sensitive){
+                timex_text=timex_text.toLowerCase(); //make it all-lowercase
+            }
             timex_text = timex_text.replaceAll(" ,", "").replaceAll(", ", " "); // remove tokenized commas untokenized commas
             // REMOVE USELESS SYMBOLS: only if they are completely useless
             // YES: "of" is useless in English dates
@@ -113,7 +131,7 @@ public class TimexNormalizer {
                             if (textarr[i].matches("[0-9]+(?:\\.[0-9]+)?") || textarr[i].matches("(" + timek.numek.units.getRE() + "|" + timek.numek.tens.getRE() + "|" + timek.numek.irregular_tens.getRE() + "|" + timek.numek.magnitudes.getRE() + "|" + timek.numek.special_groups.getRE() + "|" + timek.numek.ordinals.getRE() + "|" + timek.numek.units.getRE() + "|" + timek.numek.tens.getRE() + "-" + timek.numek.units.getRE() + ")") || (!spelledNum.equals("") && !spelledNum.matches(".*([0-9]|" + timek.numek.ordinals.getRE() + ").*") && textarr[i].matches(timek.numek.delimiters.getRE()))) {
                                 currentPat = "C_card";
                             } else {
-                                currentPat = textarr[i].toLowerCase();
+                                currentPat = textarr[i];
                             }
                         }
                     }
@@ -158,7 +176,7 @@ public class TimexNormalizer {
             timex_pattern = " " + timex_pattern + " ";
             for (String phraselist : timek.phraselists.keySet()) {
                 //System.err.println(timex_normtext+"   "+timex_pattern+"   "+timek.phraselists.get(phraselist).getName()+" " + timek.phraselists.get(phraselist).getRE());
-                p = Pattern.compile(" " + timek.phraselists.get(phraselist).getRE() + " ", Pattern.CASE_INSENSITIVE);
+                p = Pattern.compile(" " + timek.phraselists.get(phraselist).getRE() + " "); //, Pattern.CASE_INSENSITIVE this must be handled with a parameter (default insensitive, all lowercap)
                 m = p.matcher(timex_normtext);
                 while (m.find()) {
                     timex_normtext = timex_normtext.replaceAll("(?i)" +m.group(), " V__" + timek.phraselists.get(phraselist).getMapValue(m.group().trim()) + " ");

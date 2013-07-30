@@ -3,6 +3,7 @@ package org.timen.nlp_files;
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * PhraselistFile consists instances like phrase(one or more
@@ -26,12 +27,20 @@ public class PhraselistFile extends NLPFile {
     
     private String name;
     private Boolean has_canonical;
+    private Boolean case_sensitive;
     private HashMap<String, String> map; // if some other type is needed you can transform it at run-time (dynamic casting is complicated and makes things complicate)
     private HashSet<String> keyset; // added for efficiency ONLY. Equivalent to map.keySet();
     private String re; // regular expression
+    private Locale lang;
 
     public PhraselistFile(String filename) {
+        this(filename,Boolean.FALSE,new Locale("en", "us"));
+    }
+
+    public PhraselistFile(String filename, Boolean casesensitive, Locale locale) {
         super(filename);
+        case_sensitive=casesensitive;
+        lang=locale;
         name="C_"+this.f.getName().substring(0, this.f.getName().lastIndexOf(".")).toLowerCase();
         has_canonical = null;
         re = "_no_regex_to_match_";
@@ -40,6 +49,7 @@ public class PhraselistFile extends NLPFile {
         isWellFormatted(); // good format is mandatory, this loads map<String,String> and re by default
     }
 
+    
     @Override
     public Boolean isWellFormatted() {
         try {
@@ -82,6 +92,8 @@ public class PhraselistFile extends NLPFile {
                     if (line.length() != 0) {
                         if (has_canonical) {
                             String key = line.substring(0, line.lastIndexOf("|"));
+                            if(!case_sensitive)
+                                key=key.toLowerCase(lang);
                             String value = line.substring(line.lastIndexOf("|") + 1);
                             if (map.containsKey(key)) {
                                 throw new Exception(this.f.getName() + ". Line " + linen + " (" + line + "): Repeated phrase. Phraselists must not contain repetitions.");
@@ -129,6 +141,8 @@ public class PhraselistFile extends NLPFile {
                 }
                 if (checked) {
                     re += ")";
+                    if(!case_sensitive)
+                        re=re.toLowerCase(lang);
                     //re=re.replaceAll("\\.", "\\\\."); // this would be a solution to allow dots
                     keyset = new HashSet<>(map.keySet());
                     // Check for multi-word ambiguity (partial match): can be done lively since longest first can be allowed
