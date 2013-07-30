@@ -1,0 +1,4 @@
+^ segundo | C_ord 
+ un segundo | un C_tunit 
+^ mañana | C_deictic 
+deprecated (la|esta|de) mañana | deprecated $1 C_time_of_day 
