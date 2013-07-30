@@ -2,8 +2,8 @@
         <modelVersion>4.0.0</modelVersion> <!--maven model type (see schema above) -->
         <groupId>org.timen</groupId>       <!-- base package uri -->
         <artifactId>timen</artifactId>     <!-- the project name (id) -->
-        <version>1.0.11</version>  <!-- version. NOTE: must be -SNAPSHOT. Maven automatically removes that when release:prepare/perform -->
-        <packaging>jar</packaging>
+	<version>1.0.11-SNAPSHOT</version>  <!-- version. NOTE: must be -SNAPSHOT. Maven automatically removes that when release:prepare/perform -->        
+	<packaging>jar</packaging>
         <name>TIMEN</name>                 <!-- Full name (not id) -->
         <description>Converts text temporal expressions into their normalized values (standard: ISO 8601 extension used in TimeML)</description>
         <url>http://www.timen.org/</url>
@@ -18,10 +18,10 @@
                 </license>
         </licenses>
         <scm>  <!-- source code management -->
-                <url>https://timen.googlecode.com/svn/tags/timen-1.0.11</url>
-                <connection>scm:svn:http://timen.googlecode.com/svn/tags/timen-1.0.11</connection>
-                <developerConnection>scm:svn:https://timen.googlecode.com/svn/tags/timen-1.0.11</developerConnection>
-        </scm>
+                <url>https://timen.googlecode.com/svn/trunk/TIMEN</url>
+                <connection>scm:svn:http://timen.googlecode.com/svn/trunk/TIMEN</connection>
+                <developerConnection>scm:svn:https://timen.googlecode.com/svn/trunk/TIMEN</developerConnection>
+	</scm>
         <developers>
                 <developer>
                         <id>hector.llorens</id>
