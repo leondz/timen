@@ -1,0 +1,10 @@
+example.tml.plain	1	3-s	timex3	t31	1	value	2012-02-24
+example.tml.plain	1	3-s	timex3	t31	1	type	DATE
+example.tml.plain	2	4-s	timex3	t32	1	value	2012-02-24
+example.tml.plain	2	4-s	timex3	t32	1	type	DATE
+example.tml.plain	3	4-s	timex3	t33	1	value	2012-02-20
+example.tml.plain	3	4-s	timex3	t33	1	type	DATE
+example.tml.plain	4	4-s	timex3	t34	1	value	2012-02-19
+example.tml.plain	4	4-s	timex3	t34	1	type	DATE
+example.tml.plain	5	5-s	timex3	t35	1	value	2012-02-26
+example.tml.plain	5	5-s	timex3	t35	1	type	DATE
