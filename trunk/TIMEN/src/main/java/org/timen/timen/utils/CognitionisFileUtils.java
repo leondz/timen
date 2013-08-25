@@ -149,6 +149,34 @@ public class CognitionisFileUtils {
         }
     }
 
+    /**
+     * Return an existing resources path given a subdir (trying to find it inside or outside to classes)
+     * @param subdir
+     * @return res_path
+     * @throws Exception if resources are not found 
+     */
+    public static String getResourcesPath(String subdir) throws Exception{
+            // Check for internal resources
+            String app_path = CognitionisFileUtils.getApplicationPath();
+            String res_path = app_path + File.separator + subdir;
+            
+            if (!(new File(res_path)).exists()) { // Check for external resources
+                // For our beloved Windows
+                String extra = "";
+                if (File.separator.equals("\\")) {
+                    extra = "\\";
+                }
+                app_path = CognitionisFileUtils.getApplicationPath().replaceAll(extra + File.separator + "classes", "");
+                res_path = app_path + File.separator + subdir;
+            }
+
+            if (!(new File(res_path)).exists()) { //Set to null if does not exist
+                throw new Exception ("Resources +"+subdir+" do not exist neither interal or external to 'classes' in "+app_path+".");
+            }
+            
+            return res_path;
+    }
+    
     public static void copyFileUtil(File in, File out) throws IOException {
         FileChannel inChannel = new FileInputStream(in).getChannel();
         FileChannel outChannel = new FileOutputStream(out).getChannel();

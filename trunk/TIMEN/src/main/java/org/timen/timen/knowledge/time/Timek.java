@@ -4,17 +4,15 @@ import org.timen.timen.nlp_files.PhraselistFile;
 import org.timen.timen.knowledge.numbers.Numek;
 import org.timen.timen.utils.CognitionisFileUtils;
 import java.io.File;
-import java.text.DateFormatSymbols;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class Timek {
     // this could probably be loaded from json confing
-    public static final String [] phraselist_names= {"weekday","month","tunit","decade", "deictic", "time_of_day","season"};
-    
-    public HashMap<String,PhraselistFile> phraselists=new HashMap<>();
+
+    public static final String[] phraselist_names = {"weekday", "month", "tunit", "decade", "deictic", "time_of_day", "season"};
+    public HashMap<String, PhraselistFile> phraselists = new HashMap<>();
     // this can probably be an array of dependent knowledges
     public Numek numek;
     // this could probably be an abstract class
@@ -23,11 +21,6 @@ public class Timek {
     public HashSet<String> repeated_keys;
     public PhraselistFile ambiguous;
     public PhraselistFile useless_symbols;
-
-    public HashMap<String, Integer> Java_Weekdays;
-    public HashMap<String, Integer> Java_Yearmonths;
-
-   
 
     /*
      // set TODO develop the phraselist... or somethign else
@@ -40,53 +33,61 @@ public class Timek {
     }
 
     public Timek(Locale l) {
+        this(new Locale("en", "US"), "resources");
+    }
+
+    public Timek(Locale l, String resources_dir) {
         try {
             locale = l;
-            numek = new Numek(l);
-            this.loadJavaTemporalKnowledge(l);
+            numek = new Numek(l, resources_dir);
             String lang = l.toString().replace('_', '-').substring(0, 2);
+            String shortlang = lang.substring(0, 2);
             all_keys = new HashSet<>();
             repeated_keys = new HashSet<>();
             phraselists = new HashMap<>();
 
             all_keys = numek.all_keys;
             // Load from resource knowledge files (all string, string)            
-            // For our beloved Windows
-            String extra = "";
-            if (File.separator.equals("\\")) {
-                extra = "\\";
-            }
-            //String app_path = CognitionisFileUtils.getApplicationPath().replaceAll(extra + File.separator + "classes", "");
-            String app_path = CognitionisFileUtils.getApplicationPath(); //.replaceAll(extra + File.separator + "classes", "");
-            String res_path = app_path + File.separator + "knowledge-bases" + File.separator + "time" + File.separator + lang + File.separator;
-            ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist", false, locale,true,true);
-            useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale,false,true);
-            //weekdays=new PhraselistFile(this.getClass().getResource("/time/"+lang+"/weekdays.phraselist").toURI().getPath()); // does not work if Phraselist requires a File as input
+            String res_path = CognitionisFileUtils.getResourcesPath(resources_dir + File.separator + "time" + File.separator);
 
-            // TODO: this should only work for some required phraselists
-            for (String phra : phraselist_names) {
-                if (new File(res_path + phra + ".phraselist").exists()) {
-                    phraselists.put(phra, new PhraselistFile(res_path + phra + ".phraselist", false, locale,false,false));
-                    repeated_keys.addAll(phraselists.get(phra).intersectPhraselist(all_keys));
-                    all_keys.addAll(phraselists.get(phra).keySet());
-                }
-                // ELSE REQUIRED PHRASELIST DOES NOT EXIST
+            if (!(new File(res_path + lang + File.separator)).exists()) {
+                res_path = res_path + shortlang + File.separator;
+            } else {
+                res_path = res_path + lang + File.separator;
             }
-            // set TODO develop the phraselist... or somethign else
-            // todo TIMEgranul_re = "(?i)(?:seconds|minute(?:s)?|hour(?:s)?|" + TOD_re + ")";
 
-            for (String akey : ambiguous.keySet()) {
-                HashSet<String> temp_keys = new HashSet<>(repeated_keys);
-                for (String key : repeated_keys) {
-                    if (akey.contains(key)) {
-                        temp_keys.remove(key);
+            if (!(new File(res_path)).exists()) {
+                throw new Exception("Not-supported locale: " + lang + " nor " + shortlang);
+            } else {
+                ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist", false, locale, true, true);
+                useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale, false, true);
+                //weekdays=new PhraselistFile(this.getClass().getResource("/time/"+lang+"/weekdays.phraselist").toURI().getPath()); // does not work if Phraselist requires a File as input
+
+                // TODO: this should only work for some required phraselists
+                for (String phra : phraselist_names) {
+                    if (new File(res_path + phra + ".phraselist").exists()) {
+                        phraselists.put(phra, new PhraselistFile(res_path + phra + ".phraselist", false, locale, false, false));
+                        repeated_keys.addAll(phraselists.get(phra).intersectPhraselist(all_keys));
+                        all_keys.addAll(phraselists.get(phra).keySet());
                     }
+                    // ELSE REQUIRED PHRASELIST DOES NOT EXIST
                 }
-                repeated_keys.clear();
-                repeated_keys.addAll(temp_keys);
-            }
-            if (!repeated_keys.isEmpty()) {
-                throw new Exception("This knowledge element has unhandled ambiguity: " + repeated_keys);
+                // set TODO develop the phraselist... or somethign else
+                // todo TIMEgranul_re = "(?i)(?:seconds|minute(?:s)?|hour(?:s)?|" + TOD_re + ")";
+
+                for (String akey : ambiguous.keySet()) {
+                    HashSet<String> temp_keys = new HashSet<>(repeated_keys);
+                    for (String key : repeated_keys) {
+                        if (akey.contains(key)) {
+                            temp_keys.remove(key);
+                        }
+                    }
+                    repeated_keys.clear();
+                    repeated_keys.addAll(temp_keys);
+                }
+                if (!repeated_keys.isEmpty()) {
+                    throw new Exception("This knowledge element has unhandled ambiguity: " + repeated_keys);
+                }
             }
         } catch (Exception e) {
             System.err.println("Errors found in " + this.getClass().getName() + ":\n\t" + e.toString());
@@ -161,9 +162,7 @@ public class Timek {
             return text;
         }
     }
-    
-    
-    
+
     /**
      * *****************************************************************
      * NORMALIZING TEXT INPUT
@@ -226,7 +225,7 @@ public class Timek {
                 String normalizedfrac = "" + Numek.calc_and_sum_frac(nums2norm);
                 timex_text = timex_text.replaceFirst("(.* )?((?:[0-9]* )?[1-9][0-9]*/[1-9][0-9]*)( " + this.phraselists.get("tunit").getRE() + ".*)", "$1" + normalizedfrac + "$3");
             }
-            
+
             //if(this.numek.ordinal_suffixes!=null){ // needed because ordinal card th disambiguation is not included in time.ambiguous
             //    timex_text = timex_text.replaceAll(" ([0-9]+)\\s+("+this.numek.ordinal_suffixes.getRE()+") ", " $1$2 ");
             //}
@@ -273,7 +272,7 @@ public class Timek {
             }
 
             // Normalize numbers
-            String normTextandPattern=this.numek.getNormTextandPattern(timex_normtext+" ", timex_pattern+" ");
+            String normTextandPattern = this.numek.getNormTextandPattern(timex_normtext + " ", timex_pattern + " ");
             String[] normTextandPattern_arr = normTextandPattern.split("\\|");
             timex_normtext = normTextandPattern_arr[0];
             timex_pattern = normTextandPattern_arr[1];
@@ -302,44 +301,4 @@ public class Timek {
         return (timex_normtext.trim().replaceAll("v__", "") + "|" + timex_pattern.trim());
 
     }
-    
-    
-    
-
-    
-    // OLD STUFF MAYBE WE CAN REMOVE THIS IN THE FUTURE
-     /**
-     * Loads the localized java GregorianCalendar temporal knowledge (i.e., DOW, MOY) for the indicated locale l
-     *
-     * @param l language locale
-     *
-     */
-    private void loadJavaTemporalKnowledge(Locale l) {
-        // load Java Days-of-the-week
-        Java_Weekdays = new HashMap<>();
-        String[] temp = new DateFormatSymbols(l).getWeekdays();
-        for (int i = 1; i < temp.length; i++) {
-            Java_Weekdays.put(temp[i].toLowerCase(l), i);
-        }
-        temp = new DateFormatSymbols(l).getShortWeekdays();
-        for (int i = 1; i < temp.length; i++) {
-            Java_Weekdays.put(temp[i].toLowerCase(l), i);
-        }
-        //System.out.println(Java_Weekdays.toString());
-
-        // load Months of the year
-        Java_Yearmonths = new HashMap<>();
-        temp = new DateFormatSymbols(l).getMonths();
-        for (int i = 0; i < temp.length - 1; i++) {
-            //System.out.println(i+temp[i]+ " "+l.toString());
-            Java_Yearmonths.put(temp[i].toLowerCase(l), i);
-        }
-        temp = new DateFormatSymbols(l).getShortMonths();
-        for (int i = 0; i < temp.length - 1; i++) {
-            //System.out.println(i+temp[i]);
-            Java_Yearmonths.put(temp[i].toLowerCase(l), i);
-        }
-        //System.out.println(Java_Yearmonths.toString());
-    }
-    
 }

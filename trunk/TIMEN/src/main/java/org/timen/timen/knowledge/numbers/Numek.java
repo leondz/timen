@@ -61,25 +61,30 @@ public class Numek {
     }
 
     public Numek() {
-        this(new Locale("en", "US"));
+        this(new Locale("en", "US")); // default language
     }
 
     public Numek(Locale l) {
+        this(l,"resources"); // default resources location
+    }
+
+    public Numek(Locale l, String resources_dir) {
         locale = l;
-        String lang = l.toString().replace('_', '-').substring(0, 2);
+        String lang = l.toString().replace('_', '-');
+        String shortlang =lang.substring(0, 2);
         all_keys = new HashSet<>();
         repeated_keys = new HashSet<>();
         try {
-            // For our beloved Windows
-            String extra = "";
-            if (File.separator.equals("\\")) {
-                extra = "\\";
+            String res_path=CognitionisFileUtils.getResourcesPath(resources_dir + File.separator + "numbers" + File.separator);
+           
+            if (!(new File(res_path+ lang + File.separator)).exists()) {
+                res_path = res_path + shortlang + File.separator;
+            }else{
+                res_path= res_path + lang + File.separator;
             }
-            String app_path = CognitionisFileUtils.getApplicationPath(); //.replaceAll(extra + File.separator + "classes", "");
-            //String app_path = CognitionisFileUtils.getApplicationPath().replaceAll(extra + File.separator + "classes", "");
-            String res_path = app_path + File.separator + "knowledge-bases" + File.separator + "numbers" + File.separator + lang + File.separator;          
+            
             if (!(new File(res_path)).exists()) {
-                throw new Exception("Not-supported locale: " + lang);
+                throw new Exception("Not-supported locale: " + lang + " nor " +shortlang);
             } else {
                 // this can be done dynamically given .conf json file (requiring specific files...)
                 // I understand more why VLINGO is how it is
