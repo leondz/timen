@@ -1,3 +1,0 @@
-TODO TODO
-            SET_re = "(?i)(?:each(\\s|_)+.*|every(?:\\s|_)+.*|.*" + TWeekdays_re + "s.*|(?:hour|day|week|month|quarter|year)ly)";
-
