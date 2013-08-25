@@ -50,10 +50,10 @@
                 <!--<sourceDirectory>src</sourceDirectory>
                 <testSourceDirectory>test</testSourceDirectory>-->
                 <resources>
-                        <resource>
-                                <directory>res</directory>
-								<!-- <targetPath>..</targetPath> -->
-                        </resource>
+			<resource>
+			    <directory>res</directory>
+			    <!--<targetPath>../resources</targetPath>  DOCUMENT ¿WHY? HAVING RESOURCES EXTERNAL TO JAR??? -->
+			</resource>
                 </resources>
                 <plugins>
 				<!-- TODO needs execution and goals definition to work properly... 

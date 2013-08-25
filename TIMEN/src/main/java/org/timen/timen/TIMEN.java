@@ -8,10 +8,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormatSymbols;
 //import java.sql.Statement;
 import java.text.*;
 import java.util.*;
-import org.timen.timen.knowledge.numbers.Numek;
 import org.timen.timen.knowledge.time.Timek;
 
 /**
@@ -22,9 +22,11 @@ import org.timen.timen.knowledge.time.Timek;
 public class TIMEN implements Closeable {
 
     private Locale locale;
-    private Numek numek;
     private Timek timek;
     private Connection connection;
+    public HashMap<String, Integer> Java_Weekdays;
+    public HashMap<String, Integer> Java_Yearmonths;
+
 
     public TIMEN() {
         this(Locale.getDefault());
@@ -32,9 +34,10 @@ public class TIMEN implements Closeable {
 
     // constructor
     public TIMEN(Locale l) {
-        numek = new Numek(l);
-        timek = new Timek(l);
+        timek = new Timek(l,"knowledge-bases");
         locale = l;
+        this.loadJavaTemporalKnowledge(l);
+
 
         // load knowledge (in the future the knowledge should be a sqlite db)
         // The sqlite is loaded into a hash in construction and then it is fast if used in tml files
@@ -110,7 +113,6 @@ public class TIMEN implements Closeable {
     public void close() {
         //knowledge = null;
         locale = null;
-        numek = null;
         try {
             connection.close();
         } catch (SQLException e) {
@@ -133,6 +135,43 @@ public class TIMEN implements Closeable {
     public static String granul_seconds = "yyyy-MM-dd'T'HH:mm:ss";
     public static String granul_weeks = "yyyy-'W'ww";
 
+    
+    
+     /**
+     * Loads the localized java GregorianCalendar temporal knowledge (i.e., DOW, MOY) for the indicated locale l
+     *
+     * @param l language locale
+     *
+     */
+    private void loadJavaTemporalKnowledge(Locale l) {
+        // load Java Days-of-the-week
+        Java_Weekdays = new HashMap<>();
+        String[] temp = new DateFormatSymbols(l).getWeekdays();
+        for (int i = 1; i < temp.length; i++) {
+            Java_Weekdays.put(temp[i].toLowerCase(l), i);
+        }
+        temp = new DateFormatSymbols(l).getShortWeekdays();
+        for (int i = 1; i < temp.length; i++) {
+            Java_Weekdays.put(temp[i].toLowerCase(l), i);
+        }
+        //System.out.println(Java_Weekdays.toString());
+
+        // load Months of the year
+        Java_Yearmonths = new HashMap<>();
+        temp = new DateFormatSymbols(l).getMonths();
+        for (int i = 0; i < temp.length - 1; i++) {
+            //System.out.println(i+temp[i]+ " "+l.toString());
+            Java_Yearmonths.put(temp[i].toLowerCase(l), i);
+        }
+        temp = new DateFormatSymbols(l).getShortMonths();
+        for (int i = 0; i < temp.length - 1; i++) {
+            //System.out.println(i+temp[i]);
+            Java_Yearmonths.put(temp[i].toLowerCase(l), i);
+        }
+        //System.out.println(Java_Yearmonths.toString());
+    }
+    
+    
     /**
      * Simplified version of normalize (no tense, no context)
      * @param expr          the temporal expression text (multiwords use "_" for concat)
@@ -193,7 +232,8 @@ public class TIMEN implements Closeable {
                     }
                 }
             }
-            String normTextandPattern = timek.getNormTextandPattern(expr);
+            // Converting c_ord to card to be compatible with old TIMEN (without card/ord differentiation)
+            String normTextandPattern = timek.getNormTextandPattern(expr).replaceAll("c_ord","c_card").replaceAll("ord__", "");
             if (normTextandPattern == null) {
                 throw new Exception("Problem obtaining NormText and Pattern from: " + expr);
             }
@@ -462,7 +502,7 @@ public class TIMEN implements Closeable {
     }
 
     public String to_month(String month) {
-        String output = "" + (timek.Java_Yearmonths.get(month.toLowerCase(locale)) + 1);
+        String output = "" + (Java_Yearmonths.get(month.toLowerCase(locale)) + 1);
         if (output.length() == 1) {
             output = "0" + output;
         }
@@ -957,9 +997,9 @@ public class TIMEN implements Closeable {
                 cal = timex_object.reftime.getCalendar();
             }
             //System.out.println(reference+weekday+quantity+timex_object+"---");
-            //System.out.println(reference+weekday+quantity+timex_object+"---"+timek.Java_Weekdays);
+            //System.out.println(reference+weekday+quantity+timex_object+"---"+Java_Weekdays);
             formatter = new SimpleDateFormat(granul_days);
-            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, Java_Weekdays.get(weekday.toLowerCase(locale)));
             cal.add(GregorianCalendar.DAY_OF_MONTH, quantity);
 
         } catch (Exception e) {
@@ -997,7 +1037,7 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, Java_Weekdays.get(weekday.toLowerCase(locale)));
             Date result = cal.getTime();
             if (!timex_object.getTense().startsWith("omit")) {
                 if (result.before(refdate)) {
@@ -1042,7 +1082,7 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)));
+            cal.set(GregorianCalendar.MONTH, Java_Yearmonths.get(month.toLowerCase(locale)));
             Date result = cal.getTime();
             if (!timex_object.getTense().startsWith("omit")) {
                 if (result.before(refdate)) {
@@ -1085,7 +1125,7 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)));
+            cal.set(GregorianCalendar.MONTH, Java_Yearmonths.get(month.toLowerCase(locale)));
             cal.set(GregorianCalendar.DAY_OF_MONTH, Integer.parseInt(day));
             Date result = cal.getTime();
             if (!timex_object.getTense().startsWith("omit")) {
@@ -1130,12 +1170,12 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)));
+            cal.set(GregorianCalendar.MONTH, Java_Yearmonths.get(month.toLowerCase(locale)));
             cal.set(GregorianCalendar.DAY_OF_MONTH, 0);
             int dayofweekday1 = cal.get(GregorianCalendar.DAY_OF_WEEK);
-            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, Java_Weekdays.get(weekday.toLowerCase(locale)));
             // if first weekday of month is lower or equal than the given weekday, then substract one week (first (1) Monday will add already 1 week)
-            if (dayofweekday1 <= timek.Java_Weekdays.get(weekday.toLowerCase(locale))) {
+            if (dayofweekday1 <= Java_Weekdays.get(weekday.toLowerCase(locale))) {
                 cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
             }
             cal.add(GregorianCalendar.WEEK_OF_YEAR, Integer.parseInt(num));
@@ -1159,14 +1199,14 @@ public class TIMEN implements Closeable {
                 refdate = timex_object.reftime.getCalendar().getTime();
             }
             cal.setTime(refdate);
-            cal.set(GregorianCalendar.MONTH, timek.Java_Yearmonths.get(month.toLowerCase(locale)) + 1);
+            cal.set(GregorianCalendar.MONTH, Java_Yearmonths.get(month.toLowerCase(locale)) + 1);
             cal.set(GregorianCalendar.DAY_OF_MONTH, -1);
             Date bug = cal.getTime(); // BUG: Three consecutive sets without a get make the 2nd set useless
-            cal.set(GregorianCalendar.DAY_OF_WEEK, timek.Java_Weekdays.get(weekday.toLowerCase(locale)));
+            cal.set(GregorianCalendar.DAY_OF_WEEK, Java_Weekdays.get(weekday.toLowerCase(locale)));
             int rmonth = cal.get(GregorianCalendar.MONTH);
             //System.out.println(cal.getTime());
             // if month is different than the provided (not greater because could be december-january), then substract one week
-            if (rmonth != timek.Java_Yearmonths.get(month.toLowerCase(locale))) {
+            if (rmonth != Java_Yearmonths.get(month.toLowerCase(locale))) {
                 cal.add(GregorianCalendar.WEEK_OF_YEAR, -1);
             }
             //System.out.println(cal.getTime());
@@ -1251,4 +1291,7 @@ public class TIMEN implements Closeable {
         Date ret = a;
         return a;
     }
+    
+    
+    
 }
