@@ -1,4 +1,0 @@
-{
-	"reference-lang": "en-US",
-	"required-knowledge": ["lang-particularities.json", "delimiters.phraselist", "units.phraselist", "magnitudes.phraselist", "tens.pharselist", "irregular_tens.phraselist", "special_groups.phraselist"]
-}
