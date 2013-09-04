@@ -77,19 +77,19 @@ public class Numek {
         try {
             String res_path=CognitionisFileUtils.getResourcesPath(resources_dir + File.separator + "numbers" + File.separator);
            
-            if (!(new File(res_path+ lang + File.separator)).exists()) {
+            if (!CognitionisFileUtils.URL_exists(res_path + lang + File.separator)) {
                 res_path = res_path + shortlang + File.separator;
-            }else{
-                res_path= res_path + lang + File.separator;
+            } else {
+                res_path = res_path + lang + File.separator;
             }
             
-            if (!(new File(res_path)).exists()) {
+            if (!CognitionisFileUtils.URL_exists(res_path)) {
                 throw new Exception("Not-supported locale: " + lang + " nor " +shortlang);
             } else {
                 // this can be done dynamically given .conf json file (requiring specific files...)
                 // I understand more why VLINGO is how it is
                 // This then could be a FOR loop
-                if (new File(res_path + "ambiguous.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "ambiguous.phraselist")) {
                     ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist",false, locale,true,true);
                 }
                 delimiters = new PhraselistFile(res_path + "delimiters.phraselist", false, locale,false,false);
@@ -109,37 +109,37 @@ public class Numek {
                 ordinal_units = new PhraselistFile(res_path + "ordinal_units.phraselist", false, locale,true,false);
                 repeated_keys.addAll(ordinal_units.intersectPhraselist(all_keys));
                 all_keys.addAll(ordinal_units.keySet());
-                if (new File(res_path + "irregular_tens.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "irregular_tens.phraselist")) {
                     irregular_tens = new PhraselistFile(res_path + "irregular_tens.phraselist", false, locale,true,false);
                     repeated_keys.addAll(irregular_tens.intersectPhraselist(all_keys));
                     all_keys.addAll(irregular_tens.keySet());
                 }
-                if (new File(res_path + "special_groups.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "special_groups.phraselist")) {
                     special_groups = new PhraselistFile(res_path + "special_groups.phraselist", false, locale,true,false);
                     repeated_keys.addAll(special_groups.intersectPhraselist(all_keys));
                     all_keys.addAll(special_groups.keySet());
                 }
-                if (new File(res_path + "group_separators.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "group_separators.phraselist")) {
                     group_separators = new PhraselistFile(res_path + "group_separators.phraselist", false, locale, false,false);
                     repeated_keys.addAll(group_separators.intersectPhraselist(all_keys));
                     all_keys.addAll(group_separators.keySet());
                 }
-                if (new File(res_path + "ordinal_irregular_tens.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "ordinal_irregular_tens.phraselist")) {
                     ordinal_irregular_tens = new PhraselistFile(res_path + "ordinal_irregular_tens.phraselist", false, locale);
                     repeated_keys.addAll(ordinal_irregular_tens.intersectPhraselist(all_keys));
                     all_keys.addAll(ordinal_irregular_tens.keySet());
                 }
-                if (new File(res_path + "ordinal_tens.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "ordinal_tens.phraselist")) {
                     ordinal_tens = new PhraselistFile(res_path + "ordinal_tens.phraselist", false, locale,true,false);
                     repeated_keys.addAll(ordinal_tens.intersectPhraselist(all_keys));
                     all_keys.addAll(ordinal_tens.keySet());
                 }
-                if (new File(res_path + "ordinal_suffixes.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "ordinal_suffixes.phraselist")) {
                     ordinal_suffixes = new PhraselistFile(res_path + "ordinal_suffixes.phraselist", false, locale,false,false);
                     repeated_keys.addAll(ordinal_suffixes.intersectPhraselist(all_keys));
                     all_keys.addAll(ordinal_suffixes.keySet());
                 }
-                if (new File(res_path + "restrictions.phraselist").exists()) {
+                if (CognitionisFileUtils.URL_exists(res_path + "restrictions.phraselist")) {
                     restrictions = new PhraselistFile(res_path + "restrictions.phraselist", false, locale,true,false); // do not count for ambiguity
                 }
                 if(ambiguous!=null){
