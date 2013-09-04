@@ -86,7 +86,11 @@ add[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
         | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=toint[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
         | 'ADD' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=tonegativeint[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
         | 'ADD' '(' r=REFERENCE       ',' e=subpat[$timex_object] ',' i=intsubpat[$timex_object] ')' {$value = $timen.add($REFERENCE.text,$e.value,$i.value, $timex_object);}
+        | 'ADD' '(' a=subpat[$timex_object]       ',' e=pat[$timex_object] ',' i=intsubpat[$timex_object] ')' {$value = $timen.add($a.value,$e.value,$i.value, $timex_object);}
+        | 'ADD' '(' a=subpat[$timex_object]       ',' e=subpat[$timex_object] ',' i=intsubpat[$timex_object] ')' {$value = $timen.add($a.value,$e.value,$i.value, $timex_object);}
         | 'ADD_WEEKDAY' '(' r=REFERENCE       ',' e=pat[$timex_object] ',' i=intnumber ')' {$value = $timen.add_weekday($REFERENCE.text,$e.value,$i.value, $timex_object);}
+        | 'ADD_WEEKDAY' '(' a=subpat[$timex_object]       ',' e=pat[$timex_object] ',' i=intnumber ')' {$value = $timen.add_weekday($a.value,$e.value,$i.value, $timex_object);}
+        | 'ADD_WEEKDAY' '(' a=subpat[$timex_object]       ',' e=pat[$timex_object] ',' i=intsubpat[$timex_object] ')' {$value = $timen.add_weekday($a.value,$e.value,$i.value, $timex_object);}
         ;
 
 

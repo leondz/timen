@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Timek {
     // this could probably be loaded from json confing
 
-    public static final String[] phraselist_names = {"weekday", "month", "tunit", "decade", "deictic", "time_of_day", "season"};
+    public static final String[] phraselist_names = {"weekday", "month", "tunit", "decade", "deictic", "time_of_day", "season","after_before","modifier","relative_ord"};
     public HashMap<String, PhraselistFile> phraselists = new HashMap<>();
     // this can probably be an array of dependent knowledges
     public Numek numek;
@@ -50,22 +50,26 @@ public class Timek {
             // Load from resource knowledge files (all string, string)            
             String res_path = CognitionisFileUtils.getResourcesPath(resources_dir + File.separator + "time" + File.separator);
 
-            if (!(new File(res_path + lang + File.separator)).exists()) {
+            if (!CognitionisFileUtils.URL_exists(res_path + lang + File.separator)) {
                 res_path = res_path + shortlang + File.separator;
             } else {
                 res_path = res_path + lang + File.separator;
             }
-
-            if (!(new File(res_path)).exists()) {
+            
+            if (!CognitionisFileUtils.URL_exists(res_path)) {
                 throw new Exception("Not-supported locale: " + lang + " nor " + shortlang);
             } else {
-                ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist", false, locale, true, true);
-                useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale, false, true);
-                //weekdays=new PhraselistFile(this.getClass().getResource("/time/"+lang+"/weekdays.phraselist").toURI().getPath()); // does not work if Phraselist requires a File as input
+                // these are separated because they allow regex or special things
+                if (CognitionisFileUtils.URL_exists(res_path + "ambiguous.phraselist")) {
+                    ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist", false, locale, true, true);
+                }
+                if (CognitionisFileUtils.URL_exists(res_path + "useless_symbol.phraselist")) {
+                    useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale, false, true);
+                }
 
                 // TODO: this should only work for some required phraselists
                 for (String phra : phraselist_names) {
-                    if (new File(res_path + phra + ".phraselist").exists()) {
+                    if (CognitionisFileUtils.URL_exists(res_path + phra + ".phraselist")) {
                         phraselists.put(phra, new PhraselistFile(res_path + phra + ".phraselist", false, locale, false, false));
                         repeated_keys.addAll(phraselists.get(phra).intersectPhraselist(all_keys));
                         all_keys.addAll(phraselists.get(phra).keySet());
@@ -74,16 +78,17 @@ public class Timek {
                 }
                 // set TODO develop the phraselist... or somethign else
                 // todo TIMEgranul_re = "(?i)(?:seconds|minute(?:s)?|hour(?:s)?|" + TOD_re + ")";
-
-                for (String akey : ambiguous.keySet()) {
-                    HashSet<String> temp_keys = new HashSet<>(repeated_keys);
-                    for (String key : repeated_keys) {
-                        if (akey.contains(key)) {
-                            temp_keys.remove(key);
+                if(ambiguous!=null){
+                    for (String akey : ambiguous.keySet()) {
+                        HashSet<String> temp_keys = new HashSet<>(repeated_keys);
+                        for (String key : repeated_keys) {
+                            if (akey.contains(key)) {
+                                temp_keys.remove(key);
+                            }
                         }
+                        repeated_keys.clear();
+                        repeated_keys.addAll(temp_keys);
                     }
-                    repeated_keys.clear();
-                    repeated_keys.addAll(temp_keys);
                 }
                 if (!repeated_keys.isEmpty()) {
                     throw new Exception("This knowledge element has unhandled ambiguity: " + repeated_keys);

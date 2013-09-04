@@ -21,6 +21,7 @@ import org.timen.timen.knowledge.time.Timek;
  */
 public class TIMEN implements Closeable {
 
+    public static SimpleDateFormat dct_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     private Locale locale;
     private Timek timek;
     private Connection connection;
@@ -89,6 +90,7 @@ public class TIMEN implements Closeable {
                 applicationpath = applicationpath.substring(0, applicationpath.length() - 14);
             }
             // + File.separator + "res"
+            // NOT USED BECAUSE IT SUPOSES THAT THE DB is inside resources
             String dbpath = applicationpath + File.separator + "rule-bases" + File.separator + databaseName;
             //System.out.println(dbpath);
            /* if ((new File(dbpath)).exists()) {
@@ -171,6 +173,17 @@ public class TIMEN implements Closeable {
         //System.out.println(Java_Yearmonths.toString());
     }
     
+
+    
+    /**
+     * Basic version of normalize (no tense, no context,no DCT)
+     * @param expr          the temporal expression text (multiwords use "_" for concat)
+     * @return normalization (value)
+     */
+    public String normalize(String expr) {
+        String dct = dct_format.format(new Date());
+        return this.normalize(expr, dct, "omit", dct);
+    }
     
     /**
      * Simplified version of normalize (no tense, no context)
@@ -985,13 +998,14 @@ public class TIMEN implements Closeable {
      * Adds a positive or negative integer from a weekday given a specific reference (dct or reftime)
      * @param reference
      * @param weekday
-     * @param quantity
+     * @param quantity (new! now it is multiplied by 7)
      * @return String (operated reference)
      */
     public String add_weekday(String reference, String weekday, int quantity, TIMEX_Instance timex_object) {
         Calendar cal = timex_object.dct.getCalendar();
         SimpleDateFormat formatter = new SimpleDateFormat(granul_days);
-
+        quantity=quantity*7;
+        
         try {
             if (reference.equalsIgnoreCase("REFTIME")) {
                 cal = timex_object.reftime.getCalendar();

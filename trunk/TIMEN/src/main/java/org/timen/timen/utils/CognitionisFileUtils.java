@@ -22,13 +22,17 @@ public class CognitionisFileUtils {
     //        However a unique canonical path (the real one to the file)
     // System.getProperty("user.dir"); .. user.home, user, ... interesting
     /*for(Entry<Object,Object> entry : System.getProperties().entrySet()) {
-    String name = entry.getValue().toString();
-    if(name.contains("CorpusInterface")) {
-    System.out.println(entry.getKey());
-    }
-    }*/
+     String name = entry.getValue().toString();
+     if(name.contains("CorpusInterface")) {
+     System.out.println(entry.getKey());
+     }
+     }*/
     // MIME Types, not so accurate nor useful by the moment...
     //String mime=new MimetypesFileTypeMap().getContentType(f);
+    // Resource locations
+    public static final int JAR = 0;
+    public static final int LOCAL_FILE_SYSTEM = 1;
+    public static final int WEB = 2;
     // File encodings (charsets)
     public static String UTF8 = "UTF-8";
     public static String ASCII = "ASCII";
@@ -43,21 +47,18 @@ public class CognitionisFileUtils {
     public static String ApplicationPath = null;
     public static String NLPFiles_descr_path = "program-data/default-NLPFiles-descriptions/";
     public static FileFilter onlyFilesFilter = new FileFilter() {
-
         @Override
         public boolean accept(File file) {
             return (!file.isDirectory() && !file.getName().matches("\\..*"));
         }
     };
     public static FileFilter onlyDirsNonAuxDirs = new FileFilter() {
-
         @Override
         public boolean accept(File file) {
             return (!file.isFile() && !file.getName().matches(".*([-_]features|\\.d)"));
         }
     };
     public static Comparator fileSizeAsc = new Comparator() {
-
         @Override
         public int compare(Object f1, Object f2) {
             if (((File) f1).length() < ((File) f2).length()) {
@@ -70,7 +71,6 @@ public class CognitionisFileUtils {
         }
     };
     public static Comparator fileSizeDesc = new Comparator() {
-
         @Override
         public int compare(Object f1, Object f2) {
             if (((File) f1).length() > ((File) f2).length()) {
@@ -109,34 +109,40 @@ public class CognitionisFileUtils {
                 //innerpath = FileUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
                 //innerpath = FileUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
-            URL url = CognitionisFileUtils.class.getProtectionDomain().getCodeSource().getLocation();
-            innerpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
+                // probably won't work for Windows non ascii folder names
+                URL url = CognitionisFileUtils.class.getProtectionDomain().getCodeSource().getLocation();
+                innerpath = (new File(URLDecoder.decode(url.getFile(), "UTF-8"))).getAbsolutePath();
+
 
                 //System.out.println("dfdf "+innerpath);
                 if (innerpath.contains(".jar")) {
                     innerpath = innerpath.substring(0, innerpath.lastIndexOf(File.separator) + 1);
-                    if (innerpath.endsWith(File.separator+"lib"+File.separator)) {
+                    // Go up from app local libraries
+                    if (innerpath.endsWith(File.separator + "lib" + File.separator)) {
                         innerpath = innerpath.substring(0, innerpath.length() - 4);
                     }
                     // When you release the final dist you must use a name different than "dist"
                     // NOOOO YOU MUST say to ant (build.xml) that lib and program-data must be copied to dist
                     /*if (innerpath.endsWith("dist"+File.separator)) {
-                        innerpath = innerpath.substring(0, innerpath.length() - 5);
-                    }*/
+                     innerpath = innerpath.substring(0, innerpath.length() - 5);
+                     }*/
                 } else {
                     /*if (innerpath.endsWith("/lib/")) {
-                    innerpath = innerpath.substring(0, innerpath.length() - 4);
-                    }*/
-                    if (innerpath.endsWith("build"+File.separator+"classes"+File.separator)) {
+                     innerpath = innerpath.substring(0, innerpath.length() - 4);
+                     }*/
+                    if (innerpath.endsWith("build" + File.separator + "classes" + File.separator)) {
                         innerpath = innerpath.substring(0, innerpath.length() - 14);
                     }
                 }
-                if (innerpath.matches(".*Utils_BasicKit.*")) {
-                // Hack for debugging (executed from NetBeans... and project added, not compiled)
-                innerpath = "/home/hector/Dropbox/JApplications/TIMEE/";
-                //System.err.println("utils_bk FileUtils.java. This must be solved in some other way.");
-                //System.exit(0);
+                if (innerpath.matches(".*Utils_BasicKit.*")) { // DELETE THIS
+                    // Hack for debugging (executed from NetBeans... and project added, not compiled)
+                    innerpath = "/home/hector/Dropbox/JApplications/TIMEE/";
+                    //System.err.println("utils_bk FileUtils.java. This must be solved in some other way.");
+                    //System.exit(0);
                 }
+
+                // TODO: we have aproblem if this library is just in the classpath I guess, test it.
+
                 CognitionisFileUtils.ApplicationPath = innerpath;
             }
             return innerpath;
@@ -149,34 +155,91 @@ public class CognitionisFileUtils {
         }
     }
 
+    public static String ensureURL(String URLName) {
+        if (!URLName.matches("^[^:/ |]+:.*")) {
+            URLName = "file:" + URLName;
+        }
+        return URLName;
+    }
+
+    public static boolean URL_exists(String URLName) {
+        boolean result = false;
+        try {
+            System.out.println("EXISTS? "+ensureURL(URLName));
+            URL url = new URL(ensureURL(URLName));
+            URLConnection con = url.openConnection(); // this will return an {Http,Jar}UrlConnection depending
+            if (url.getProtocol()=="http") {
+                HttpURLConnection con_http = (HttpURLConnection) con;
+                HttpURLConnection.setFollowRedirects(false);
+                //HttpURLConnection.setInstanceFollowRedirects(false); // this might be needed
+                con_http.setRequestMethod("HEAD");
+                if (con_http.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    result = true;
+                }
+            } else {
+                con.connect();
+                result = true;
+            }
+        } catch (Exception e) {
+            System.err.println("Errors found (FileUtils): Application path not found: " + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+            }
+        }
+        return result;
+    }
+
     /**
-     * Return an existing resources path given a subdir (trying to find it inside or outside to classes)
+     * Return an existing resources path given a subdir (trying to find it
+     * inside or outside to classes)
+     *
      * @param subdir
      * @return res_path
-     * @throws Exception if resources are not found 
+     * @throws Exception if resources are not found
      */
-    public static String getResourcesPath(String subdir) throws Exception{
-            // Check for internal resources
-            String app_path = CognitionisFileUtils.getApplicationPath();
-            String res_path = app_path + File.separator + subdir;
-            
-            if (!(new File(res_path)).exists()) { // Check for external resources
-                // For our beloved Windows
-                String extra = "";
-                if (File.separator.equals("\\")) {
-                    extra = "\\";
-                }
-                app_path = CognitionisFileUtils.getApplicationPath().replaceAll(extra + File.separator + "classes", "");
-                res_path = app_path + File.separator + subdir;
+    public static String getResourcesPath(String subdir) throws Exception {
+        String app_path = CognitionisFileUtils.getApplicationPath();
+        String res_path = app_path + File.separator + subdir;
+        System.out.println(res_path);
+        // Check for internal resources
+        //if(!app_path.startsWith("jar:")){
+        if (!URL_exists(res_path)) { // Check for external resources
+            // See if these are outside classes (they will be outside jar afterwards)
+            String extra = "";
+            if (File.separator.equals("\\")) {
+                System.err.println("WARNING: THIS IS A BAD HACK AND WE NEED TO FIGURE OUT WHAT HAPPENS...");
+                extra = "\\";
             }
+            res_path = res_path.replaceAll(extra + File.separator + "classes", "");
+        }
 
-            if (!(new File(res_path)).exists()) { //Set to null if does not exist
-                throw new Exception ("Resources +"+subdir+" do not exist neither interal or external to 'classes' in "+app_path+".");
+
+        if (!URL_exists(res_path)) { // Check for JAR resoucre
+            System.out.println("look into jar");
+            URL res = CognitionisFileUtils.class.getClassLoader().getResource(subdir);
+            //InputStream res = CognitionisFileUtils.class.getClassLoader().getResourceAsStream(subdir);
+            if (res == null) {
+                System.out.println("java jar res not found " + subdir);
+            } else {
+                System.out.println("java jar res " + res.toString());
+                res_path = res.getPath();
+                //res_path=res.
+                System.out.println(new File(res_path));
+                Enumeration<URL> resources = CognitionisFileUtils.class.getClassLoader().getResources(subdir);
+                System.out.println("exists = " + resources.hasMoreElements());
             }
-            
-            return res_path;
+        }
+
+        // ANOTHER OPTION IS SEARCH ON THE WEB 
+        //cognitionis.com/resources/... 
+
+        if (!URL_exists(res_path)) { //Set to null if does not exist
+            throw new Exception("Resources " + subdir + " do not exist neither interal or external to 'classes' in " + app_path + " or inside jar.");
+        }
+
+        return res_path;
     }
-    
+
     public static void copyFileUtil(File in, File out) throws IOException {
         FileChannel inChannel = new FileInputStream(in).getChannel();
         FileChannel outChannel = new FileOutputStream(out).getChannel();
@@ -515,7 +578,7 @@ public class CognitionisFileUtils {
      */
     public static void writeFileFromString(String str, String fileName) throws java.io.IOException {
         //BufferedWriter of = new BufferedWriter(new FileWriter(fileName));
-        OutputStreamWriter of = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(new File(fileName))),Charset.forName("UTF8"));
+        OutputStreamWriter of = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(new File(fileName))), Charset.forName("UTF8"));
 
         try {
             of.write(str);
@@ -523,5 +586,4 @@ public class CognitionisFileUtils {
             of.close();
         }
     }
-
 }

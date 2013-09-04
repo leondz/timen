@@ -89,7 +89,7 @@ public class PhraselistFile extends NLPFile {
             if (super.getFile() == null) {
                 throw new Exception("No file loaded in NLPFile object");
             }
-            if (!encoding.equalsIgnoreCase("UTF-8") && !encoding.equalsIgnoreCase("ASCII")) {
+            if (encoding==null || (!encoding.equalsIgnoreCase("UTF-8") && !encoding.equalsIgnoreCase("ASCII"))) {
                 throw new Exception("\n\tError: Only ASCII/UTF-8 text is allowed. " + this.f.getName() + " is " + encoding + "\n");
             }
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.f), "UTF-8"))) {

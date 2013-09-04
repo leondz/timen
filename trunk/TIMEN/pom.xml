@@ -51,11 +51,49 @@
                 <testSourceDirectory>test</testSourceDirectory>-->
                 <resources>
 			<resource>
-			    <directory>res</directory>
-			    <!--<targetPath>../resources</targetPath>  DOCUMENT ¿WHY? HAVING RESOURCES EXTERNAL TO JAR??? -->
+			    <directory>res/rule-bases</directory>
+			    <targetPath>rule-bases</targetPath> <!-- in the future be consistent -->
+			    <!--<directory>res</directory>-->
+			    <!--<targetPath>../resources</targetPath>  DOCUMENT ¿WHY? HAVING RESOURCES EXTERNAL TO JAR??? db inside is fine -->
 			</resource>
+			<!-- if you want to use standard file system functions like .exists() or file handling (get resource as stream not in context of FS) it is better to have an external version of the resources, inside jar they are compressed and hidden for the normal file system -->
+			<resource>
+			    <directory>res/knowledge-bases</directory>
+			    <targetPath>../knowledge-bases</targetPath> <!--outside jar and outside classes-->
+			</resource>
+			<resource>
+			    <directory>.</directory>
+			    <includes><include>README.TXT</include></includes>
+			    <!--<targetPath>..</targetPath> -->
+			</resource>			
                 </resources>
                 <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>org.timen.timen.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> 
 				<!-- TODO needs execution and goals definition to work properly... 
 				http://www.sonatype.com/books/nexus-book/reference/staging-sect-deployment.html -->			
 			<!--<plugin>
