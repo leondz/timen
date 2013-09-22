@@ -31,9 +31,10 @@ Additional instructions for developers:
 
 	1) Include ANTLR in the CLASSPATH:
 		export CLASSPATH=~/path2jar/antlr-3.4-complete-no-antlrv2.jar:$CLASSPATH
+		e.g., export CLASSPATH=~/timen/TIMEN/lib-for-offline-use-only/antlr-3.4-complete-no-antlrv2.jar:$CLASSPATH
 
 	2) Generate tokens, TIMENruleGrammarLexer.java, and TIMENruleGrammarParser.java
-		cd path2timen/src/org/timen/grammar/
+		cd path2timen/src/org/timen/grammar/ (e.g., cd ~/timen/TIMEN/src/main/java/org/timen/timen/grammar)
 		java org.antlr.Tool TIMENruleGrammar.g
 
 	3) If you generated these files in the java folder when you rebuild TIMEN (with ant or mvn) the new grammar will be included

@@ -597,6 +597,15 @@ public class TIMEN implements Closeable {
         return ret;
     }
 
+    
+    public String to_century(String date, TIMEX_Instance timex_object) {
+        String ret = "unknown_century";
+        if (date.matches("[0-9]+"))
+                    ret=""+(Integer.parseInt(date) -1);
+        return ret;
+    }
+    
+    
     public String to_iso(String date, TIMEX_Instance timex_object) {
         String iso = null;
 

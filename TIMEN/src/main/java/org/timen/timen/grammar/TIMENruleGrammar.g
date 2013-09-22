@@ -27,6 +27,7 @@ rule[TIMEN timen, TIMEX_Instance timex_object] returns [String value] :
 	|e=to_day[$timen,$timex_object] {$value = $e.value;}
 	|e=to_iso[$timen,$timex_object] {$value = $e.value;}
 	|e=to_decade[$timen,$timex_object] {$value = $e.value;}
+	|e=to_century[$timen,$timex_object] {$value = $e.value;}
 	|e=to_time[$timen,$timex_object] {$value = $e.value;}
 	|e=add[$timen, $timex_object] {$value = $e.value;}
 	|e=date_weekday[$timen, $timex_object] {$value = $e.value;}
@@ -73,6 +74,9 @@ to_iso[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 
 to_decade[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 	'TO_DECADE' '(' e=pat[$timex_object] ')' {$value = $timen.to_decade($e.value,$timex_object);};
+
+to_century[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
+	'TO_CENTURY' '(' e=pat[$timex_object] ')' {$value = $timen.to_century($e.value,$timex_object);};
 
 to_time[TIMEN timen, TIMEX_Instance timex_object] returns [String value]:
 	'TO_TIME' '(' e=pat[$timex_object] ')' {$value = $timen.to_time($e.value);};
