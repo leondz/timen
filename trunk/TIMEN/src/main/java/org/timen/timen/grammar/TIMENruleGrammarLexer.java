@@ -1,4 +1,4 @@
-// $ANTLR 3.4 TIMENruleGrammar.g 2013-09-05 01:11:13
+// $ANTLR 3.4 TIMENruleGrammar.g 2013-09-22 20:09:47
 package org.timen.timen.grammar;
 
 import org.antlr.runtime.*;
@@ -35,6 +35,7 @@ public class TIMENruleGrammarLexer extends Lexer {
     public static final int T__34=34;
     public static final int T__35=35;
     public static final int T__36=36;
+    public static final int T__37=37;
     public static final int COMMENT=4;
     public static final int GRANULARITY=5;
     public static final int INT=6;
@@ -494,10 +495,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__30;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:23:7: ( 'TO_DAY' )
-            // TIMENruleGrammar.g:23:9: 'TO_DAY'
+            // TIMENruleGrammar.g:23:7: ( 'TO_CENTURY' )
+            // TIMENruleGrammar.g:23:9: 'TO_CENTURY'
             {
-            match("TO_DAY"); 
+            match("TO_CENTURY"); 
 
 
 
@@ -517,10 +518,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:24:7: ( 'TO_DECADE' )
-            // TIMENruleGrammar.g:24:9: 'TO_DECADE'
+            // TIMENruleGrammar.g:24:7: ( 'TO_DAY' )
+            // TIMENruleGrammar.g:24:9: 'TO_DAY'
             {
-            match("TO_DECADE"); 
+            match("TO_DAY"); 
 
 
 
@@ -540,10 +541,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:25:7: ( 'TO_ISO' )
-            // TIMENruleGrammar.g:25:9: 'TO_ISO'
+            // TIMENruleGrammar.g:25:7: ( 'TO_DECADE' )
+            // TIMENruleGrammar.g:25:9: 'TO_DECADE'
             {
-            match("TO_ISO"); 
+            match("TO_DECADE"); 
 
 
 
@@ -563,10 +564,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__33;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:26:7: ( 'TO_MONTH' )
-            // TIMENruleGrammar.g:26:9: 'TO_MONTH'
+            // TIMENruleGrammar.g:26:7: ( 'TO_ISO' )
+            // TIMENruleGrammar.g:26:9: 'TO_ISO'
             {
-            match("TO_MONTH"); 
+            match("TO_ISO"); 
 
 
 
@@ -586,10 +587,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__34;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:27:7: ( 'TO_PERIOD' )
-            // TIMENruleGrammar.g:27:9: 'TO_PERIOD'
+            // TIMENruleGrammar.g:27:7: ( 'TO_MONTH' )
+            // TIMENruleGrammar.g:27:9: 'TO_MONTH'
             {
-            match("TO_PERIOD"); 
+            match("TO_MONTH"); 
 
 
 
@@ -609,10 +610,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__35;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:28:7: ( 'TO_TIME' )
-            // TIMENruleGrammar.g:28:9: 'TO_TIME'
+            // TIMENruleGrammar.g:28:7: ( 'TO_PERIOD' )
+            // TIMENruleGrammar.g:28:9: 'TO_PERIOD'
             {
-            match("TO_TIME"); 
+            match("TO_PERIOD"); 
 
 
 
@@ -632,10 +633,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = T__36;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:29:7: ( 'TO_YEAR' )
-            // TIMENruleGrammar.g:29:9: 'TO_YEAR'
+            // TIMENruleGrammar.g:29:7: ( 'TO_TIME' )
+            // TIMENruleGrammar.g:29:9: 'TO_TIME'
             {
-            match("TO_YEAR"); 
+            match("TO_TIME"); 
 
 
 
@@ -650,15 +651,38 @@ public class TIMENruleGrammarLexer extends Lexer {
     }
     // $ANTLR end "T__36"
 
+    // $ANTLR start "T__37"
+    public final void mT__37() throws RecognitionException {
+        try {
+            int _type = T__37;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // TIMENruleGrammar.g:30:7: ( 'TO_YEAR' )
+            // TIMENruleGrammar.g:30:9: 'TO_YEAR'
+            {
+            match("TO_YEAR"); 
+
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "T__37"
+
     // $ANTLR start "REFERENCE"
     public final void mREFERENCE() throws RecognitionException {
         try {
             int _type = REFERENCE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:147:10: ( ( 'DCT' | 'REFTIME' ) )
-            // TIMENruleGrammar.g:147:12: ( 'DCT' | 'REFTIME' )
+            // TIMENruleGrammar.g:151:10: ( ( 'DCT' | 'REFTIME' ) )
+            // TIMENruleGrammar.g:151:12: ( 'DCT' | 'REFTIME' )
             {
-            // TIMENruleGrammar.g:147:12: ( 'DCT' | 'REFTIME' )
+            // TIMENruleGrammar.g:151:12: ( 'DCT' | 'REFTIME' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -677,7 +701,7 @@ public class TIMENruleGrammarLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // TIMENruleGrammar.g:147:13: 'DCT'
+                    // TIMENruleGrammar.g:151:13: 'DCT'
                     {
                     match("DCT"); 
 
@@ -686,7 +710,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // TIMENruleGrammar.g:147:19: 'REFTIME'
+                    // TIMENruleGrammar.g:151:19: 'REFTIME'
                     {
                     match("REFTIME"); 
 
@@ -714,10 +738,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = GRANULARITY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:149:12: ( ( 'millennium' | 'century' | 'decade' | 'year' | 'semester' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' ) )
-            // TIMENruleGrammar.g:149:14: ( 'millennium' | 'century' | 'decade' | 'year' | 'semester' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' )
+            // TIMENruleGrammar.g:153:12: ( ( 'millennium' | 'century' | 'decade' | 'year' | 'semester' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' ) )
+            // TIMENruleGrammar.g:153:14: ( 'millennium' | 'century' | 'decade' | 'year' | 'semester' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' )
             {
-            // TIMENruleGrammar.g:149:14: ( 'millennium' | 'century' | 'decade' | 'year' | 'semester' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' )
+            // TIMENruleGrammar.g:153:14: ( 'millennium' | 'century' | 'decade' | 'year' | 'semester' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second' )
             int alt2=12;
             switch ( input.LA(1) ) {
             case 'm':
@@ -837,7 +861,7 @@ public class TIMENruleGrammarLexer extends Lexer {
 
             switch (alt2) {
                 case 1 :
-                    // TIMENruleGrammar.g:149:15: 'millennium'
+                    // TIMENruleGrammar.g:153:15: 'millennium'
                     {
                     match("millennium"); 
 
@@ -846,7 +870,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // TIMENruleGrammar.g:149:28: 'century'
+                    // TIMENruleGrammar.g:153:28: 'century'
                     {
                     match("century"); 
 
@@ -855,7 +879,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // TIMENruleGrammar.g:149:38: 'decade'
+                    // TIMENruleGrammar.g:153:38: 'decade'
                     {
                     match("decade"); 
 
@@ -864,7 +888,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // TIMENruleGrammar.g:149:47: 'year'
+                    // TIMENruleGrammar.g:153:47: 'year'
                     {
                     match("year"); 
 
@@ -873,7 +897,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // TIMENruleGrammar.g:149:54: 'semester'
+                    // TIMENruleGrammar.g:153:54: 'semester'
                     {
                     match("semester"); 
 
@@ -882,7 +906,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // TIMENruleGrammar.g:149:65: 'quarter'
+                    // TIMENruleGrammar.g:153:65: 'quarter'
                     {
                     match("quarter"); 
 
@@ -891,7 +915,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // TIMENruleGrammar.g:149:75: 'month'
+                    // TIMENruleGrammar.g:153:75: 'month'
                     {
                     match("month"); 
 
@@ -900,7 +924,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 8 :
-                    // TIMENruleGrammar.g:149:83: 'week'
+                    // TIMENruleGrammar.g:153:83: 'week'
                     {
                     match("week"); 
 
@@ -909,7 +933,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 9 :
-                    // TIMENruleGrammar.g:149:90: 'day'
+                    // TIMENruleGrammar.g:153:90: 'day'
                     {
                     match("day"); 
 
@@ -918,7 +942,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 10 :
-                    // TIMENruleGrammar.g:149:96: 'hour'
+                    // TIMENruleGrammar.g:153:96: 'hour'
                     {
                     match("hour"); 
 
@@ -927,7 +951,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 11 :
-                    // TIMENruleGrammar.g:149:103: 'minute'
+                    // TIMENruleGrammar.g:153:103: 'minute'
                     {
                     match("minute"); 
 
@@ -936,7 +960,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 12 :
-                    // TIMENruleGrammar.g:149:112: 'second'
+                    // TIMENruleGrammar.g:153:112: 'second'
                     {
                     match("second"); 
 
@@ -964,12 +988,12 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:154:7: ( '\"' (~ '\"' )+ '\"' )
-            // TIMENruleGrammar.g:154:9: '\"' (~ '\"' )+ '\"'
+            // TIMENruleGrammar.g:158:7: ( '\"' (~ '\"' )+ '\"' )
+            // TIMENruleGrammar.g:158:9: '\"' (~ '\"' )+ '\"'
             {
             match('\"'); 
 
-            // TIMENruleGrammar.g:154:13: (~ '\"' )+
+            // TIMENruleGrammar.g:158:13: (~ '\"' )+
             int cnt3=0;
             loop3:
             do {
@@ -1028,10 +1052,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:156:6: ( ( '+' | '-' )? ( '0' .. '9' )+ )
-            // TIMENruleGrammar.g:156:8: ( '+' | '-' )? ( '0' .. '9' )+
+            // TIMENruleGrammar.g:160:6: ( ( '+' | '-' )? ( '0' .. '9' )+ )
+            // TIMENruleGrammar.g:160:8: ( '+' | '-' )? ( '0' .. '9' )+
             {
-            // TIMENruleGrammar.g:156:8: ( '+' | '-' )?
+            // TIMENruleGrammar.g:160:8: ( '+' | '-' )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1058,7 +1082,7 @@ public class TIMENruleGrammarLexer extends Lexer {
             }
 
 
-            // TIMENruleGrammar.g:156:19: ( '0' .. '9' )+
+            // TIMENruleGrammar.g:160:19: ( '0' .. '9' )+
             int cnt5=0;
             loop5:
             do {
@@ -1113,8 +1137,8 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = SEPARATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:158:11: ( ';' )
-            // TIMENruleGrammar.g:158:14: ';'
+            // TIMENruleGrammar.g:162:11: ( ';' )
+            // TIMENruleGrammar.g:162:14: ';'
             {
             match(';'); 
 
@@ -1134,7 +1158,7 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:160:8: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
+            // TIMENruleGrammar.g:164:8: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' | '/*' ( options {greedy=false; } : . )* '*/' )
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -1164,13 +1188,13 @@ public class TIMENruleGrammarLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // TIMENruleGrammar.g:160:13: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+                    // TIMENruleGrammar.g:164:13: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
                     {
                     match("//"); 
 
 
 
-                    // TIMENruleGrammar.g:160:18: (~ ( '\\n' | '\\r' ) )*
+                    // TIMENruleGrammar.g:164:18: (~ ( '\\n' | '\\r' ) )*
                     loop6:
                     do {
                         int alt6=2;
@@ -1204,7 +1228,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     } while (true);
 
 
-                    // TIMENruleGrammar.g:160:32: ( '\\r' )?
+                    // TIMENruleGrammar.g:164:32: ( '\\r' )?
                     int alt7=2;
                     int LA7_0 = input.LA(1);
 
@@ -1213,7 +1237,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     switch (alt7) {
                         case 1 :
-                            // TIMENruleGrammar.g:160:32: '\\r'
+                            // TIMENruleGrammar.g:164:32: '\\r'
                             {
                             match('\r'); 
 
@@ -1230,13 +1254,13 @@ public class TIMENruleGrammarLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // TIMENruleGrammar.g:160:63: '/*' ( options {greedy=false; } : . )* '*/'
+                    // TIMENruleGrammar.g:164:63: '/*' ( options {greedy=false; } : . )* '*/'
                     {
                     match("/*"); 
 
 
 
-                    // TIMENruleGrammar.g:160:68: ( options {greedy=false; } : . )*
+                    // TIMENruleGrammar.g:164:68: ( options {greedy=false; } : . )*
                     loop8:
                     do {
                         int alt8=2;
@@ -1261,7 +1285,7 @@ public class TIMENruleGrammarLexer extends Lexer {
 
                         switch (alt8) {
                     	case 1 :
-                    	    // TIMENruleGrammar.g:160:96: .
+                    	    // TIMENruleGrammar.g:164:96: .
                     	    {
                     	    matchAny(); 
 
@@ -1298,10 +1322,10 @@ public class TIMENruleGrammarLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // TIMENruleGrammar.g:162:12: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
-            // TIMENruleGrammar.g:162:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // TIMENruleGrammar.g:166:12: ( ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+ )
+            // TIMENruleGrammar.g:166:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             {
-            // TIMENruleGrammar.g:162:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
+            // TIMENruleGrammar.g:166:15: ( '\\t' | ' ' | '\\r' | '\\n' | '\\u000C' )+
             int cnt10=0;
             loop10:
             do {
@@ -1354,8 +1378,8 @@ public class TIMENruleGrammarLexer extends Lexer {
     // $ANTLR end "WHITESPACE"
 
     public void mTokens() throws RecognitionException {
-        // TIMENruleGrammar.g:1:8: ( T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | REFERENCE | GRANULARITY | STRING | INT | SEPARATOR | COMMENT | WHITESPACE )
-        int alt11=33;
+        // TIMENruleGrammar.g:1:8: ( T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | REFERENCE | GRANULARITY | STRING | INT | SEPARATOR | COMMENT | WHITESPACE )
+        int alt11=34;
         switch ( input.LA(1) ) {
         case '(':
             {
@@ -1428,78 +1452,26 @@ public class TIMENruleGrammarLexer extends Lexer {
                                 break;
                             case 'M':
                                 {
-                                int LA11_44 = input.LA(7);
+                                int LA11_45 = input.LA(7);
 
-                                if ( (LA11_44=='O') ) {
-                                    int LA11_46 = input.LA(8);
+                                if ( (LA11_45=='O') ) {
+                                    int LA11_47 = input.LA(8);
 
-                                    if ( (LA11_46=='N') ) {
-                                        int LA11_48 = input.LA(9);
+                                    if ( (LA11_47=='N') ) {
+                                        int LA11_49 = input.LA(9);
 
-                                        if ( (LA11_48=='T') ) {
-                                            int LA11_50 = input.LA(10);
+                                        if ( (LA11_49=='T') ) {
+                                            int LA11_51 = input.LA(10);
 
-                                            if ( (LA11_50=='H') ) {
-                                                int LA11_52 = input.LA(11);
+                                            if ( (LA11_51=='H') ) {
+                                                int LA11_53 = input.LA(11);
 
-                                                if ( (LA11_52=='_') ) {
+                                                if ( (LA11_53=='_') ) {
                                                     alt11=8;
                                                 }
                                                 else {
                                                     alt11=7;
                                                 }
-                                            }
-                                            else {
-                                                NoViableAltException nvae =
-                                                    new NoViableAltException("", 11, 50, input);
-
-                                                throw nvae;
-
-                                            }
-                                        }
-                                        else {
-                                            NoViableAltException nvae =
-                                                new NoViableAltException("", 11, 48, input);
-
-                                            throw nvae;
-
-                                        }
-                                    }
-                                    else {
-                                        NoViableAltException nvae =
-                                            new NoViableAltException("", 11, 46, input);
-
-                                        throw nvae;
-
-                                    }
-                                }
-                                else {
-                                    NoViableAltException nvae =
-                                        new NoViableAltException("", 11, 44, input);
-
-                                    throw nvae;
-
-                                }
-                                }
-                                break;
-                            case 'W':
-                                {
-                                int LA11_45 = input.LA(7);
-
-                                if ( (LA11_45=='E') ) {
-                                    int LA11_47 = input.LA(8);
-
-                                    if ( (LA11_47=='E') ) {
-                                        int LA11_49 = input.LA(9);
-
-                                        if ( (LA11_49=='K') ) {
-                                            int LA11_51 = input.LA(10);
-
-                                            if ( (LA11_51=='D') ) {
-                                                alt11=9;
-                                            }
-                                            else if ( (LA11_51=='N') ) {
-                                                alt11=10;
                                             }
                                             else {
                                                 NoViableAltException nvae =
@@ -1534,9 +1506,61 @@ public class TIMENruleGrammarLexer extends Lexer {
                                 }
                                 }
                                 break;
+                            case 'W':
+                                {
+                                int LA11_46 = input.LA(7);
+
+                                if ( (LA11_46=='E') ) {
+                                    int LA11_48 = input.LA(8);
+
+                                    if ( (LA11_48=='E') ) {
+                                        int LA11_50 = input.LA(9);
+
+                                        if ( (LA11_50=='K') ) {
+                                            int LA11_52 = input.LA(10);
+
+                                            if ( (LA11_52=='D') ) {
+                                                alt11=9;
+                                            }
+                                            else if ( (LA11_52=='N') ) {
+                                                alt11=10;
+                                            }
+                                            else {
+                                                NoViableAltException nvae =
+                                                    new NoViableAltException("", 11, 52, input);
+
+                                                throw nvae;
+
+                                            }
+                                        }
+                                        else {
+                                            NoViableAltException nvae =
+                                                new NoViableAltException("", 11, 50, input);
+
+                                            throw nvae;
+
+                                        }
+                                    }
+                                    else {
+                                        NoViableAltException nvae =
+                                            new NoViableAltException("", 11, 48, input);
+
+                                        throw nvae;
+
+                                    }
+                                }
+                                else {
+                                    NoViableAltException nvae =
+                                        new NoViableAltException("", 11, 46, input);
+
+                                    throw nvae;
+
+                                }
+                                }
+                                break;
                             default:
                                 NoViableAltException nvae =
-                                    new NoViableAltException("", 11, 40, input);
+                                    new NoViableAltException("", 11, 41, input);
 
                                 throw nvae;
 
@@ -1588,7 +1612,7 @@ public class TIMENruleGrammarLexer extends Lexer {
                         }
                         break;
                     default:
-                        alt11=27;
+                        alt11=28;
                     }
 
                 }
@@ -1648,19 +1672,24 @@ public class TIMENruleGrammarLexer extends Lexer {
 
                 if ( (LA11_23=='_') ) {
                     switch ( input.LA(4) ) {
+                    case 'C':
+                        {
+                        alt11=20;
+                        }
+                        break;
                     case 'D':
                         {
-                        int LA11_34 = input.LA(5);
+                        int LA11_35 = input.LA(5);
 
-                        if ( (LA11_34=='A') ) {
-                            alt11=20;
-                        }
-                        else if ( (LA11_34=='E') ) {
+                        if ( (LA11_35=='A') ) {
                             alt11=21;
+                        }
+                        else if ( (LA11_35=='E') ) {
+                            alt11=22;
                         }
                         else {
                             NoViableAltException nvae =
-                                new NoViableAltException("", 11, 34, input);
+                                new NoViableAltException("", 11, 35, input);
 
                             throw nvae;
 
@@ -1669,27 +1698,27 @@ public class TIMENruleGrammarLexer extends Lexer {
                         break;
                     case 'I':
                         {
-                        alt11=22;
+                        alt11=23;
                         }
                         break;
                     case 'M':
                         {
-                        alt11=23;
+                        alt11=24;
                         }
                         break;
                     case 'P':
                         {
-                        alt11=24;
+                        alt11=25;
                         }
                         break;
                     case 'T':
                         {
-                        alt11=25;
+                        alt11=26;
                         }
                         break;
                     case 'Y':
                         {
-                        alt11=26;
+                        alt11=27;
                         }
                         break;
                     default:
@@ -1720,7 +1749,7 @@ public class TIMENruleGrammarLexer extends Lexer {
             break;
         case 'R':
             {
-            alt11=27;
+            alt11=28;
             }
             break;
         case 'c':
@@ -1732,12 +1761,12 @@ public class TIMENruleGrammarLexer extends Lexer {
         case 'w':
         case 'y':
             {
-            alt11=28;
+            alt11=29;
             }
             break;
         case '\"':
             {
-            alt11=29;
+            alt11=30;
             }
             break;
         case '+':
@@ -1753,17 +1782,17 @@ public class TIMENruleGrammarLexer extends Lexer {
         case '8':
         case '9':
             {
-            alt11=30;
+            alt11=31;
             }
             break;
         case ';':
             {
-            alt11=31;
+            alt11=32;
             }
             break;
         case '/':
             {
-            alt11=32;
+            alt11=33;
             }
             break;
         case '\t':
@@ -1772,7 +1801,7 @@ public class TIMENruleGrammarLexer extends Lexer {
         case '\r':
         case ' ':
             {
-            alt11=33;
+            alt11=34;
             }
             break;
         default:
@@ -1993,55 +2022,63 @@ public class TIMENruleGrammarLexer extends Lexer {
                 }
                 break;
             case 27 :
-                // TIMENruleGrammar.g:1:166: REFERENCE
+                // TIMENruleGrammar.g:1:166: T__37
+                {
+                mT__37(); 
+
+
+                }
+                break;
+            case 28 :
+                // TIMENruleGrammar.g:1:172: REFERENCE
                 {
                 mREFERENCE(); 
 
 
                 }
                 break;
-            case 28 :
-                // TIMENruleGrammar.g:1:176: GRANULARITY
+            case 29 :
+                // TIMENruleGrammar.g:1:182: GRANULARITY
                 {
                 mGRANULARITY(); 
 
 
                 }
                 break;
-            case 29 :
-                // TIMENruleGrammar.g:1:188: STRING
+            case 30 :
+                // TIMENruleGrammar.g:1:194: STRING
                 {
                 mSTRING(); 
 
 
                 }
                 break;
-            case 30 :
-                // TIMENruleGrammar.g:1:195: INT
+            case 31 :
+                // TIMENruleGrammar.g:1:201: INT
                 {
                 mINT(); 
 
 
                 }
                 break;
-            case 31 :
-                // TIMENruleGrammar.g:1:199: SEPARATOR
+            case 32 :
+                // TIMENruleGrammar.g:1:205: SEPARATOR
                 {
                 mSEPARATOR(); 
 
 
                 }
                 break;
-            case 32 :
-                // TIMENruleGrammar.g:1:209: COMMENT
+            case 33 :
+                // TIMENruleGrammar.g:1:215: COMMENT
                 {
                 mCOMMENT(); 
 
 
                 }
                 break;
-            case 33 :
-                // TIMENruleGrammar.g:1:217: WHITESPACE
+            case 34 :
+                // TIMENruleGrammar.g:1:223: WHITESPACE
                 {
                 mWHITESPACE(); 
 

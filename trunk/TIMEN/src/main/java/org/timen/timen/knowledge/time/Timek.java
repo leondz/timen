@@ -7,12 +7,15 @@ import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.timen.timen.nlp_files.LengthAlphabeticalComparator;
 
 public class Timek {
     // this could probably be loaded from json confing
 
     public static final String[] phraselist_names = {"weekday", "month", "tunit", "decade", "deictic", "time_of_day", "season","after_before","modifier","relative_ord"};
     public HashMap<String, PhraselistFile> phraselists = new HashMap<>();
+    public TreeMap<String, String[]> multitokens = new TreeMap<>(new LengthAlphabeticalComparator()); // merger of all multitokens including their class
+    public String multitokens_re="_no_regex_to_match_"; // merger of all multitokens
     // this can probably be an array of dependent knowledges
     public Numek numek;
     // this could probably be an abstract class
@@ -66,6 +69,8 @@ public class Timek {
                 if (CognitionisFileUtils.URL_exists(res_path + "useless_symbol.phraselist")) {
                     useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale, false, true);
                 }
+                
+                
 
                 // TODO: this should only work for some required phraselists
                 for (String phra : phraselist_names) {
@@ -73,9 +78,13 @@ public class Timek {
                         phraselists.put(phra, new PhraselistFile(res_path + phra + ".phraselist", false, locale, false, false));
                         repeated_keys.addAll(phraselists.get(phra).intersectPhraselist(all_keys));
                         all_keys.addAll(phraselists.get(phra).keySet());
+                        if(!phraselists.get(phra).getMultiRE().equals("_no_regex_to_match_")){
+                            PhraselistFile.mergeMaps(multitokens, phraselists.get(phra).getMultiMap(), phra);
+                        }
                     }
                     // ELSE REQUIRED PHRASELIST DOES NOT EXIST
                 }
+                multitokens_re=PhraselistFile.get_re_from_keyset(multitokens.keySet());
                 // set TODO develop the phraselist... or somethign else
                 // todo TIMEgranul_re = "(?i)(?:seconds|minute(?:s)?|hour(?:s)?|" + TOD_re + ")";
                 if(ambiguous!=null){
@@ -219,7 +228,7 @@ public class Timek {
             timex_text = timex_text.replaceAll("([0-9]+|" + this.phraselists.get("month").getRE() + ") ([-/:]) ([0-9]+)", "$1$2$3");
             timex_text = timex_text.replaceAll("((?:[0-9]+|" + this.phraselists.get("month").getRE() + ")[-/:]) ([0-9]+)", "$1$2");
             timex_text = timex_text.replaceAll("([0-9]+|" + this.phraselists.get("month").getRE() + ") ([-/:][0-9]+)", "$1$2");
-            timex_text = timex_text.replaceAll("([0-9]0) s", "$1s");
+            timex_text = timex_text.replaceAll("([0-9]0)s", "$1 s");
             // Special for modifiers (SHOULD be loaded from a phraselist)
             timex_text = timex_text.replaceAll("mid(?:-)?([0-9]+)", "mid $1").replaceAll("mid-(.+)", "mid $1");
             // Separate adjective periods num-TUnit
@@ -286,9 +295,17 @@ public class Timek {
             //  if (text matches ^( v__[^\s])+ $ )) break (completely paternized)
             timex_normtext = " " + timex_normtext + " ";
             timex_pattern = " " + timex_pattern + " ";
+            Pattern p = Pattern.compile(" " + (multitokens_re).replaceAll("\\\\\\\\", "\\\\") + " ");
+            Matcher m = p.matcher(timex_normtext);
+                        
+            while (m.find()) {
+                    timex_normtext = timex_normtext.replaceAll("(?i)" + m.group(), " v__" + multitokens.get(m.group().trim())[0] + " ");
+                    timex_pattern = timex_pattern.replaceAll("(?i)" + m.group(), " " + multitokens.get(m.group().trim())[1] + " ");
+            }
+            
             for (String phraselist : this.phraselists.keySet()) {
-                Pattern p = Pattern.compile(" " + (this.phraselists.get(phraselist).getRE()).replaceAll("\\\\\\\\", "\\\\") + " "); //, Pattern.CASE_INSENSITIVE this must be handled with a parameter (default insensitive, all lowercap)
-                Matcher m = p.matcher(timex_normtext);
+                p = Pattern.compile(" " + (this.phraselists.get(phraselist).getRE()).replaceAll("\\\\\\\\", "\\\\") + " "); //, Pattern.CASE_INSENSITIVE this must be handled with a parameter (default insensitive, all lowercap)
+                m = p.matcher(timex_normtext);
                 while (m.find()) {
                     timex_normtext = timex_normtext.replaceAll("(?i)" + m.group(), " v__" + this.phraselists.get(phraselist).getMapValue(m.group().trim()) + " ");
                     timex_pattern = timex_pattern.replaceAll("(?i)" + m.group(), " " + this.phraselists.get(phraselist).getName() + " ");
