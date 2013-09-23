@@ -1,4 +1,4 @@
-package timen_example;
+package org.timen.timen_example;
 
 import org.apache.commons.cli.*;
 
