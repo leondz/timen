@@ -90,37 +90,37 @@ public class Numek {
                 // I understand more why VLINGO is how it is
                 // This then could be a FOR loop
                 if (CognitionisFileUtils.URL_exists(res_path + "ambiguous.phraselist")) {
-                    ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist",false, locale,true,true);
+                    ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist",false, locale,true,true,true);
                 }
-                delimiters = new PhraselistFile(res_path + "delimiters.phraselist", false, locale,false,false);
+                delimiters = new PhraselistFile(res_path + "delimiters.phraselist", false, locale,false,false,false);
                 all_keys.addAll(delimiters.keySet());
-                units = new PhraselistFile(res_path + "units.phraselist", false, locale,true,false);
+                units = new PhraselistFile(res_path + "units.phraselist", false, locale,true,false,false);
                 repeated_keys.addAll(units.intersectPhraselist(all_keys));
                 all_keys.addAll(units.keySet());
-                tens = new PhraselistFile(res_path + "tens.phraselist", false, locale,true,false);
+                tens = new PhraselistFile(res_path + "tens.phraselist", false, locale,true,false,false);
                 repeated_keys.addAll(tens.intersectPhraselist(all_keys));
                 all_keys.addAll(tens.keySet());
-                magnitudes = new PhraselistFile(res_path + "magnitudes.phraselist", false, locale,true,false);
+                magnitudes = new PhraselistFile(res_path + "magnitudes.phraselist", false, locale,true,false,false);
                 repeated_keys.addAll(magnitudes.intersectPhraselist(all_keys));
                 all_keys.addAll(magnitudes.keySet());
-                decimal_point_separator = new PhraselistFile(res_path + "decimal_point_separator.phraselist", false, locale,false,false);
+                decimal_point_separator = new PhraselistFile(res_path + "decimal_point_separator.phraselist", false, locale,false,false,false);
                 repeated_keys.addAll(decimal_point_separator.intersectPhraselist(all_keys));
                 all_keys.addAll(decimal_point_separator.keySet());
-                ordinal_units = new PhraselistFile(res_path + "ordinal_units.phraselist", false, locale,true,false);
+                ordinal_units = new PhraselistFile(res_path + "ordinal_units.phraselist", false, locale,true,false,false);
                 repeated_keys.addAll(ordinal_units.intersectPhraselist(all_keys));
                 all_keys.addAll(ordinal_units.keySet());
                 if (CognitionisFileUtils.URL_exists(res_path + "irregular_tens.phraselist")) {
-                    irregular_tens = new PhraselistFile(res_path + "irregular_tens.phraselist", false, locale,true,false);
+                    irregular_tens = new PhraselistFile(res_path + "irregular_tens.phraselist", false, locale,true,false,false);
                     repeated_keys.addAll(irregular_tens.intersectPhraselist(all_keys));
                     all_keys.addAll(irregular_tens.keySet());
                 }
                 if (CognitionisFileUtils.URL_exists(res_path + "special_groups.phraselist")) {
-                    special_groups = new PhraselistFile(res_path + "special_groups.phraselist", false, locale,true,false);
+                    special_groups = new PhraselistFile(res_path + "special_groups.phraselist", false, locale,true,false,false);
                     repeated_keys.addAll(special_groups.intersectPhraselist(all_keys));
                     all_keys.addAll(special_groups.keySet());
                 }
                 if (CognitionisFileUtils.URL_exists(res_path + "group_separators.phraselist")) {
-                    group_separators = new PhraselistFile(res_path + "group_separators.phraselist", false, locale, false,false);
+                    group_separators = new PhraselistFile(res_path + "group_separators.phraselist", false, locale, false,false,false);
                     repeated_keys.addAll(group_separators.intersectPhraselist(all_keys));
                     all_keys.addAll(group_separators.keySet());
                 }
@@ -130,17 +130,17 @@ public class Numek {
                     all_keys.addAll(ordinal_irregular_tens.keySet());
                 }
                 if (CognitionisFileUtils.URL_exists(res_path + "ordinal_tens.phraselist")) {
-                    ordinal_tens = new PhraselistFile(res_path + "ordinal_tens.phraselist", false, locale,true,false);
+                    ordinal_tens = new PhraselistFile(res_path + "ordinal_tens.phraselist", false, locale,true,false,false);
                     repeated_keys.addAll(ordinal_tens.intersectPhraselist(all_keys));
                     all_keys.addAll(ordinal_tens.keySet());
                 }
                 if (CognitionisFileUtils.URL_exists(res_path + "ordinal_suffixes.phraselist")) {
-                    ordinal_suffixes = new PhraselistFile(res_path + "ordinal_suffixes.phraselist", false, locale,false,false);
+                    ordinal_suffixes = new PhraselistFile(res_path + "ordinal_suffixes.phraselist", false, locale,false,false,false);
                     repeated_keys.addAll(ordinal_suffixes.intersectPhraselist(all_keys));
                     all_keys.addAll(ordinal_suffixes.keySet());
                 }
                 if (CognitionisFileUtils.URL_exists(res_path + "restrictions.phraselist")) {
-                    restrictions = new PhraselistFile(res_path + "restrictions.phraselist", false, locale,true,false); // do not count for ambiguity
+                    restrictions = new PhraselistFile(res_path + "restrictions.phraselist", false, locale,true,false,false); // do not count for ambiguity
                 }
                 if(ambiguous!=null){
                     for (String akey : ambiguous.keySet()) {
@@ -609,7 +609,7 @@ public class Numek {
             for (int i = 0; i < textarr.length; i++) {
 
                 // Establish the current pattern
-                if (patternarr[i].matches("c_.*")) {
+                if (patternarr[i].startsWith("c_") || textarr[i].startsWith("v__")) {
                     currentPat = patternarr[i]; // if there is already a pattern keep it
                 } else {
                     // cardinals or cardinal delimiters for initialized spelled nums
