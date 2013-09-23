@@ -12,10 +12,10 @@ import org.timen.timen.nlp_files.LengthAlphabeticalComparator;
 public class Timek {
     // this could probably be loaded from json confing
 
-    public static final String[] phraselist_names = {"weekday", "month", "tunit", "decade", "deictic", "time_of_day", "season","after_before","modifier","relative_ord"};
+    public static final String[] phraselist_names = {"weekday", "month", "tunit", "decade", "deictic", "time_of_day", "season", "after_before", "modifier", "relative_ord"};
     public HashMap<String, PhraselistFile> phraselists = new HashMap<>();
     public TreeMap<String, String[]> multitokens = new TreeMap<>(new LengthAlphabeticalComparator()); // merger of all multitokens including their class
-    public String multitokens_re="_no_regex_to_match_"; // merger of all multitokens
+    public String multitokens_re = "_no_regex_to_match_"; // merger of all multitokens
     // this can probably be an array of dependent knowledges
     public Numek numek;
     // this could probably be an abstract class
@@ -36,7 +36,7 @@ public class Timek {
     }
 
     public Timek(Locale l) {
-        this(new Locale("en", "US"), "resources");
+        this(l, "resources");
     }
 
     public Timek(Locale l, String resources_dir) {
@@ -64,30 +64,28 @@ public class Timek {
             } else {
                 // these are separated because they allow regex or special things
                 if (CognitionisFileUtils.URL_exists(res_path + "ambiguous.phraselist")) {
-                    ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist", false, locale, true, true);
+                    ambiguous = new PhraselistFile(res_path + "ambiguous.phraselist", false, locale, true, true,true);
                 }
                 if (CognitionisFileUtils.URL_exists(res_path + "useless_symbol.phraselist")) {
-                    useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale, false, true);
+                    useless_symbols = new PhraselistFile(res_path + "useless_symbol.phraselist", false, locale, false, true,true);
                 }
                 
-                
-
                 // TODO: this should only work for some required phraselists
                 for (String phra : phraselist_names) {
                     if (CognitionisFileUtils.URL_exists(res_path + phra + ".phraselist")) {
-                        phraselists.put(phra, new PhraselistFile(res_path + phra + ".phraselist", false, locale, false, false));
+                        phraselists.put(phra, new PhraselistFile(res_path + phra + ".phraselist", false, locale, false, false,false));
                         repeated_keys.addAll(phraselists.get(phra).intersectPhraselist(all_keys));
                         all_keys.addAll(phraselists.get(phra).keySet());
-                        if(!phraselists.get(phra).getMultiRE().equals("_no_regex_to_match_")){
+                        if (!phraselists.get(phra).getMultiRE().equals("_no_regex_to_match_")) {
                             PhraselistFile.mergeMaps(multitokens, phraselists.get(phra).getMultiMap(), phra);
                         }
                     }
                     // ELSE REQUIRED PHRASELIST DOES NOT EXIST
                 }
-                multitokens_re=PhraselistFile.get_re_from_keyset(multitokens.keySet());
+                multitokens_re = PhraselistFile.get_re_from_keyset(multitokens.keySet());
                 // set TODO develop the phraselist... or somethign else
                 // todo TIMEgranul_re = "(?i)(?:seconds|minute(?:s)?|hour(?:s)?|" + TOD_re + ")";
-                if(ambiguous!=null){
+                if (ambiguous != null) {
                     for (String akey : ambiguous.keySet()) {
                         HashSet<String> temp_keys = new HashSet<>(repeated_keys);
                         for (String key : repeated_keys) {
@@ -135,6 +133,7 @@ public class Timek {
                      negkey=key.split("-")[1];
                      }
                      if (positive && text.matches(key)) {*/
+                    // System.out.println("debug111: "+key);
                     Pattern ambig = Pattern.compile(key, Pattern.CASE_INSENSITIVE);
                     Matcher m = ambig.matcher(text);
                     if (m.find()) {
@@ -142,14 +141,21 @@ public class Timek {
                         String[] normarr = text.trim().split(" ");
                         String[] patarr = pat.trim().split(" ");
                         text = "";
+                        pat="";
                         // THIS DOES NOT WORK FOR Multi-word phraselist... nor for regex based values... e.g., Mon(\\.)?
                         for (int i = 0; i < patarr.length; i++) {
-                            if (patarr[i].matches("^c_.*")) {// pero açò es un poc merda...                        
+                            if (patarr[i].matches("^c_keep$")){
+                                patarr[i]=normarr[i].replaceAll("v__", "");
+                                normarr[i]="v__" +normarr[i];
+                            }
+                            if (patarr[i].matches("^c_.*") && !normarr[i].startsWith("v__")) {// pero açò es un poc merda...                        
                                 normarr[i] = "v__" + phraselists.get(patarr[i].substring(2).toLowerCase()).getMapValue(normarr[i]);
                             }
                             text += " " + normarr[i];
-                        }
+                            pat  += " " + patarr[i];
+                    }
                         text += " ";
+                        pat  += " ";
                     }
                     /*}
                      if (!positive && !text.matches(key)) {
@@ -158,8 +164,7 @@ public class Timek {
                 }
             }
         }
-        return text + "|" + pat;
-
+        return text.trim() + "|" + pat.trim();
     }
 
     /**
@@ -247,14 +252,9 @@ public class Timek {
             // DISAMBIGUATE TO PATTERN IF NEEDED  ----------------------------------------------------------------------------
             // ambiguity (replace also text v_ except c_Card, c_Ord) 
             String norm_and_pat = this.disambiguate(timex_text); // if there is nothing to disambiguate it will return same text and pattern
-            timex_text = norm_and_pat.split("\\|")[0];
-            timex_pattern = norm_and_pat.split("\\|")[1];
+            timex_text = norm_and_pat.split("\\|")[0].trim();
+            timex_pattern = norm_and_pat.split("\\|")[1].trim();
 
-
-
-
-            timex_text = timex_text.trim();
-            timex_pattern = timex_pattern.trim();
             String[] textarr = timex_text.split(" ");
             String[] patternarr = timex_pattern.split(" ");
             timex_pattern = ""; // reset to build
@@ -264,7 +264,7 @@ public class Timek {
             // check Nums and ISO (e.g., one million or 25 hundred), if after [0-9] there is no spell leave as it is.
             String currentPat;
             for (int i = 0; i < textarr.length; i++) {
-                if (patternarr[i].matches("c_.*")) {
+                if (patternarr[i].startsWith("c_") || textarr[i].startsWith("v__")) {
                     currentPat = patternarr[i];
                 } else {
                     if (textarr[i].matches("(?:[0-2])?[0-9][.:][0-5][0-9](?:[.:][0-5][0-9])?(?:(?:p|a)(?:\\.)?m(?:\\.)?|h)?") || textarr[i].matches("(?:[0-2])?[0-9](?:(?:p|a)(?:\\.)?m(?:\\.)?)")) {
@@ -285,6 +285,7 @@ public class Timek {
                 timex_pattern += " " + currentPat;
             }
 
+           
             // Normalize numbers
             String normTextandPattern = this.numek.getNormTextandPattern(timex_normtext + " ", timex_pattern + " ");
             String[] normTextandPattern_arr = normTextandPattern.split("\\|");

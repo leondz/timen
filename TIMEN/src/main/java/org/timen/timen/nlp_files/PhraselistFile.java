@@ -34,6 +34,7 @@ public class PhraselistFile extends NLPFile {
     private Boolean case_sensitive;
     private Boolean require_canonical;
     private Boolean allow_regex;
+    private Boolean unify_multitokens;
     private HashMap<String, String> map; // if some other type is needed you can transform it at run-time (dynamic casting is complicated and makes things complicate)
     private HashMap<String, String> multitoken_map; // if some other type is needed you can transform it at run-time (dynamic casting is complicated and makes things complicate)
     private HashSet<String> keyset; // added for efficiency ONLY. Equivalent to map.keySet();
@@ -41,16 +42,15 @@ public class PhraselistFile extends NLPFile {
     private String re; // regular expression
     private Locale lang;
 
-
-   
     /**
      * Creates a new phraselist from a file. By default: not case-sensitive,
-     * en-US locale, canonical forms are not required, and regex are not allowed
+     * en-US locale, canonical forms are not required, regex are not allowed,
+     * and unify multi-tokens false
      *
      * @param filename
      */
     public PhraselistFile(String filename) {
-        this(filename, Boolean.FALSE, new Locale("en", "us"), false, false);
+        this(filename, Boolean.FALSE, new Locale("en", "us"), false, false, false);
     }
 
     /**
@@ -63,7 +63,7 @@ public class PhraselistFile extends NLPFile {
      * @param locale
      */
     public PhraselistFile(String filename, Boolean casesensitive, Locale locale) {
-        this(filename, casesensitive, locale, false, false);
+        this(filename, casesensitive, locale, false, false, false);
     }
 
     /**
@@ -77,10 +77,11 @@ public class PhraselistFile extends NLPFile {
      * @param require_canonical
      * @param allow_regex
      */
-    public PhraselistFile(String filename, Boolean casesensitive, Locale locale, Boolean req_canonical, Boolean allow_re) {
+    public PhraselistFile(String filename, Boolean casesensitive, Locale locale, Boolean req_canonical, Boolean allow_re, Boolean uni_multitokens) {
         super(filename);
         case_sensitive = casesensitive;
         require_canonical = req_canonical;
+        unify_multitokens = uni_multitokens;
         allow_regex = allow_re;
         lang = locale;
         name = "c_" + this.f.getName().substring(0, this.f.getName().lastIndexOf(".")).toLowerCase();
@@ -116,7 +117,7 @@ public class PhraselistFile extends NLPFile {
                             if (line.matches("^.+\\|[^\\|]*$")) {
                                 has_canonical = true;
                                 token = line.substring(0, line.lastIndexOf("|"));
-                                if (!token.contains(" ")) {
+                                if (!token.contains(" ") || unify_multitokens) {
                                     re = "(" + token;
                                 } else {
                                     multitoken_re = "(" + token;
@@ -126,7 +127,7 @@ public class PhraselistFile extends NLPFile {
                                 if (require_canonical) {
                                     throw new Exception(this.f.getName() + ". Line " + linen + " (" + line + "): Required canonical form not found.");
                                 }
-                                if (!line.contains(" ")) {
+                                if (!line.contains(" ") || unify_multitokens) {
                                     re = "(" + token;
                                 } else {
                                     multitoken_re = "(" + token;
@@ -145,7 +146,7 @@ public class PhraselistFile extends NLPFile {
                                 token = line.substring(0, line.lastIndexOf("|"));
                             }
 
-                            if (!token.contains(" ")) {
+                            if (!token.contains(" ") || unify_multitokens) {
                                 if (re.equals("_no_regex_to_match_")) {
                                     re = "(" + token;
                                 } else {
@@ -161,9 +162,10 @@ public class PhraselistFile extends NLPFile {
                         }
 
                         if (has_canonical) {
-                            String value=line.substring(line.lastIndexOf("|") + 1);
-                            if(value.length()==0)
-                                value=token; // key|  (value omitted case)
+                            String value = line.substring(line.lastIndexOf("|") + 1);
+                            if (value.length() == 0) {
+                                value = token; // key|  (value omitted case)
+                            }
                             add_to_map(token, value, linen);
                         } else {
                             add_to_map(token, token, linen);
@@ -171,13 +173,15 @@ public class PhraselistFile extends NLPFile {
                     }
                 }
                 if (checked) {
-                    if (!re.equals("_no_regex_to_match_"))
+                    if (!re.equals("_no_regex_to_match_")) {
                         re += ")";
-                    if(!multitoken_re.equals("_no_regex_to_match_"))
+                    }
+                    if (!multitoken_re.equals("_no_regex_to_match_")) {
                         multitoken_re += ")";
+                    }
                     if (!case_sensitive) {
                         re = re.toLowerCase(lang);
-                        multitoken_re=multitoken_re.toLowerCase(lang);
+                        multitoken_re = multitoken_re.toLowerCase(lang);
                     }
                     if (!allow_regex) {
                         re = re.replaceAll("\\.", "\\\\\\\\."); // escape points 
@@ -235,7 +239,7 @@ public class PhraselistFile extends NLPFile {
                 throw new Exception(this.f.getName() + ". Line " + linen + " (" + key + "): Repeated sub-character (" + oldkey + "). Longer phrases must appear first (" + key + ").");
             }
         }
-        
+
         // check sub-phrase matching (longer phrases should appear first)
         String[] multitoken = key.trim().split(" "); // trim to avoid matching empty
         if (multitoken.length > 1) {
@@ -245,7 +249,7 @@ public class PhraselistFile extends NLPFile {
                 //System.err.println("----- " + token + " i=" + i + " ngram=1");
                 if (!token.equals("^") && !token.equals("$")) {
                     //System.out.println(this.f.getName() +" trying " + token);
-                    if (map.containsKey(token)||multitoken_map.containsKey(token)) {
+                    if (map.containsKey(token) || multitoken_map.containsKey(token)) {
                         throw new Exception(this.f.getName() + ". Line " + linen + " (" + key + "): Repeated sub-phrase (" + token + "). Longer phrases must appear first.");
                     }
                 }
@@ -257,38 +261,42 @@ public class PhraselistFile extends NLPFile {
                     }
                 }
             }
+            if (unify_multitokens) {
+                map.put(key.trim(), value.trim());
+            } else {
             multitoken_map.put(key.trim(), value.trim());
-        }else{
+            }
+        } else {
             map.put(key.trim(), value.trim());
         }
     }
 
-    public static TreeMap<String,String[]> mergeMaps(TreeMap<String,String[]> base, HashMap<String,String> newmap,String c_name){
-        if(base==null){
-            base=new TreeMap<>(new LengthAlphabeticalComparator());
+    public static TreeMap<String, String[]> mergeMaps(TreeMap<String, String[]> base, HashMap<String, String> newmap, String c_name) {
+        if (base == null) {
+            base = new TreeMap<>(new LengthAlphabeticalComparator());
         }
-        for (Entry<String,String> e : newmap.entrySet()){
-            base.put(e.getKey(), new String[]{e.getValue(), "c_"+c_name});
+        for (Entry<String, String> e : newmap.entrySet()) {
+            base.put(e.getKey(), new String[]{e.getValue(), "c_" + c_name});
         }
         return base;
     }
-    
-    public static String get_re_from_keyset(Set<String> keyset){
-        String k_re="_no_regex_to_match_";
-        if(keyset!=null && keyset.size()!=0){
-            k_re="(";
-            for(String key:keyset){
-                if(k_re.equals("("))
-                    k_re+=key;
-                else
-                    k_re+="|"+key;
-            } 
-            k_re+=")";
+
+    public static String get_re_from_keyset(Set<String> keyset) {
+        String k_re = "_no_regex_to_match_";
+        if (keyset != null && keyset.size() != 0) {
+            k_re = "(";
+            for (String key : keyset) {
+                if (k_re.equals("(")) {
+                    k_re += key;
+                } else {
+                    k_re += "|" + key;
+                }
+            }
+            k_re += ")";
         }
         return k_re;
-    }    
-    
-    
+    }
+
     @Override
     public String toPlain(String filename) {
         throw new UnsupportedOperationException("toPlain not applicable to this type of file");
@@ -320,8 +328,8 @@ public class PhraselistFile extends NLPFile {
 
     public String getMultiRE() {
         return multitoken_re;
-    }    
-    
+    }
+
     public String getName() {
         return name;
     }
