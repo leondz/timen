@@ -59,6 +59,11 @@
 			<!-- if you want to use standard file system functions like .exists() or file handling (get resource as stream not in context of FS) it is better to have an external version of the resources, inside jar they are compressed and hidden for the normal file system -->
 			<resource>
 			    <directory>res/knowledge-bases</directory>
+			    <targetPath>knowledge-bases</targetPath> <!--outside jar and outside classes-->
+			</resource>
+
+			<resource>
+			    <directory>res/knowledge-bases</directory>
 			    <targetPath>../knowledge-bases</targetPath> <!--outside jar and outside classes-->
 			</resource>
 			<resource>
