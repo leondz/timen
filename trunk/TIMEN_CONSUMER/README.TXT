@@ -6,10 +6,14 @@ AUTHORS
 	Original paper: Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
 	Current code:	Hector Llorens, Leon Derczynski, Steven Bethard
 
+Prerequisites
+-----------------------------------------------------
+	1) copy knowledge-bases folder in the same path as timen-example.jar
+	
 Prerequisites (ONLY IF YOU WANT TO USE THE NLP OPTION):
 ------------------------------------------------------
-	1) copy the Treetagger program-data/Tretagger/script in the Treetagger folder
-	2) specify the Treetagger path in the program-data/confing.properties
+	1) specify the Treetagger path in the program-data/confing.properties
+	2) copy the Treetagger program-data/Tretagger/script in the Treetagger folder
 	3) Remove from Treetagger/lib/english-abberviations     "days."
 
 Usage:
@@ -17,7 +21,7 @@ Usage:
 	If you don't have the jar distribution generate it (cd TIMEN_CONSUMER; mvn package).
 	Copy the jar distribution (in target/ folder) to a folder of your choice.
 
-	java -jar "/path2jar/TIMEN_CONSUMER...version.jar" [options]
+	java -jar "/path2jar/timen_example-1.0.0.jar" [options]
 
 	OPTIONAL: If you want to override the rulebases included in TIMEN.jar, you have 2 options:
 		- Easy: put your own in rule-base for each language in res/rule-bases/*.db and copy res/ folder into target/ folder
@@ -28,17 +32,17 @@ Usage:
 Examples:
 --------
 	Normalize a single expression: this outputs the normalized value
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday"
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" "yesterday" -ap dct=1999-12-04
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" "Monday" -ap dct=1999-12-04,tense=past
+	java -jar "/path2jar/timen_example-1.0.0.jar" "yesterday"
+	java -jar "/path2jar/timen_example-1.0.0.jar" "yesterday" -ap dct=1999-12-04
+	java -jar "/path2jar/timen_example-1.0.0.jar" "Monday" -ap dct=1999-12-04,tense=past
 
 	Normalize file/s: this outputs file/s in the same path in TIMEN-output/ folder with added/updated normalized values
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
+	java -jar "/path2jar/timen_example-1.0.0.jar" -a normalize_tml examples/example.tml
+	java -jar "/path2jar/timen_example-1.0.0.jar" -a normalize_tml examples/example.tml -ap use_nlp=true
 
 
 	For evaluation just  put TimeBank or TBAQ files in a folder and run 
-	java -jar "/path2jar/TIMEN_CONSUMER.jar" -a normalize_tml folder/*.tml
+	java -jar "/path2jar/timen_example-1.0.0.jar" -a normalize_tml folder/*.tml
 	Then use the evaluation scripts to evaluate KEY-files against TIMEN-output files
 
 
