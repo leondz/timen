@@ -18,6 +18,18 @@
 		  </repository>
 		</repositories>	
 	<build>
+	
+                <resources>
+			<resource>
+			    <directory>../TIMEN/res/knowledge-bases</directory>
+			    <targetPath>../knowledge-bases</targetPath> <!--outside jar and outside classes-->
+			</resource>
+			<resource>
+			    <directory>.</directory>
+			    <includes><include>README.TXT</include></includes>
+			</resource>			
+                </resources>
+	
 		<plugins>
 
 			<plugin>
@@ -146,6 +158,11 @@
 		<dependency>
 			<groupId>Utils_BasicKit</groupId>
 			<artifactId>Utils_BasicKit</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>External_Tools</groupId>
+			<artifactId>External_Tools</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 		<dependency>
