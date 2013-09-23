@@ -1,7 +1,6 @@
 package org.timen.timen_example;
 
 import FeatureBuilder.*;
-import org.timen.TIMEN;
 import TimeML_BasicKit.TML_file_utils;
 import java.io.*;
 import java.text.*;
@@ -11,6 +10,7 @@ import utils_bk.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.timen.timen.TIMEN;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -67,7 +67,7 @@ public class OptionHandler {
 
                     /* Process expression/s */
                     for (int i = 0; i < input.length; i++) {
-                        System.out.println(timen.normalize(input[i].replaceAll("\\s+", "_"), dctvalue));
+                        System.out.println(timen.normalize(input[i], dctvalue));
                     }
                     // limit to one expression, but it could be useful allowing a list for efficiency
                     /*if (input.length == 1) {
@@ -234,7 +234,7 @@ public class OptionHandler {
                 for (int s = 0; s < current_node.getLength(); s++) {
                     Element element = (Element) current_node.item(s);
                     // write line to file
-                    writer.write(element.getAttribute("tid") + "|" + element.getTextContent().replaceAll("\\s+", "_") + "|"+tense+"|" + dct + "\n");
+                    writer.write(element.getAttribute("tid") + "|" + element.getTextContent() + "|"+tense+"|" + dct + "\n");
                 }
             } finally {
                 if (writer != null) {
@@ -320,7 +320,7 @@ public class OptionHandler {
      * text|tense|DCT|ref-val
      *
      *
-     * text:		timex tokens separated by "_"
+     * text:		timex tokens separated by " "
      * tense:           timex governing-verb tense
      * DCT:		Document Creation Time in ISO8601 format
      * DEPRECATED - ref-val:  Previous date/time-timex focus (temporal reference) (i.e., reference point time-location)
