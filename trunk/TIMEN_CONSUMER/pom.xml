@@ -99,8 +99,8 @@
 			    </executions>
 			</plugin>				            
 		</plugins>
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
+		<!--<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>-->
 		<!--To have the rule-bases inside the jar (not necessary since k and rule-bases are included in lib/timen jar) -->
 		<!--<resources>
 			<resource>
