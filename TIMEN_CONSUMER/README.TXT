@@ -6,10 +6,7 @@ AUTHORS
 	Original paper: Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
 	Current code:	Hector Llorens, Leon Derczynski, Steven Bethard
 
-Prerequisites
------------------------------------------------------
-	1) copy knowledge-bases folder in the same path as timen-example.jar
-	
+
 Prerequisites (ONLY IF YOU WANT TO USE THE NLP OPTION):
 ------------------------------------------------------
 	1) specify the Treetagger path in the program-data/confing.properties

@@ -25,6 +25,10 @@
 			    <targetPath>../knowledge-bases</targetPath> <!--outside jar and outside classes-->
 			</resource>
 			<resource>
+			    <directory>..examples/</directory>
+			    <targetPath>../examples</targetPath> <!--outside jar and outside classes-->
+			</resource>
+			<resource>
 			    <directory>.</directory>
 			    <includes><include>README.TXT</include></includes>
 			</resource>			
