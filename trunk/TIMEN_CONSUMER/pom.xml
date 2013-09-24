@@ -150,7 +150,7 @@
                 <dependency>
 			<groupId>org.timen</groupId>
 			<artifactId>timen</artifactId>
-			<version>1.0.14</version>
+			<version>1.0.15</version>
 		</dependency>
 		<!-- These are local: remember to generate the repo distribution with mvn install:install-file -->
 		<dependency>
