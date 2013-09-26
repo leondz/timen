@@ -1,6 +1,7 @@
 package org.timen.timen.nlp_files;
 
 import java.io.*;
+import java.net.JarURLConnection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -97,13 +98,21 @@ public class PhraselistFile extends NLPFile {
     @Override
     public Boolean isWellFormatted() {
         try {
-            if (super.getFile() == null) {
+            if (super.getFile() == null || url==null) {
                 throw new Exception("No file loaded in NLPFile object");
             }
             if (encoding == null || (!encoding.equalsIgnoreCase("UTF-8") && !encoding.equalsIgnoreCase("ASCII"))) {
                 throw new Exception("\n\tError: Only ASCII/UTF-8 text is allowed. " + this.f.getName() + " is " + encoding + "\n");
             }
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.f), "UTF-8"))) {
+            if (url.getProtocol().equals("file")) {
+                this.inputstream=new FileInputStream(f);
+            }
+            if (url.getProtocol().equals("jar")) {
+                JarURLConnection connection = (JarURLConnection) url.openConnection();
+                inputstream = connection.getInputStream();
+            }
+            
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputstream, "UTF-8"))) {
                 Boolean checked = false;
                 String line;
                 int linen = 0;
