@@ -9,6 +9,7 @@ import java.util.Map.*;
 //import javax.activation.MimetypesFileTypeMap;
 //import java.nio.charset.CharsetDecoder;
 
+
 /**
  * @author Hector Llorens
  * @since 2011
@@ -91,7 +92,7 @@ public class CognitionisFileUtils {
             // Old way: String executionPath=(new File (".")).getCanonicalPath();
             return System.getProperty("user.dir");
         } catch (Exception e) {
-            System.err.println("Errors found (FileUtils):\n\tApplication path not found: " + e.getMessage() + "\n");
+            System.err.println("Errors found (FileUtils):\n\tApplication execution path not found: " + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 e.printStackTrace(System.err);
             }
@@ -166,11 +167,11 @@ public class CognitionisFileUtils {
         boolean result = false;
         try {
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
-                System.out.println("EXISTS? "+ensureURL(URLName));
+                System.out.println("EXISTS? " + ensureURL(URLName));
             }
             URL url = new URL(ensureURL(URLName));
             URLConnection con = url.openConnection(); // this will return an {Http,Jar}UrlConnection depending
-            if (url.getProtocol()=="http") {
+            if (url.getProtocol() == "http") {
                 HttpURLConnection con_http = (HttpURLConnection) con;
                 HttpURLConnection.setFollowRedirects(false);
                 //HttpURLConnection.setInstanceFollowRedirects(false); // this might be needed
@@ -183,10 +184,11 @@ public class CognitionisFileUtils {
                 result = true;
             }
         } catch (Exception e) {
-            System.err.println("Errors found (FileUtils): Application path not found: " + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.err.println("Errors found (FileUtils): URL ("+URLName+") not found: " + e.getMessage() + "\n");
                 e.printStackTrace(System.err);
             }
+            return false;
         }
         return result;
     }
@@ -202,7 +204,7 @@ public class CognitionisFileUtils {
     public static String getResourcesPath(String subdir) throws Exception {
         String app_path = CognitionisFileUtils.getApplicationPath();
         String res_path = app_path + File.separator + subdir;
-        System.out.println(res_path);
+        //System.out.println(res_path);
         // Check for internal resources
         //if(!app_path.startsWith("jar:")){
         if (!URL_exists(res_path)) { // Check for external resources
@@ -217,18 +219,25 @@ public class CognitionisFileUtils {
 
 
         if (!URL_exists(res_path)) { // Check for JAR resoucre
-            System.out.println("look into jar");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.out.println("look into jar");
+            }
             URL res = CognitionisFileUtils.class.getClassLoader().getResource(subdir);
             //InputStream res = CognitionisFileUtils.class.getClassLoader().getResourceAsStream(subdir);
             if (res == null) {
+                            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("java jar res not found " + subdir);
+                            }
             } else {
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("java jar res " + res.toString());
-                res_path = res.getPath();
-                //res_path=res.
-                System.out.println(new File(res_path));
+                System.out.println("file: " + new File(res.getPath())); // path part of the URL
+                }
                 Enumeration<URL> resources = CognitionisFileUtils.class.getClassLoader().getResources(subdir);
+                            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("exists = " + resources.hasMoreElements());
+                            }
+                res_path = res.toString();
             }
         }
 
@@ -461,6 +470,10 @@ public class CognitionisFileUtils {
         return ((ascii) ? ASCII : UTF8);
     }
 
+    public static String getEncoding(InputStream is) {
+        return getEncoding(CognitionisFileUtils.file2bytes(is));
+    }
+    
     public static String getEncoding(File f) {
         return getEncoding(CognitionisFileUtils.file2bytes(f));
     }
@@ -492,16 +505,26 @@ public class CognitionisFileUtils {
 
     public static byte[] file2bytes(File f) {
         try {
-            FileInputStream fi = new FileInputStream(f);
+            file2bytes(new FileInputStream(f));
+        } catch (Exception e) {
+            System.err.println("Errors found (FileUtils):\n\t" + e.getMessage() + "\n");
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                e.printStackTrace(System.err);
+            }
+        }
+        return null;
+    }
 
-            ArrayList<Byte> bytes = new ArrayList<Byte>();
+    public static byte[] file2bytes(InputStream is) {
+        try {
+            ArrayList<Byte> bytes = new ArrayList<>();
             byte c;
             int rc;
-            while ((rc = fi.read()) > -1) {
+            while ((rc = is.read()) > -1) {
                 c = (byte) (rc & 255);
                 bytes.add(c);
             }
-            fi.close();
+            is.close();
 
             int bsize = bytes.size();
             byte[] rbytes = new byte[bsize];
@@ -520,7 +543,8 @@ public class CognitionisFileUtils {
 
         return null;
     }
-
+    
+    
 //    static public String getTempDir() {
 //        String ret = System.getProperty("java.io.tmpdir");
 //
