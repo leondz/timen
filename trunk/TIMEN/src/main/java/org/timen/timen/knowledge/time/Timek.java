@@ -43,7 +43,7 @@ public class Timek {
         try {
             locale = l;
             numek = new Numek(l, resources_dir);
-            String lang = l.toString().replace('_', '-').substring(0, 2);
+            String lang = l.toString().replace('_', '-');
             String shortlang = lang.substring(0, 2);
             all_keys = new HashSet<>();
             repeated_keys = new HashSet<>();
@@ -52,7 +52,7 @@ public class Timek {
             all_keys = numek.all_keys;
             // Load from resource knowledge files (all string, string)            
             String res_path = CognitionisFileUtils.getResourcesPath(resources_dir + File.separator + "time" + File.separator);
-
+            
             if (!CognitionisFileUtils.URL_exists(res_path + lang + File.separator)) {
                 res_path = res_path + shortlang + File.separator;
             } else {
@@ -118,6 +118,7 @@ public class Timek {
      * @return String: unambiguous text
      */
     public final String disambiguate(String text) {
+        //System.out.println("disambig call: "+text);
         String pat = text;
         if (ambiguous != null) {
             Pattern pa = Pattern.compile(ambiguous.getRE(), Pattern.CASE_INSENSITIVE);
@@ -133,7 +134,7 @@ public class Timek {
                      negkey=key.split("-")[1];
                      }
                      if (positive && text.matches(key)) {*/
-                    // System.out.println("debug111: "+key);
+                    //System.out.println("debug111: "+key);
                     Pattern ambig = Pattern.compile(key, Pattern.CASE_INSENSITIVE);
                     Matcher m = ambig.matcher(text);
                     if (m.find()) {

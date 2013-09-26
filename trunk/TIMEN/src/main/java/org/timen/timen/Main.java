@@ -21,8 +21,9 @@ import org.timen.timen.utils.CognitionisFileUtils;
  */
 public class Main {
 
+    //, FIND_RESOURCES
     public static enum Action {
-        GET_PATTERN, NORMALIZE, SILLY
+        GET_PATTERN, NORMALIZE
     };
 
     public static void main(String[] args) {
@@ -158,10 +159,10 @@ public class Main {
     public static void doAction(String action, String[] input_files, String action_parameters, String lang, String country) {
         try {
             switch (Action.valueOf(action.toUpperCase())) {
-                case SILLY: {
-                    System.out.println("Silly with file");
+                /*case FIND_RESOURCES: {
+                    System.out.println("Silly with file. Under construction.");
                 }
-                break;
+                break;*/
             }
 
         } catch (Exception e) {
@@ -191,17 +192,22 @@ public class Main {
                     System.out.println(timen.normalize(input_text,dctvalue));
                 }
                 break;
-                case SILLY: {
-                    System.out.println("Silly with text");
+                /*case FIND_RESOURCES: {
+                    System.out.println("Silly with text (e.g., jar:file:/home/hector/timen/TIMEN/target/timen-1.0.16-SNAPSHOT.jar!/knowledge-bases/time/)");
+                    
+                    //RULEBASES
                     URL url=CognitionisFileUtils.class.getClassLoader().getResource("rule-bases");
                     if(url!=null){
                         System.out.println(url.toString()+" - URI: "+url.toURI().toString()+"  - file:  "+url.getFile());                  
                         if(CognitionisFileUtils.URL_exists(url.toString())){
                             System.out.println("EXISTS");
                         }else{
-                            System.out.println("does not");
+                            System.out.println("does not exist");
                         }
                     }
+                    
+                    // RANDOM INPUT TEXT
+                    System.out.println("Silly with text (testing: "+input_text);
                     input_text=CognitionisFileUtils.ensureURL(input_text);
                     if(CognitionisFileUtils.URL_exists(input_text)){
                         url=new URL(input_text);
@@ -209,10 +215,10 @@ public class Main {
                         System.out.println("EXISTS");
                         // intentar leer contenido
                     }else{
-                        System.out.println("does not");
+                        System.out.println("does not exist "+input_text);
                     }
                 }
-                break;                    
+                break;  */                  
             }
 
         } catch (Exception e) {
