@@ -18,6 +18,9 @@ Before building TIMEN. You can modify the {rule,knowledge}-bases in res/ folder.
 
 After building TIMEN. If you want to override the {rule,knowledge}-bases included in TIMEN.jar, you have to put your own in rule-base for each language in path2jar/{rule,knowledge}-bases.
 
+
+Examples:
+--------
 java -jar "/path2jar/timen-<version>.jar" -a GET_PATTERN "yesterday"
 java -jar "/path2jar/timen-<version>.jar" -a NORMALIZE "yesterday" -ap dct=1999-12-04
 

@@ -20,10 +20,11 @@ Usage:
 
 	java -jar "/path2jar/timen_example-1.0.0.jar" [options]
 
-	OPTIONAL: If you want to override the rulebases included in TIMEN.jar, you have 2 options:
-		- Easy: put your own in rule-base for each language in res/rule-bases/*.db and copy res/ folder into target/ folder
+	OPTIONAL: If you want to override the rule-bases and/or knowledge-bases included in TIMEN.jar, you have 2 options:
+		- Easy: put your own files for each language in path2jar/{rule,knowledge}-bases/ (e.g., target/ folder after building)
 		  or
-		- Advanced: put them in the TIMEN distribution, and regenerate the jar to include rulebases inside the jar
+		- Advanced: put them in the TIMEN distribution, and regenerate the jar to include rulebases inside the jar, then manually
+		            copy the new jar in path2jar/lib/timen-<version>.jar
 
 
 Examples:

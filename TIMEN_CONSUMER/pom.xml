@@ -20,10 +20,10 @@
 	<build>
 	
                 <resources>
-			<resource>
+			<!--<resource>
 			    <directory>../TIMEN/res/knowledge-bases</directory>
-			    <targetPath>../knowledge-bases</targetPath> <!--outside jar and outside classes-->
-			</resource>
+			    <targetPath>../knowledge-bases</targetPath> 
+			</resource>-->
 			<resource>
 			    <directory>examples</directory>
 			    <targetPath>../examples</targetPath> <!--outside jar and outside classes-->
@@ -150,7 +150,7 @@
                 <dependency>
 			<groupId>org.timen</groupId>
 			<artifactId>timen</artifactId>
-			<version>1.0.15</version>
+			<version>1.0.16</version>
 		</dependency>
 		<!-- These are local: remember to generate the repo distribution with mvn install:install-file -->
 		<dependency>
