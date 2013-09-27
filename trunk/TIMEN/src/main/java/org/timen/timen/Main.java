@@ -193,11 +193,12 @@ public class Main {
                     if (tense == null) {
                         tense = "omit";
                     }
-                    
-                    
-                    
+                    String ref_datevalue = getParameter(action_parameters, "ref_date");
+                    if (ref_datevalue == null) {
+                        ref_datevalue = dctvalue;
+                    }
                     TIMEN timen = new TIMEN(new Locale(lang, country));
-                    System.out.println(timen.normalize(input_text,dctvalue, tense, dctvalue));
+                    System.out.println(timen.normalize(input_text,dctvalue, tense, ref_datevalue));
                 }
                 break;
                 /*case FIND_RESOURCES: {

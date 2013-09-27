@@ -1304,7 +1304,9 @@ public class TIMEN implements Closeable {
     }
 
     /**
-     * TODO: DON'T DO THIS NOW. Compare 2 dates to a reference and return the closest one
+     * DON'T DO THIS: is unnatural if I say Monday present tense is a better default ("future").
+     * It was a good fake to win evaluations or to guess tense but it is not something consistent.
+     * Compare 2 dates to a reference and return the closest one
      * @param key
      * @param a
      * @param b
