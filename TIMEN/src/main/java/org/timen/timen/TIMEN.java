@@ -239,7 +239,7 @@ public class TIMEN implements Closeable {
                         if (tense.contains("-")) {
                             tense = tense.substring(0, tense.indexOf('-'));
                         }
-                        if (!tense.matches("(?:past|present|future)")) {
+                        if (!tense.matches("(?:past|present|future)")) { // closest will end up here for now
                             tense = "present";
                         }
                     }

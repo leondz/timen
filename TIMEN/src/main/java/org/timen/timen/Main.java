@@ -43,7 +43,7 @@ public class Main {
             opt.addOption("h", "help", false, "Print this help");
             opt.addOption("l", "lang", true, "Language locale (default \"en_US\" [English])");
             opt.addOption("a", "action", true, "Action/s to be done (tokenize, tag, parse, ...)");
-            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (-a PRINT_STATS -ap POS)");
+            opt.addOption("ap", "action_parameters", true, "Optionally actions can have parameters (-a NORMALIZE -ap dct=1999-09-09,tense={past,present,future,omit})");
             opt.addOption("t", "text", true, "To use text instead of a file (for short texts)");
             opt.addOption("d", "debug", false, "Debug mode: Output errors stack trace (default: disabled)");
             PosixParser parser = new PosixParser();
@@ -188,8 +188,16 @@ public class Main {
                     if (dctvalue == null) {
                         dctvalue = TIMEN.dct_format.format(new Date());
                     }
+                    /* Set tense parameter */
+                    String tense = getParameter(action_parameters, "tense");
+                    if (tense == null) {
+                        tense = "omit";
+                    }
+                    
+                    
+                    
                     TIMEN timen = new TIMEN(new Locale(lang, country));
-                    System.out.println(timen.normalize(input_text,dctvalue));
+                    System.out.println(timen.normalize(input_text,dctvalue, tense, dctvalue));
                 }
                 break;
                 /*case FIND_RESOURCES: {
