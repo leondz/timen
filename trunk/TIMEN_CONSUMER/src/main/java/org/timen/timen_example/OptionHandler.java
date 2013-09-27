@@ -92,7 +92,7 @@ public class OptionHandler {
 
                     /* Set tense parameter */
                     String tense = getParameter(action_parameters, "tense");
-                    if (tense != null && !tense.equalsIgnoreCase("closest")) {
+                    if (tense != null && !tense.equalsIgnoreCase("closest")) { // this is useless
                         tense = null;
                     }
 
