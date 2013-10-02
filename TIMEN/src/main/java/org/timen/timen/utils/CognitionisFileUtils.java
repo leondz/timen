@@ -207,7 +207,7 @@ public class CognitionisFileUtils {
         //System.out.println(res_path);
         // Check for internal resources
         //if(!app_path.startsWith("jar:")){
-        if (!URL_exists(res_path)) { // Check for external resources
+        /*if (!URL_exists(res_path)) { // Check for external resources
             // See if these are outside classes (they will be outside jar afterwards)
             String extra = "";
             if (File.separator.equals("\\")) {
@@ -215,7 +215,7 @@ public class CognitionisFileUtils {
                 extra = "\\";
             }
             res_path = res_path.replaceAll(extra + File.separator + "classes", "");
-        }
+        }*/
 
 
         if (!URL_exists(res_path)) { // Check for JAR resoucre
