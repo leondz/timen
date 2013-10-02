@@ -72,15 +72,18 @@ public class Numek {
         locale = l;
         String lang = l.toString().replace('_', '-');
         String shortlang =lang.substring(0, 2);
+        String resource_separator=File.separator;
         all_keys = new HashSet<>();
         repeated_keys = new HashSet<>();
         try {
             String res_path=CognitionisFileUtils.getResourcesPath(resources_dir + File.separator + "numbers" + File.separator);
-           
-            if (!CognitionisFileUtils.URL_exists(res_path + lang + File.separator)) {
-                res_path = res_path + shortlang + File.separator;
+            if(res_path.contains("/")){
+                resource_separator="/";
+            }           
+            if (!CognitionisFileUtils.URL_exists(res_path + lang + resource_separator)) {
+                res_path = res_path + shortlang + resource_separator;
             } else {
-                res_path = res_path + lang + File.separator;
+                res_path = res_path + lang + resource_separator;
             }
             
             if (!CognitionisFileUtils.URL_exists(res_path)) {

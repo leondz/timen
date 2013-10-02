@@ -212,6 +212,7 @@ public class CognitionisFileUtils {
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("look into jar");
             }
+            // replace \ by / since URL always use that even in windows
             URL res = CognitionisFileUtils.class.getClassLoader().getResource(subdir.replaceAll("\\\\", "/"));
             //InputStream res = CognitionisFileUtils.class.getClassLoader().getResourceAsStream(subdir);
             if (res == null) {
