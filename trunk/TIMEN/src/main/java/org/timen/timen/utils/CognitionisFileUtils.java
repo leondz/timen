@@ -171,7 +171,7 @@ public class CognitionisFileUtils {
             }
             URL url = new URL(ensureURL(URLName));
             URLConnection con = url.openConnection(); // this will return an {Http,Jar}UrlConnection depending
-            if (url.getProtocol() == "http") {
+            if (url.getProtocol().equals("http")) {
                 HttpURLConnection con_http = (HttpURLConnection) con;
                 HttpURLConnection.setFollowRedirects(false);
                 //HttpURLConnection.setInstanceFollowRedirects(false); // this might be needed
@@ -205,24 +205,14 @@ public class CognitionisFileUtils {
         String app_path = CognitionisFileUtils.getApplicationPath();
         String res_path = app_path + File.separator + subdir;
         //System.out.println(res_path);
-        // Check for internal resources
-        //if(!app_path.startsWith("jar:")){
-        /*if (!URL_exists(res_path)) { // Check for external resources
-            // See if these are outside classes (they will be outside jar afterwards)
-            String extra = "";
-            if (File.separator.equals("\\")) {
-                System.err.println("WARNING: THIS IS A BAD HACK AND WE NEED TO FIGURE OUT WHAT HAPPENS...");
-                extra = "\\";
-            }
-            res_path = res_path.replaceAll(extra + File.separator + "classes", "");
-        }*/
+
 
 
         if (!URL_exists(res_path)) { // Check for JAR resoucre
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("look into jar");
             }
-            URL res = CognitionisFileUtils.class.getClassLoader().getResource(subdir);
+            URL res = CognitionisFileUtils.class.getClassLoader().getResource(subdir.replaceAll("\\\\", "/"));
             //InputStream res = CognitionisFileUtils.class.getClassLoader().getResourceAsStream(subdir);
             if (res == null) {
                             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
