@@ -21,9 +21,9 @@ import org.timen.timen.utils.CognitionisFileUtils;
  */
 public class Main {
 
-    //, FIND_RESOURCES
+
     public static enum Action {
-        GET_PATTERN, NORMALIZE
+        GET_PATTERN, NORMALIZE, FIND_RESOURCE
     };
 
     public static void main(String[] args) {
@@ -159,10 +159,10 @@ public class Main {
     public static void doAction(String action, String[] input_files, String action_parameters, String lang, String country) {
         try {
             switch (Action.valueOf(action.toUpperCase())) {
-                /*case FIND_RESOURCES: {
-                    System.out.println("Silly with file. Under construction.");
+                case FIND_RESOURCE: {
+                    System.out.println("find resource with file. Under construction.");
                 }
-                break;*/
+                break;
             }
 
         } catch (Exception e) {
@@ -201,7 +201,7 @@ public class Main {
                     System.out.println(timen.normalize(input_text,dctvalue, tense, ref_datevalue));
                 }
                 break;
-                /*case FIND_RESOURCES: {
+                case FIND_RESOURCE: {
                     System.out.println("Silly with text (e.g., jar:file:/home/hector/timen/TIMEN/target/timen-1.0.16-SNAPSHOT.jar!/knowledge-bases/time/)");
                     
                     //RULEBASES
@@ -216,7 +216,7 @@ public class Main {
                     }
                     
                     // RANDOM INPUT TEXT
-                    System.out.println("Silly with text (testing: "+input_text);
+                    System.out.println("Finding resource with text (testing: "+input_text);
                     input_text=CognitionisFileUtils.ensureURL(input_text);
                     if(CognitionisFileUtils.URL_exists(input_text)){
                         url=new URL(input_text);
@@ -227,7 +227,7 @@ public class Main {
                         System.out.println("does not exist "+input_text);
                     }
                 }
-                break;  */                  
+                break;                  
             }
 
         } catch (Exception e) {
