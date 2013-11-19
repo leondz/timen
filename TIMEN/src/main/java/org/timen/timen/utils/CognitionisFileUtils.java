@@ -224,7 +224,7 @@ public class CognitionisFileUtils {
                 System.out.println("java jar res " + res.toString());
                 System.out.println("file: " + new File(res.getPath())); // path part of the URL
                 }
-                Enumeration<URL> resources = CognitionisFileUtils.class.getClassLoader().getResources(subdir);
+                Enumeration<URL> resources = CognitionisFileUtils.class.getClassLoader().getResources(subdir.replaceAll("\\\\", "/"));
                             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("exists = " + resources.hasMoreElements());
                             }
@@ -435,6 +435,8 @@ public class CognitionisFileUtils {
         short b = '\0';
         boolean ascii = true;
 
+        if(bytes==null) return "EMPTY-FILE";
+        
         for (i = 0; i < bytes.length; i++) {
             b = (short) (0xFF & bytes[i]);
 
@@ -496,7 +498,8 @@ public class CognitionisFileUtils {
 
     public static byte[] file2bytes(File f) {
         try {
-            file2bytes(new FileInputStream(f));
+            //System.err.println("Converting file to input stream"+f.getAbsolutePath()+"\n");
+            return file2bytes(new FileInputStream(f));
         } catch (Exception e) {
             System.err.println("Errors found (FileUtils):\n\t" + e.getMessage() + "\n");
             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
@@ -508,6 +511,7 @@ public class CognitionisFileUtils {
 
     public static byte[] file2bytes(InputStream is) {
         try {
+            //System.err.println("input stream bytes available "+is.available()+"\n");
             ArrayList<Byte> bytes = new ArrayList<>();
             byte c;
             int rc;
@@ -523,6 +527,7 @@ public class CognitionisFileUtils {
             for (int i = 0; i < bsize; i++) {
                 rbytes[i] = ((Byte) bytes.get(i)).byteValue();
             }
+            //System.err.println("bytes read "+rbytes.length+"\n");
 
             return rbytes;
         } catch (Exception e) {

@@ -160,8 +160,13 @@ public class Main {
         try {
             switch (Action.valueOf(action.toUpperCase())) {
                 case FIND_RESOURCE: {
-                    System.out.println("find resource with file. Under construction.");
+                    System.out.println("find resource with file. Under construction.\n\n");
                 }
+                break;
+
+                default:{
+                    System.out.println(action.toUpperCase()+" with input_file not supported yet.\n\n");
+                }                    
                 break;
             }
 
@@ -228,6 +233,10 @@ public class Main {
                     }
                 }
                 break;                  
+                default:{
+                    System.out.println(action.toUpperCase()+" with text input not supported yet.\n\n");
+                }                    
+                break;
             }
 
         } catch (Exception e) {
