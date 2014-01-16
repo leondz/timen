@@ -157,9 +157,22 @@ public class CognitionisFileUtils {
     }
 
     public static String ensureURL(String URLName) {
-        if (!URLName.matches("^[^:/ |]+:.*")) {
-            URLName = "file:" + URLName;
+        // replace windows by linux
+        if (File.separator.equals("\\") && URLName.contains("\\")) {
+            URLName=URLName.replaceAll("\\\\", "/");
         }
+        // handel ugly windows dirves C:\ not starting by / 
+        if(!URLName.startsWith("/") && URLName.matches("^[A-Za-z]:.*")){
+            URLName="/"+URLName;
+        }
+        
+        // handle spaces?? %20?
+        
+        if (!URLName.matches("^[^:/ |]+:.*") ) {
+            URLName = "file://" + URLName;  // NOTE: // has been recently added
+        }
+
+        
         return URLName;
     }
 
@@ -206,6 +219,18 @@ public class CognitionisFileUtils {
         String res_path = app_path + File.separator + subdir;
         //System.out.println(res_path);
 
+        if (!URL_exists(res_path)) { // Check for external resoucre (outside classes)
+            // For our beloved Windows
+            String extra = ""; // TODO check if this is really needed, it is but could be avoided if we transform res_path to URI at the beginiing
+            if (File.separator.equals("\\")) {
+                extra = "\\";
+            }
+            res_path=res_path.replaceAll(extra + File.separator + "classes", ""); // see if we need \\ for windows
+            if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
+                System.out.println("look outside classes: "+ensureURL(res_path));
+            }            
+        }
+
 
 
         if (!URL_exists(res_path)) { // Check for JAR resoucre
@@ -224,7 +249,7 @@ public class CognitionisFileUtils {
                 System.out.println("java jar res " + res.toString());
                 System.out.println("file: " + new File(res.getPath())); // path part of the URL
                 }
-                Enumeration<URL> resources = CognitionisFileUtils.class.getClassLoader().getResources(subdir.replaceAll("\\\\", "/"));
+                Enumeration<URL> resources = CognitionisFileUtils.class.getClassLoader().getResources(subdir.replaceAll("\\\\", "/")); //
                             if (System.getProperty("DEBUG") != null && System.getProperty("DEBUG").equalsIgnoreCase("true")) {
                 System.out.println("exists = " + resources.hasMoreElements());
                             }
