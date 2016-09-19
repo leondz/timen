@@ -9,12 +9,8 @@
         <url>http://www.timen.org/</url>
         <licenses>
                 <license>
-                        <name>Apache License, Version 2.0</name>
-                        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-                </license>
-                <license>
-                        <name>GNU General Public License, Version 3</name>
-                        <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+                        <name>Creative Commons Attribution 3.0 Unported (CC BY 3.0)</name>
+                        <url>https://creativecommons.org/licenses/by/3.0/</url>
                 </license>
         </licenses>
         <scm>  <!-- source code management --> 
