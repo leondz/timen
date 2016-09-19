@@ -1,5 +1,6 @@
 LICENSE
-	AGPL/Apache
+	Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+	https://creativecommons.org/licenses/by/3.0/
 
 AUTHORS
 	Original Code:	Hector Llorens, Leon Derczynski
