@@ -1,7 +1,8 @@
 TIMEN LIBRARY
 
 LICENSE
-	AGPL/Apache
+	Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+	https://creativecommons.org/licenses/by/3.0/
 
 AUTHORS
 	Hector Llorens, Leon Derczynski, Robert Gaizauskas, Estela Saquete
