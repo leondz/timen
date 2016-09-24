@@ -13,11 +13,6 @@
                         <url>https://creativecommons.org/licenses/by/3.0/</url>
                 </license>
         </licenses>
-        <scm>  <!-- source code management --> 
-                <url>https://timen.googlecode.com/svn/trunk/TIMEN</url>
-                <connection>scm:svn:http://timen.googlecode.com/svn/trunk/TIMEN</connection>
-                <developerConnection>scm:svn:https://timen.googlecode.com/svn/trunk/TIMEN</developerConnection>
-	</scm>
         <developers>
                 <developer>
                         <id>hector.llorens</id>
@@ -150,5 +145,10 @@
 		    <version>1.2</version>
 		</dependency>
         </dependencies>
+        <scm>
+
+                 <developerConnection>scm:git:https://github.com/leondz/timen.git</developerConnection>
+       </scm>
+
 </project>
 
